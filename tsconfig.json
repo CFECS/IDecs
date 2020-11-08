@@ -8,7 +8,13 @@
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
     "baseUrl": "./",
-    "lib": ["ESNext", "ESNext.AsyncIterable", "DOM"]
+    "lib": [
+      "ESNext",
+      "ESNext.AsyncIterable",
+      "DOM"
+    ]
   }
 }

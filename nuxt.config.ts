@@ -1,4 +1,4 @@
-import { NuxtConfig } from '@nuxt/types'
+import { NuxtConfig } from '@nuxt/types';
 
 const config: NuxtConfig = {
   // Disabled nuxt telemetry
@@ -60,6 +60,6 @@ const config: NuxtConfig = {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {},
-}
+};
 
-export default config
+export default config;
