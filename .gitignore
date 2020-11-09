@@ -568,5 +568,4 @@ fabric.properties
 
 commentpackagejson
 Supprimerait client/components/global/
-yarn.lock
 yarn-error.log
