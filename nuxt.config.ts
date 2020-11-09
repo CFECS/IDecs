@@ -1,13 +1,9 @@
 import { NuxtConfig } from '@nuxt/types';
 
 const config: NuxtConfig = {
+  ssr: false,
   // Disabled nuxt telemetry
   telemetry: false,
-  /*
-   ** Nuxt rendering mode
-   ** See https://nuxtjs.org/api/configuration-mode
-   */
-  mode: 'universal',
   // base nuxt src dir
   srcDir: 'client/',
   /*
@@ -23,12 +19,16 @@ const config: NuxtConfig = {
   /*
    ** Global CSS
    */
-  css: [],
+  css: ['~/assets/styles/main.less'],
+
+  styleResources: {
+    less: ['~/assets/styles/variables.less'],
+  },
   /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: [],
+  plugins: ['~/plugins/antd-ui'],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
@@ -42,6 +42,7 @@ const config: NuxtConfig = {
    ** Nuxt.js modules
    */
   modules: [
+    '@nuxtjs/style-resources',
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
   ],
@@ -50,16 +51,71 @@ const config: NuxtConfig = {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {},
-  /*
-   ** Content module configuration
-   ** See https://content.nuxtjs.org/configuration
-   */
-  content: {},
+
+  render: {
+    bundleRenderer: {
+      shouldPreload: (_, type: string) => {
+        return ['script', 'style', 'font'].includes(type);
+      },
+    },
+  },
   /*
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
    */
-  build: {},
+  build: {
+    extractCSS: true,
+    optimizeCSS: true,
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          styles: {
+            name: 'styles',
+            test: /\.(css)$/,
+            chunks: 'all',
+            enforce: true,
+          },
+          vendor: {
+            test: /[\\/]node_modules[\\/](ant-design-vue)[\\/]/,
+            name: 'vendor',
+            chunks: 'all',
+          },
+          vendor2: {
+            test: /[\\/]node_modules[\\/](@ant-design)[\\/]/,
+            name: 'vendor2',
+            chunks: 'all',
+          },
+          default: {
+            chunks: 'all',
+            priority: -20,
+          },
+        },
+      },
+    },
+    babel: {
+      babelrc: true,
+      plugins: [
+        [
+          'import',
+          {
+            libraryName: 'ant-design-vue',
+            libraryDirectory: 'es',
+            style: true,
+          },
+        ],
+      ],
+    },
+    transpile: [/ant-design-vue/],
+    loaders: {
+      imgUrl: { limit: 1000 },
+      less: {
+        javascriptEnabled: true,
+        modifyVars: {
+          'primary-color': '#4aa271',
+        },
+      },
+    },
+  },
 };
 
 export default config;

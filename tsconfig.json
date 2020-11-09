@@ -11,6 +11,7 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": "./",
+    "outDir": "./dist",
     "lib": [
       "ESNext",
       "ESNext.AsyncIterable",
