@@ -3,7 +3,11 @@
 </template>
 
 <script lang="ts">
-export default {};
+export default {
+  created() {
+    this.$router.replace('/login');
+  },
+};
 </script>
 
 <style></style>
