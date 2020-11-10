@@ -1,14 +1,25 @@
-import { Logger, Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MongooseModule } from '@nestjs/mongoose';
 import { config } from '../config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { NuxtController } from './controller/nuxt.controller';
+import { UserModule } from './api/user/user.module';
+import { GlobalModule } from './module/global.module';
+import { GatewayMiddleware } from './middleware/gateway';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(config.database), MongooseModule.forRoot(config.mongoDB.uri)],
-  controllers: [AppController, NuxtController],
-  providers: [AppService, Logger],
+  imports: [
+    TypeOrmModule.forRoot({ ...config.database, entities: [`${__dirname}/model/rds/*.ts`] }),
+    MongooseModule.forRoot(config.mongoDB.uri, { useCreateIndex: true }),
+    GlobalModule,
+    UserModule,
+  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(GatewayMiddleware).forRoutes('*');
+  }
+}

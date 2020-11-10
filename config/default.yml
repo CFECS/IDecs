@@ -3,6 +3,7 @@ logger:
   - error
   - warn
   - log
+  - debug
 
 database:
   type: postgres
@@ -11,6 +12,7 @@ database:
   username: postgres
   password: 123456
   database: idecs
+  synchronize: true
 
 mongoDB:
   uri: mongodb://localhost/idecs
