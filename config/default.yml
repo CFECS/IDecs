@@ -12,3 +12,5 @@ database:
   password: 123456
   database: idecs
 
+mongoDB:
+  uri: mongodb://localhost/idecs
