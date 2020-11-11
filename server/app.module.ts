@@ -6,7 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './api/user/user.module';
 import { GlobalModule } from './module/global.module';
-import { GatewayMiddleware } from './middleware/gateway';
+import { GatewayMiddleware } from './middleware/gateway.middleware';
 
 @Module({
   imports: [

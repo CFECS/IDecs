@@ -12,6 +12,6 @@ export class UserModel extends BaseModel {
   @Column({ length: 16, nullable: true })
   phone!: string;
 
-  @Column({ length: 64, nullable: true })
+  @Column({ length: 128, nullable: true })
   password!: string;
 }
