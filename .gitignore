@@ -570,3 +570,4 @@ commentpackagejson
 Supprimerait client/components/global/
 #yarn.lock
 yarn-error.log
+*test*.ts

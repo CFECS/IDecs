@@ -4,8 +4,8 @@ import { Constants } from '../common/constants';
 export class JwtTool {
   private static readonly jwtOption: SignOptions = { keyid: Constants.KEY_ID };
 
-  static signToken(sub: string): string {
-    return sign({ sub }, Constants.JWT_SECRET, this.jwtOption);
+  static signToken(sub: string, expiresIn: string | number): string {
+    return sign({ sub }, Constants.JWT_SECRET, { expiresIn, ...this.jwtOption });
   }
 
   static decodeToken(token: string): any {

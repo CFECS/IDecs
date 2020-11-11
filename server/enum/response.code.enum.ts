@@ -1,4 +1,6 @@
 export enum ResponseCodeEnum {
   OK = 'I_00000',
   WRONG_PARAMETERS = 'I_00001',
+  INCONSISTENT_PASSWORD = 'I_00002',
+  ALREADY_EXISTED_USER = 'I_00003',
 }

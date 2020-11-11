@@ -6,7 +6,7 @@ export class PasswordTool {
   }
 
   static encryptPwdWithSalt(password: string, salt: string): string {
-    return scryptSync(password, salt, 64).toString('hex');
+    return scryptSync(password, salt, 32).toString('hex');
   }
 
   static generateStorePwd(password: string): string {

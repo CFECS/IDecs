@@ -16,3 +16,6 @@ database:
 
 mongoDB:
   uri: mongodb://localhost/idecs
+
+api:
+  secret: RrGPfx1sn79q
