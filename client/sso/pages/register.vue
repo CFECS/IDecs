@@ -18,13 +18,13 @@
       </a-form-model-item>
     </a-form-model>
     <div class="form-footer">
-      <span>暂无账号，<nuxt-link to="/register">立即注册</nuxt-link></span>
+      <span>暂无账号，<nuxt-link to="/regsiter">立即注册</nuxt-link></span>
       <nuxt-link to="/forgot-password">忘记密码</nuxt-link>
     </div>
   </div>
 </template>
 
-<script lang="ts">
+<script>
 export default {
   name: 'Login',
 

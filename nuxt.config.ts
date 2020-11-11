@@ -1,11 +1,12 @@
 import { NuxtConfig } from '@nuxt/types';
+const project: string = process.env.PROJECT || 'sso';
 
 const config: NuxtConfig = {
   ssr: false,
   // Disabled nuxt telemetry
   telemetry: false,
   // base nuxt src dir
-  srcDir: 'client/',
+  srcDir: `client/${project}`,
   /*
    ** Nuxt target
    ** See https://nuxtjs.org/api/configuration-target

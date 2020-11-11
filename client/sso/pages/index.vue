@@ -2,7 +2,7 @@
   <div></div>
 </template>
 
-<script lang="ts">
+<script>
 export default {
   created() {
     this.$router.replace('/login');
