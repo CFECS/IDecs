@@ -1,5 +1,6 @@
 import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { config } from '../../../config';
 
 @Schema()
 export class Session extends Document {
@@ -9,9 +10,9 @@ export class Session extends Document {
   @Prop()
   profile!: Record<string, any>;
 
-  @Prop({ default: Date.now, expires: '1d' })
+  @Prop({ default: Date.now, expires: config.sessionExpire })
   createdAt?: Date;
 }
 
-export type CatDocument = Session & Document;
+export type SessionDocument = Session & Document;
 export const SessionSchema = SchemaFactory.createForClass(Session);

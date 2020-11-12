@@ -1,12 +1,12 @@
 import { randomBytes, scryptSync } from 'crypto';
 
-export class PasswordTool {
+export class PasswordUtil {
   static generateSalt(): string {
     return randomBytes(16).toString('hex');
   }
 
   static encryptPwdWithSalt(password: string, salt: string): string {
-    return scryptSync(password, salt, 64).toString('hex');
+    return scryptSync(password, salt, 32).toString('hex');
   }
 
   static generateStorePwd(password: string): string {

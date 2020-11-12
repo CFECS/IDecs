@@ -10,8 +10,9 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, BaseResponse<T
   intercept(context: ExecutionContext, next: CallHandler): Observable<BaseResponse<T>> {
     return next.handle().pipe(
       map((data) => {
-        this.logger.debug('response:', JSON.stringify(data));
-        return BaseResponse.successful(data);
+        const resData = BaseResponse.successful(data);
+        this.logger.debug('response:', JSON.stringify(resData));
+        return resData;
       }),
     );
   }

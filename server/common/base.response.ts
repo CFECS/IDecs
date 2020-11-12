@@ -1,4 +1,4 @@
-import { ResponseCodeEnum } from '../enum/response.code.enum';
+import { ResponseCodeEnum } from '../../common/enum/response.code.enum';
 
 class ResponseHeader {
   code!: string;
@@ -11,16 +11,20 @@ export class BaseResponse<T> {
 
   static successful<T>(data: T): BaseResponse<T> {
     const response = new BaseResponse<T>();
-    response.head.code = ResponseCodeEnum.OK;
-    response.head.message = this.getMsgByCode(ResponseCodeEnum.OK);
+    response.head = {
+      code: ResponseCodeEnum.OK,
+      message: this.getMsgByCode(ResponseCodeEnum.OK),
+    };
     response.data = data;
     return response;
   }
 
-  static failed<T>(code: string, message?: string): BaseResponse<T> {
+  static failed<T>(code: string): BaseResponse<T> {
     const response = new BaseResponse<T>();
-    response.head.code = code;
-    response.head.message = message ?? this.getMsgByCode(response.head.code);
+    response.head = {
+      code,
+      message: this.getMsgByCode(code),
+    };
     return response;
   }
 
