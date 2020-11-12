@@ -93,15 +93,15 @@ export class UserService {
   }
 
   getByEmail(email: string): Promise<UserModel | undefined> {
-    return this.userModelRepository.findOne({ email }, { withDeleted: false });
+    return this.userModelRepository.findOne({ email });
   }
 
   getByPhone(phone: string): Promise<UserModel | undefined> {
-    return this.userModelRepository.findOne({ phone }, { withDeleted: false });
+    return this.userModelRepository.findOne({ phone });
   }
 
   getById(id: number): Promise<UserModel | undefined> {
-    return this.userModelRepository.findOne(id, { withDeleted: false });
+    return this.userModelRepository.findOne(id);
   }
 
   async removeById(id: number): Promise<void> {
