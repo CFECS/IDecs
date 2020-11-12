@@ -1,8 +1,9 @@
 import { ResponseCodeEnum } from '../../common/enum/response.code.enum';
 
-class ResponseHeader {
-  code!: string;
-  message!: string;
+interface ResponseHeader {
+  code: string;
+  message: string;
+  detail?: string[] | string;
 }
 
 export class BaseResponse<T> {
@@ -19,11 +20,12 @@ export class BaseResponse<T> {
     return response;
   }
 
-  static failed<T>(code: string): BaseResponse<T> {
+  static failed<T>(code: string, detail: string[] | string): BaseResponse<T> {
     const response = new BaseResponse<T>();
     response.head = {
       code,
       message: this.getMsgByCode(code),
+      detail,
     };
     return response;
   }

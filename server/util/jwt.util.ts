@@ -8,6 +8,7 @@ import { CustomException } from '../exception/custom.exception';
 import { ResponseCodeEnum } from '../../common/enum/response.code.enum';
 import { Session, SessionDocument } from '../model/mongo/session.model';
 import { Utils } from '../../common/utils';
+import { config } from '../../config';
 
 export interface JwtPayload {
   sub: string;
@@ -34,7 +35,7 @@ export class JwtUtil {
   }
 
   static signAccessToken(payload: JwtPayload): string {
-    return this.signToken(payload, '1d');
+    return this.signToken(payload, config.sessionExpire);
   }
 
   async verifyToken(token: string, type: TokenTypeEnum): Promise<JwtPayload> {
