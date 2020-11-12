@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { isEmail, isPhoneNumber } from 'class-validator';
 import { generate } from 'short-uuid';
+import { classToPlain } from 'class-transformer';
 import { UserModel } from '../../model/rds/user.model';
 import { Session, SessionDocument } from '../../model/mongo/session.model';
 import { CustomException } from '../../exception/custom.exception';
@@ -100,11 +101,20 @@ export class UserService {
     return this.userModelRepository.findOne({ phone });
   }
 
-  getById(id: number): Promise<UserModel | undefined> {
-    return this.userModelRepository.findOne(id);
+  async getById(id: number): Promise<UserModel | undefined> {
+    return classToPlain(await this.userModelRepository.findOne(id)) as UserModel;
   }
 
   async removeById(id: number): Promise<void> {
     await this.userModelRepository.softDelete(id);
+  }
+
+  async userPagination(page: number, limit: number): Promise<ResPaginationDto<UserModel>> {
+    const data = await this.userModelRepository.findAndCount({
+      skip: limit * (page - 1),
+      take: limit,
+      order: { id: 'ASC' },
+    });
+    return { items: classToPlain(data[0]) as UserModel[], total: data[1] };
   }
 }

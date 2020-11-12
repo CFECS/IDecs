@@ -1,7 +1,7 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MongooseModule } from '@nestjs/mongoose';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { config } from '../config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -9,6 +9,7 @@ import { UserModule } from './api/user/user.module';
 import { GlobalModule } from './module/global.module';
 import { GatewayMiddleware } from './middleware/gateway.middleware';
 import { ResponseInterceptor } from './middleware/response.interceptor';
+import { AllExceptionsFilter } from './exception/base.exception.filter';
 
 @Module({
   imports: [
@@ -18,7 +19,11 @@ import { ResponseInterceptor } from './middleware/response.interceptor';
     UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService, { provide: APP_INTERCEPTOR, useClass: ResponseInterceptor }],
+  providers: [
+    AppService,
+    { provide: APP_INTERCEPTOR, useClass: ResponseInterceptor },
+    { provide: APP_FILTER, useClass: AllExceptionsFilter },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {

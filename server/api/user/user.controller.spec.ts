@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { SuperAgentTest } from 'supertest';
 import * as cookieParser from 'cookie-parser';
@@ -20,6 +20,7 @@ beforeAll(async () => {
   }).compile();
   app = module.createNestApplication();
   app.use(cookieParser());
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
   await app.init();
   agent = request.agent(app.getHttpServer());
   agent.timeout(3000);
@@ -132,7 +133,7 @@ describe('UserController', () => {
   });
 
   it('should get user by id successful', () => {
-    const url = '/api/user/12';
+    const url = '/api/user/10';
     setHeaders(agent, url);
     return agent
       .get(url)
@@ -145,6 +146,15 @@ describe('UserController', () => {
     setHeaders(agent, url);
     return agent
       .delete(url)
+      .expect(200)
+      .then((res) => expect(res.body.head.code).toEqual(ResponseCodeEnum.OK));
+  });
+
+  it('should get user pagination successful', () => {
+    const url = '/api/user/pagination';
+    setHeaders(agent, url);
+    return agent
+      .get(url)
       .expect(200)
       .then((res) => expect(res.body.head.code).toEqual(ResponseCodeEnum.OK));
   });
