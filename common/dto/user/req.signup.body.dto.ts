@@ -1,9 +1,9 @@
 import { IsEmail, isEmpty, IsObject, IsPhoneNumber, IsString, Matches, ValidateIf } from 'class-validator';
-import { config } from '../../../../config';
-import { ResponseCodeEnum } from '../../../enum/response.code.enum';
-import { BaseResponse } from '../../../common/base.response';
+import { config } from '../../../config';
+import { ResponseCodeEnum } from '../../enum/response.code.enum';
+import { BaseResponse } from '../../../server/common/base.response';
 
-export class SignupReqBodyDto {
+export class ReqSignupBodyDto {
   @IsEmail()
   @ValidateIf((object) => isEmpty(object.phone))
   email?: string;
@@ -22,5 +22,5 @@ export class SignupReqBodyDto {
 
   @IsObject()
   @ValidateIf((object) => isEmpty(object.profile))
-  profile = {};
+  profile: Record<string, any> = {};
 }

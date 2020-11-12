@@ -1,6 +1,6 @@
 import { randomBytes, scryptSync } from 'crypto';
 
-export class PasswordTool {
+export class PasswordUtil {
   static generateSalt(): string {
     return randomBytes(16).toString('hex');
   }
