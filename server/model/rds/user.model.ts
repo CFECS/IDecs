@@ -14,4 +14,7 @@ export class UserModel extends BaseModel {
 
   @Column({ length: 128, nullable: true })
   password!: string;
+
+  @Column({ type: 'jsonb' })
+  profile!: Record<string, any>;
 }

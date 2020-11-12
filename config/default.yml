@@ -19,3 +19,5 @@ mongoDB:
 
 api:
   secret: RrGPfx1sn79q
+
+passwordReg: ^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\W_]).{8,20}$
