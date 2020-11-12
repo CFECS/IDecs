@@ -11,7 +11,8 @@ import { RequestAo } from './request.ao';
 export class GatewayMiddleware implements NestMiddleware {
   constructor(private readonly logger: Logger, private readonly jwtUtil: JwtUtil) {}
 
-  private readonly whitelist = ['/api/user/signup', '/api/user/login', '/api/user/ticket/validate'];
+  private readonly exposeApi = ['/api'];
+  private readonly whitelist = [...this.exposeApi, '/api/user/signup', '/api/user/login', '/api/user/ticket/validate'];
 
   // eslint-disable-next-line @typescript-eslint/ban-types
   async use(req: RequestAo, res: Response, next: Function): Promise<void> {
@@ -35,15 +36,17 @@ export class GatewayMiddleware implements NestMiddleware {
       }
       return nuxt ? nuxt.render(req, res) : res.send('Nuxt is disabled.');
     }
-    // api key
-    const timestamp = Number.parseInt(req.header('timestamp') || '0');
-    if (Date.now() - timestamp > 1000 * 60) {
-      this.logger.error('timestamp mismatching');
-      throw new UnauthorizedException();
-    }
-    if (req.header('api-key') !== Utils.generateApiKey(timestamp, req.baseUrl)) {
-      this.logger.error('api-key error');
-      throw new UnauthorizedException();
+    if (!this.exposeApi.includes(req.baseUrl)) {
+      // api key
+      const timestamp = Number.parseInt(req.header('timestamp') || '0');
+      if (Date.now() - timestamp > 1000 * 60) {
+        this.logger.error('timestamp mismatching');
+        throw new UnauthorizedException();
+      }
+      if (req.header('api-key') !== Utils.generateApiKey(timestamp, req.baseUrl)) {
+        this.logger.error('api-key error');
+        throw new UnauthorizedException();
+      }
     }
     if (!this.whitelist.includes(req.baseUrl)) {
       // validate token

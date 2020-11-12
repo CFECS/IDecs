@@ -19,6 +19,7 @@ import { TokenTypeEnum } from '../../../common/enum/token.type.enum';
 import { Utils } from '../../../common/utils';
 import { ResLoginDto } from '../../../common/dto/user/res.login.dto';
 import { ResTokenValidateDto } from '../../../common/dto/user/res.token.validate.dto';
+import { ResPaginationDto } from '../../../common/dto/res.pagination.dto';
 
 @Injectable()
 export class UserService {

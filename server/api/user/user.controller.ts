@@ -8,6 +8,7 @@ import { ResLoginDto } from '../../../common/dto/user/res.login.dto';
 import { ResTokenValidateDto } from '../../../common/dto/user/res.token.validate.dto';
 import { RequestAo } from '../../middleware/request.ao';
 import { ReqPaginationBaseDto } from '../../../common/dto/req.pagination.base.dto';
+import { ResPaginationDto } from '../../../common/dto/res.pagination.dto';
 import { UserService } from './user.service';
 
 @Controller('api/user')
