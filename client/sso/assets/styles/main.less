@@ -31,10 +31,30 @@ body {
   padding: 30px;
   background-color: rgba(255, 255, 255, .7);
   box-shadow: @box-shadow-base;
+
+  .logo {
+    width: 110px;
+    height: 110px;
+    margin: 0 auto;
+    background: url('/favicon.png') no-repeat center center;
+    background-size: contain;
+  }
+
+  .description {
+    text-align: center;
+    margin: 12px 0 16px;
+    color: @text-color-secondary;
+  }
+
+  .form-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
 }
 
 .ant-input {
-  background: transparent;
+  background: transparent !important;
 }
 
 @media screen and (max-width: 768px) {

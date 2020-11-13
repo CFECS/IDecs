@@ -1,58 +1,23 @@
 import { NuxtConfig } from '@nuxt/types';
+import { config } from './config';
 const project: string = process.env.PROJECT || 'sso';
 
-const config: NuxtConfig = {
+const nuxtConfig: NuxtConfig = {
   ssr: false,
-  // Disabled nuxt telemetry
   telemetry: false,
-  // base nuxt src dir
   srcDir: `client/${project}`,
-  /*
-   ** Nuxt target
-   ** See https://nuxtjs.org/api/configuration-target
-   */
-  target: 'server',
-  /*
-   ** Headers of the page
-   ** See https://nuxtjs.org/api/configuration-head
-   */
+  env: config,
+  loading: { color: '#4aa271' },
   head: {},
-  /*
-   ** Global CSS
-   */
-  css: ['~/assets/styles/main.less'],
-
+  css: ['ant-design-vue/dist/antd.less', '~/assets/styles/main.less'],
   styleResources: {
     less: ['~/assets/styles/variables.less'],
   },
-  /*
-   ** Plugins to load before mounting the App
-   ** https://nuxtjs.org/guide/plugins
-   */
-  plugins: ['~/plugins/antd-ui'],
-  /*
-   ** Auto import components
-   ** See https://nuxtjs.org/api/configuration-components
-   */
+  plugins: ['~/plugins/antd-ui', '~/plugins/axios'],
   components: true,
-  /*
-   ** Nuxt.js dev-modules
-   */
-  buildModules: ['@nuxt/typescript-build'],
-  /*
-   ** Nuxt.js modules
-   */
-  modules: [
-    '@nuxtjs/style-resources',
-    // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
-  ],
-  /*
-   ** Axios module configuration
-   ** See https://axios.nuxtjs.org/options
-   */
+  buildModules: ['@nuxt/typescript-build', '@nuxtjs/composition-api'],
+  modules: ['@nuxtjs/style-resources'],
   axios: {},
-
   render: {
     bundleRenderer: {
       shouldPreload: (_, type: string) => {
@@ -60,10 +25,6 @@ const config: NuxtConfig = {
       },
     },
   },
-  /*
-   ** Build configuration
-   ** See https://nuxtjs.org/api/configuration-build/
-   */
   build: {
     extractCSS: true,
     optimizeCSS: true,
@@ -93,19 +54,6 @@ const config: NuxtConfig = {
         },
       },
     },
-    babel: {
-      babelrc: true,
-      plugins: [
-        [
-          'import',
-          {
-            libraryName: 'ant-design-vue',
-            libraryDirectory: 'es',
-            style: true,
-          },
-        ],
-      ],
-    },
     transpile: [/ant-design-vue/],
     loaders: {
       imgUrl: { limit: 1000 },
@@ -119,4 +67,4 @@ const config: NuxtConfig = {
   },
 };
 
-export default config;
+export default nuxtConfig;
