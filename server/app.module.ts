@@ -28,6 +28,6 @@ import { NuxtController } from './nuxt.controller';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
-    consumer.apply(GatewayMiddleware).forRoutes('*');
+    consumer.apply(GatewayMiddleware).forRoutes('/api/*');
   }
 }
