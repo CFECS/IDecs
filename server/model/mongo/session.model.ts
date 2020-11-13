@@ -10,6 +10,9 @@ export class Session extends Document {
   @Prop()
   profile!: Record<string, any>;
 
+  @Prop()
+  token!: string;
+
   @Prop({ default: Date.now, expires: config.sessionExpire })
   createdAt?: Date;
 }

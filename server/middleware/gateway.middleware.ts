@@ -24,7 +24,7 @@ export class GatewayMiddleware implements NestMiddleware {
       params:${JSON.stringify(req.params)}
       body:${JSON.stringify(req.body)}`,
     );
-    if (!req.originalUrl.startsWith('/api')) {
+    if (!req.baseUrl.startsWith('/api')) {
       // nuxt
       let nuxt: any;
       if (process.env.mode === 'production') {

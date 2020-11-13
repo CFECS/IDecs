@@ -72,14 +72,15 @@ export class UserService {
       throw new CustomException(ResponseCodeEnum.USER_NOT_EXIST);
     }
     const sessionId = generate();
-    await this.sessionModel.create({
-      sessionId,
-      profile: user,
-    });
     const token = JwtUtil.signAccessToken({
       sub: Utils.toBase64(user.id.toString()),
       sessionId,
       type: TokenTypeEnum.ACCESS_TOKEN,
+    });
+    await this.sessionModel.create({
+      sessionId,
+      profile: user,
+      token,
     });
     return { token };
   }

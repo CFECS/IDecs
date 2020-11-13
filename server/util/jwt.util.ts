@@ -54,7 +54,7 @@ export class JwtUtil {
     }
     if (jwtPayload?.type === TokenTypeEnum.ACCESS_TOKEN) {
       const session = await this.sessionModel.findOne({ sessionId: jwtPayload.sessionId });
-      if (Utils.decodeBase64(jwtPayload.sub) !== session?.profile.id.toString()) {
+      if (session?.token !== token || Utils.decodeBase64(jwtPayload.sub) !== session?.profile.id.toString()) {
         throw new CustomException(ResponseCodeEnum.INVALID_TOKEN);
       }
       jwtPayload.profile = session.profile;
