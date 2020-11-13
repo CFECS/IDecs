@@ -8,16 +8,14 @@ const nuxtConfig: NuxtConfig = {
   srcDir: `client/${project}`,
   env: config,
   loading: { color: '#4aa271' },
-  head: {},
-  css: ['ant-design-vue/dist/antd.less', '~/assets/styles/main.less'],
+  css: ['ant-design-vue/dist/antd.less', '~/styles/main.less'],
   styleResources: {
-    less: ['~/assets/styles/variables.less'],
+    less: ['~/styles/variables.less'],
   },
   plugins: ['~/plugins/antd-ui', '~/plugins/axios'],
   components: true,
   buildModules: ['@nuxt/typescript-build', '@nuxtjs/composition-api'],
   modules: ['@nuxtjs/style-resources'],
-  axios: {},
   render: {
     bundleRenderer: {
       shouldPreload: (_, type: string) => {
