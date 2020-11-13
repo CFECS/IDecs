@@ -9,13 +9,26 @@ import { RequestAo } from './request.ao';
 
 @Injectable()
 export class GatewayMiddleware implements NestMiddleware {
-  constructor(private readonly logger: Logger, private readonly jwtUtil: JwtUtil) {}
-
+  private readonly nuxt: any;
   private readonly exposeApi = ['/api'];
   private readonly whitelist = [...this.exposeApi, '/api/user/signup', '/api/user/login', '/api/user/ticket/validate'];
 
+  constructor(private readonly logger: Logger, private readonly jwtUtil: JwtUtil) {
+    if (process.env.mode === 'production') {
+      config.dev = false;
+      this.nuxt = new Nuxt(config);
+    } else if (process.env.IS_NUXT_ENABLED) {
+      this.nuxt = new Nuxt(config);
+      new Builder(this.nuxt).build();
+    }
+  }
+
   // eslint-disable-next-line @typescript-eslint/ban-types
   async use(req: RequestAo, res: Response, next: Function): Promise<void> {
+    if (!req.baseUrl.startsWith('/api')) {
+      // nuxt
+      return this.nuxt ? this.nuxt.render(req, res) : res.send('Nuxt is disabled.');
+    }
     this.logger.debug(
       `baseUrl:${req.baseUrl}
       method:${req.method}
@@ -24,18 +37,6 @@ export class GatewayMiddleware implements NestMiddleware {
       params:${JSON.stringify(req.params)}
       body:${JSON.stringify(req.body)}`,
     );
-    if (!req.baseUrl.startsWith('/api')) {
-      // nuxt
-      let nuxt: any;
-      if (process.env.mode === 'production') {
-        config.dev = false;
-        nuxt = new Nuxt(config);
-      } else if (process.env.IS_NUXT_ENABLED) {
-        nuxt = new Nuxt(config);
-        new Builder(nuxt).build();
-      }
-      return nuxt ? nuxt.render(req, res) : res.send('Nuxt is disabled.');
-    }
     if (!this.exposeApi.includes(req.baseUrl)) {
       // api key
       const timestamp = Number.parseInt(req.header('timestamp') || '0');
