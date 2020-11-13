@@ -10,6 +10,7 @@ import { GlobalModule } from './module/global.module';
 import { GatewayMiddleware } from './middleware/gateway.middleware';
 import { ResponseInterceptor } from './middleware/response.interceptor';
 import { AllExceptionsFilter } from './exception/base.exception.filter';
+import { NuxtController } from './nuxt.controller';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { AllExceptionsFilter } from './exception/base.exception.filter';
     GlobalModule,
     UserModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, NuxtController],
   providers: [
     AppService,
     { provide: APP_INTERCEPTOR, useClass: ResponseInterceptor },
