@@ -1,18 +1,18 @@
 import axios from 'axios';
 import * as dayjs from 'dayjs';
-// import { Utils } from '../../../common/utils';
 
-export default (params: any, inject: any) => {
+export default ({ env, app }: any, inject: any) => {
   const instance = axios.create({
     baseURL: '/api/user',
     withCredentials: true,
   });
 
   instance.interceptors.request.use(
-    function (config) {
-      const timestamp = dayjs().valueOf();
+    async (config) => {
+      const timestamp: number = dayjs().valueOf() * 1000;
+      const password: string = timestamp + ':' + config.baseURL + config.url;
       config.headers.common.timestamp = timestamp;
-      // config.headers.common['api-key'] = Utils.generateApiKey(timestamp, params.route.path);
+      config.headers.common['api-key'] = await app.$generateApiKey(password, env.api.secret);
       return config;
     },
     function (error) {

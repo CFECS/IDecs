@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from '@nuxtjs/composition-api';
+import { defineComponent, useContext, reactive, ref } from '@nuxtjs/composition-api';
 import { ReqLoginBodyDto } from '../../../common/dto/user/req.login.body.dto';
 import { LoginTypeEnum } from '../../../common/enum/login.type.enum';
 
@@ -32,7 +32,7 @@ export default defineComponent({
   name: 'Login',
 
   setup() {
-    // const app = useContext();
+    const { $axios }: any = useContext();
 
     const params: ReqLoginBodyDto = reactive({
       identity: '',
@@ -50,8 +50,7 @@ export default defineComponent({
     const handleSubmit = () => {
       loginForm.value.validate((valid: boolean) => {
         if (valid) {
-          // app.$axios.post('/login', params);
-          // await this.$axios.post('/login', this.params);
+          $axios.post('/login', params);
         }
       });
     };
