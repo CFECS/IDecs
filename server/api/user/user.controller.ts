@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Query, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req } from '@nestjs/common';
 import { UserModel } from '../../model/rds/user.model';
 import { CustomException } from '../../exception/custom.exception';
 import { ResponseCodeEnum } from '../../../common/enum/response.code.enum';
@@ -9,6 +9,8 @@ import { ResTokenValidateDto } from '../../../common/dto/user/res.token.validate
 import { RequestAo } from '../../middleware/request.ao';
 import { ReqPaginationBaseDto } from '../../../common/dto/req.pagination.base.dto';
 import { ResPaginationDto } from '../../../common/dto/res.pagination.dto';
+import { ReqPasswordChangeBodyDto } from '../../../common/dto/user/req.password.change.body.dto';
+import { ReqProfileUpdateBodyDto } from '../../../common/dto/user/req.profile.update.body.dto';
 import { UserService } from './user.service';
 
 @Controller('api/user')
@@ -16,16 +18,16 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('signup')
-  async signup(@Body() signupReqBodyDto: ReqSignupBodyDto): Promise<void> {
-    if (signupReqBodyDto.password !== signupReqBodyDto.confirmPassword) {
+  async signup(@Body() signupBodyDto: ReqSignupBodyDto): Promise<void> {
+    if (signupBodyDto.password !== signupBodyDto.confirmPassword) {
       throw new CustomException(ResponseCodeEnum.INCONSISTENT_PASSWORD);
     }
-    await this.userService.signup(signupReqBodyDto);
+    await this.userService.signup(signupBodyDto);
   }
 
   @Post('login')
-  login(@Body() loginReqBodyDto: ReqLoginBodyDto): Promise<ResLoginDto> {
-    return this.userService.login(loginReqBodyDto);
+  login(@Body() loginBodyDto: ReqLoginBodyDto): Promise<ResLoginDto> {
+    return this.userService.login(loginBodyDto);
   }
 
   @Get('ticket/validate')
@@ -51,5 +53,22 @@ export class UserController {
   @Delete(':id')
   async removeById(@Param('id') id: number): Promise<void> {
     await this.userService.removeById(id);
+  }
+
+  @Put('password/change')
+  async passwordChange(@Req() req: RequestAo, @Body() passwordChangeBodyDto: ReqPasswordChangeBodyDto): Promise<void> {
+    if (passwordChangeBodyDto.newPassword !== passwordChangeBodyDto.confirmPassword) {
+      throw new CustomException(ResponseCodeEnum.INCONSISTENT_PASSWORD);
+    }
+    await this.userService.passwordChange(
+      req.payload.profile?.id,
+      passwordChangeBodyDto.oldPassword,
+      passwordChangeBodyDto.newPassword,
+    );
+  }
+
+  @Put('profile')
+  async profileUpdate(@Req() req: RequestAo, @Body() profileUpdateBodyDto: ReqProfileUpdateBodyDto): Promise<void> {
+    await this.userService.profileUpdate(req.payload.profile?.id, profileUpdateBodyDto);
   }
 }

@@ -1,4 +1,4 @@
-import { IsEmail, isEmpty, IsObject, IsPhoneNumber, IsString, Matches, ValidateIf } from 'class-validator';
+import { IsEmail, isEmpty, isNotEmpty, IsObject, IsPhoneNumber, IsString, Matches, ValidateIf } from 'class-validator';
 import { config } from '../../../config';
 import { ResponseCodeEnum } from '../../enum/response.code.enum';
 import { BaseResponse } from '../../../server/common/base.response';
@@ -21,6 +21,6 @@ export class ReqSignupBodyDto {
   confirmPassword!: string;
 
   @IsObject()
-  @ValidateIf((object) => isEmpty(object.profile))
+  @ValidateIf((object) => isNotEmpty(object.profile))
   profile: Record<string, any> = {};
 }

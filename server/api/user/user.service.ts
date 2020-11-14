@@ -20,6 +20,7 @@ import { Utils } from '../../../common/utils';
 import { ResLoginDto } from '../../../common/dto/user/res.login.dto';
 import { ResTokenValidateDto } from '../../../common/dto/user/res.token.validate.dto';
 import { ResPaginationDto } from '../../../common/dto/res.pagination.dto';
+import { ReqProfileUpdateBodyDto } from '../../../common/dto/user/req.profile.update.body.dto';
 
 @Injectable()
 export class UserService {
@@ -31,20 +32,20 @@ export class UserService {
     private readonly jwtUtil: JwtUtil,
   ) {}
 
-  async signup(signupReqBodyDto: ReqSignupBodyDto): Promise<void> {
-    const identity = signupReqBodyDto.email ? signupReqBodyDto.email : signupReqBodyDto.phone;
+  async signup(signupBodyDto: ReqSignupBodyDto): Promise<void> {
+    const identity = signupBodyDto.email ? signupBodyDto.email : signupBodyDto.phone;
     if (await this.checkUserExisted(<string>identity)) {
       throw new CustomException(ResponseCodeEnum.ALREADY_EXISTED_USER);
     }
-    signupReqBodyDto.password = PasswordUtil.generateStorePwd(signupReqBodyDto.password);
-    await this.userModelRepository.save(signupReqBodyDto);
+    signupBodyDto.password = PasswordUtil.generateStorePwd(signupBodyDto.password);
+    await this.userModelRepository.insert(signupBodyDto);
   }
 
-  async login(loginReqBodyDto: ReqLoginBodyDto): Promise<ResLoginDto> {
+  async login(loginBodyDto: ReqLoginBodyDto): Promise<ResLoginDto> {
     let user;
-    switch (loginReqBodyDto.type) {
+    switch (loginBodyDto.type) {
       case LoginTypeEnum.PASSWORD:
-        user = await this.loginByPassword(loginReqBodyDto.identity, loginReqBodyDto.password);
+        user = await this.loginByPassword(loginBodyDto.identity, loginBodyDto.password);
         break;
       default:
         throw new CustomException(ResponseCodeEnum.UNKNOWN_LOGIN_TYPE);
@@ -118,5 +119,23 @@ export class UserService {
       order: { id: 'ASC' },
     });
     return { items: classToPlain(data[0]) as UserModel[], total: data[1] };
+  }
+
+  async passwordChange(id: number, oldPassword: string, newPassword: string): Promise<void> {
+    const user = await this.userModelRepository.findOne(id);
+    if (!user) {
+      throw new CustomException(ResponseCodeEnum.USER_NOT_EXIST);
+    }
+    if (!PasswordUtil.verifyPwd(oldPassword, user.password)) {
+      throw new CustomException(ResponseCodeEnum.WRONG_PASSWORD);
+    }
+    await this.userModelRepository.update(id, { password: PasswordUtil.generateStorePwd(newPassword) });
+  }
+
+  async profileUpdate(id: number, profileUpdateBodyDto: ReqProfileUpdateBodyDto): Promise<void> {
+    await this.userModelRepository.update(id, {
+      username: profileUpdateBodyDto.username,
+      profile: profileUpdateBodyDto.profile,
+    });
   }
 }
