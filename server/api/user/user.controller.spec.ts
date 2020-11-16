@@ -9,10 +9,13 @@ import { ReqLoginBodyDto } from '../../../common/dto/user/req.login.body.dto';
 import { LoginTypeEnum } from '../../../common/enum/login.type.enum';
 import { Utils } from '../../../common/utils';
 import { ResponseCodeEnum } from '../../../common/enum/response.code.enum';
+import { ReqPasswordChangeBodyDto } from '../../../common/dto/user/req.password.change.body.dto';
+import { ReqProfileUpdateBodyDto } from '../../../common/dto/user/req.profile.update.body.dto';
 import { UserModule } from './user.module';
 
 let app: INestApplication;
 let agent: SuperAgentTest;
+const password = 'IDecs@2020';
 
 beforeAll(async () => {
   const module: TestingModule = await Test.createTestingModule({
@@ -36,55 +39,59 @@ function setHeaders(agent: SuperAgentTest, baseUrl: string): void {
   agent.set('api-key', Utils.generateApiKey(now, baseUrl));
 }
 
-function doSignupAndLogin(): Promise<string> {
+function doLoginByPassword(email: string, password: string): Promise<string> {
+  const loginData: ReqLoginBodyDto = {
+    identity: email,
+    password,
+    type: LoginTypeEnum.PASSWORD,
+  };
+  let url = '/api/user/login';
+  setHeaders(agent, url);
+  return agent
+    .post(url)
+    .send(loginData)
+    .expect(201)
+    .then((res) => {
+      url = '/api/user/ticket/validate';
+      setHeaders(agent, url);
+      return agent
+        .get(url)
+        .query({ ticket: res.body.data.ticket })
+        .expect(200)
+        .then((res) => {
+          expect(res.body.head.code).toEqual(ResponseCodeEnum.OK);
+          return res;
+        })
+        .then((res) => res.body.data.token);
+    });
+}
+
+async function doSignupAndLogin(): Promise<{ email: string; token: string }> {
   const email = `${Date.now()}.test@idecs.com`;
-  const password = 'IDecs@2020';
   const signupData: ReqSignupBodyDto = {
     email,
     password,
     confirmPassword: password,
     profile: { username: 'IDecs_tester' },
   };
-  let url = '/api/user/signup';
+  const url = '/api/user/signup';
   setHeaders(agent, url);
-  return agent
+  const token = await agent
     .post(url)
     .send(signupData)
     .expect(201)
     .then(() => {
-      const loginData: ReqLoginBodyDto = {
-        identity: email,
-        password,
-        type: LoginTypeEnum.PASSWORD,
-      };
-      url = '/api/user/login';
-      setHeaders(agent, url);
-      return agent
-        .post(url)
-        .send(loginData)
-        .expect(201)
-        .then((res) => {
-          url = '/api/user/ticket/validate';
-          setHeaders(agent, url);
-          return agent
-            .get(url)
-            .query({ ticket: res.body.data.ticket })
-            .expect(200)
-            .then((res) => {
-              expect(res.body.head.code).toEqual(ResponseCodeEnum.OK);
-              return res;
-            })
-            .then((res) => res.body.data.token);
-        });
+      return doLoginByPassword(email, password);
     });
+  return { email, token };
 }
 
 describe('Signup and login', () => {
   it('should create user by email successful', () => {
     const data: ReqSignupBodyDto = {
       email: `${Date.now()}.test@idecs.com`,
-      password: 'IDecs@2020',
-      confirmPassword: 'IDecs@2020',
+      password,
+      confirmPassword: password,
       profile: { username: 'IDecs_tester' },
     };
     const url = '/api/user/signup';
@@ -99,8 +106,8 @@ describe('Signup and login', () => {
   it('should create user by phone successful', () => {
     const data: ReqSignupBodyDto = {
       phone: `+861${Date.now().toString().slice(4, 13)}`,
-      password: 'IDecs@2020',
-      confirmPassword: 'IDecs@2020',
+      password,
+      confirmPassword: password,
       profile: { username: 'IDecs_tester' },
     };
     const url = '/api/user/signup';
@@ -118,9 +125,11 @@ describe('Signup and login', () => {
 });
 
 describe('UserController', () => {
+  let email: string;
   beforeAll(async () => {
-    const token = await doSignupAndLogin();
-    agent.set('Cookie', [`token=${token}`]);
+    const data = await doSignupAndLogin();
+    email = data.email;
+    agent.set('Cookie', [`token=${data.token}`]);
   });
 
   it('should get self successful', () => {
@@ -155,6 +164,40 @@ describe('UserController', () => {
     setHeaders(agent, url);
     return agent
       .get(url)
+      .expect(200)
+      .then((res) => expect(res.body.head.code).toEqual(ResponseCodeEnum.OK));
+  });
+
+  it('should update password successful', () => {
+    const url = '/api/user/password/change';
+    setHeaders(agent, url);
+    const newPassword = 'IDecs!2020';
+    const updatePasswordData: ReqPasswordChangeBodyDto = {
+      oldPassword: password,
+      newPassword,
+      confirmPassword: newPassword,
+    };
+    return agent
+      .put(url)
+      .send(updatePasswordData)
+      .expect(200)
+      .then(() => {
+        return doLoginByPassword(email, newPassword);
+      });
+  });
+
+  it('should update profile successful', () => {
+    const url = '/api/user/profile';
+    setHeaders(agent, url);
+    const data: ReqProfileUpdateBodyDto = {
+      username: 'haha',
+      profile: {
+        test: 'prefect',
+      },
+    };
+    return agent
+      .put(url)
+      .send(data)
       .expect(200)
       .then((res) => expect(res.body.head.code).toEqual(ResponseCodeEnum.OK));
   });
