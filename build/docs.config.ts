@@ -1,65 +1,34 @@
-import { NuxtConfig } from '@nuxt/types';
+import theme from '@nuxt/content-theme-docs';
 
-const nuxtConfig: NuxtConfig = {
-  ssr: false,
-  telemetry: false,
-  srcDir: 'docs/',
+export default theme({
+  rootDir: 'docs/',
+  docs: {
+    primaryColor: '#4aa271',
+  },
   loading: { color: '#4aa271' },
-  css: ['ant-design-vue/dist/antd.less', '~/styles/main.less'],
-  styleResources: {
-    less: ['~/styles/variables.less'],
-  },
-  plugins: ['~/plugins/antd-ui'],
-  components: true,
-  buildModules: ['@nuxt/typescript-build', '@nuxtjs/composition-api'],
-  modules: ['@nuxtjs/style-resources'],
-  render: {
-    bundleRenderer: {
-      shouldPreload: (_, type: string) => {
-        return ['script', 'style', 'font'].includes(type);
+  i18n: {
+    locales: () => [
+      {
+        code: 'zh-CN',
+        iso: 'zh-CN',
+        file: 'zh-CN.js',
+        name: '简体中文',
       },
+      {
+        code: 'en',
+        iso: 'en-US',
+        file: 'en-US.js',
+        name: 'English',
+      },
+    ],
+    defaultLocale: 'zh-CN',
+  },
+  content: {
+    liveEdit: false,
+  },
+  pwa: {
+    manifest: {
+      name: 'IDecs',
     },
   },
-  build: {
-    extractCSS: true,
-    optimizeCSS: true,
-    optimization: {
-      splitChunks: {
-        cacheGroups: {
-          styles: {
-            name: 'styles',
-            test: /\.(css)$/,
-            chunks: 'all',
-            enforce: true,
-          },
-          vendor: {
-            test: /[\\/]node_modules[\\/](ant-design-vue)[\\/]/,
-            name: 'vendor',
-            chunks: 'all',
-          },
-          vendor2: {
-            test: /[\\/]node_modules[\\/](@ant-design)[\\/]/,
-            name: 'vendor2',
-            chunks: 'all',
-          },
-          default: {
-            chunks: 'all',
-            priority: -20,
-          },
-        },
-      },
-    },
-    transpile: [/ant-design-vue/],
-    loaders: {
-      imgUrl: { limit: 1000 },
-      less: {
-        javascriptEnabled: true,
-        modifyVars: {
-          'primary-color': '#4aa271',
-        },
-      },
-    },
-  },
-};
-
-export default nuxtConfig;
+});
