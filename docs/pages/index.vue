@@ -1,15 +1,11 @@
 <template>
-  <div></div>
+  <div>111</div>
 </template>
 
 <script>
 import { defineComponent } from '@nuxtjs/composition-api';
 
-export default defineComponent({
-  created() {
-    this.$router.replace('/login');
-  },
-});
+export default defineComponent({});
 </script>
 
 <style></style>
