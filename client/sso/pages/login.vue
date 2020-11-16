@@ -19,13 +19,12 @@
     .form-footer
       span
         span 暂无账号，
-        nuxt-link(to="/register") 立即注册
+        nuxt-link(to="/register/phone") 立即注册
       nuxt-link(to="/forgot-password") 忘记密码
 </template>
 
 <script lang="ts">
 import { defineComponent, useContext, reactive, ref } from '@nuxtjs/composition-api';
-import { ReqLoginBodyDto } from '../../../common/dto/user/req.login.body.dto';
 import { LoginTypeEnum } from '../../../common/enum/login.type.enum';
 
 export default defineComponent({
@@ -34,7 +33,7 @@ export default defineComponent({
   setup() {
     const { $axios }: any = useContext();
 
-    const params: ReqLoginBodyDto = reactive({
+    const params = reactive({
       identity: '',
       password: '',
       type: LoginTypeEnum.PASSWORD,

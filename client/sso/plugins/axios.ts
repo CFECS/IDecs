@@ -1,5 +1,6 @@
 import axios from 'axios';
 import * as dayjs from 'dayjs';
+import { message } from 'ant-design-vue';
 
 export default ({ env, app }: any, inject: any) => {
   const instance = axios.create({
@@ -22,6 +23,8 @@ export default ({ env, app }: any, inject: any) => {
 
   instance.interceptors.response.use(
     function (response) {
+      const code: string = response.data.head.code;
+      message.error(code);
       return response;
     },
     function (error) {
