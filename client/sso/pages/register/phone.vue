@@ -76,11 +76,14 @@ export default defineComponent({
       signupForm.value.validate((valid: boolean) => {
         if (valid) {
           state.loading = true;
-          const { dialCode, phone } = state.params;
+          const { dialCode, phone, password, confirmPassword, profile } = state.params;
           try {
             $axios.post('/signup', {
               ...state.params,
               phone: dialCode + phone,
+              password,
+              confirmPassword,
+              profile,
             });
             state.loading = false;
             root.$router.push('/login');
