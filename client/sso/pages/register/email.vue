@@ -66,11 +66,11 @@ export default defineComponent({
     };
 
     const handleSubmit = () => {
-      signupForm.value.validate((valid: boolean) => {
+      signupForm.value.validate(async (valid: boolean) => {
         if (valid) {
           state.loading = true;
           try {
-            $axios.post('/signup', state.params);
+            await $axios.post('/signup', state.params);
             state.loading = false;
             root.$router.push('/login');
           } catch (err) {

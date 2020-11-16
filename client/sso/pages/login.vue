@@ -97,7 +97,7 @@ export default defineComponent({
     };
 
     const handleSubmit = () => {
-      loginForm.value.validate((valid: boolean) => {
+      loginForm.value.validate(async (valid: boolean) => {
         if (valid) {
           state.loading = true;
           try {
@@ -112,7 +112,7 @@ export default defineComponent({
                   }
                 : state.emailForm;
 
-            $axios.post('/login', params);
+            await $axios.post('/login', params);
             state.loading = false;
           } catch (err) {
             state.loading = false;

@@ -73,12 +73,12 @@ export default defineComponent({
     };
 
     const handleSubmit = () => {
-      signupForm.value.validate((valid: boolean) => {
+      signupForm.value.validate(async (valid: boolean) => {
         if (valid) {
           state.loading = true;
           const { dialCode, phone, password, confirmPassword, profile } = state.params;
           try {
-            $axios.post('/signup', {
+            await $axios.post('/signup', {
               ...state.params,
               phone: dialCode + phone,
               password,
