@@ -22,4 +22,38 @@ api:
 
 passwordReg: ^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\W_]).{8,20}$
 
-sessionExpire: 1d
+expire:
+  session: 1d
+  otp: 10m
+
+sms:
+  aliyun:
+    enable: false
+    accessKeyId: asdkjhdjhlfalka
+    accessKeySecret: qweqwieuiourioujsf
+    signName: asdczx
+    templateCode: SMS_12345678
+    codeVarPlaceHolder: code
+  tencent:
+    enable: false
+    secretId: sdfghjkliuytredfghjdsasdas
+    secretKey: qwewqewewfzcvsasdsa
+    smsSdkAppid: '123456576'
+    sign: adsadasdasdqwe
+    templateID: '231425'
+
+email:
+  transport:
+    service: qq # If you set service, no need to set host or port etc. Support service: https://nodemailer.com/smtp/well-known
+    host:
+    port:
+    secure:
+    auth:
+      user: 1234567@qq.com # email
+      pass: sdfghjkloiuytr # password
+  info:
+    from: 1234567@qq.com
+    subject: test email
+    html: hello idecs
+    codeVarPlaceHolder: {{code}}
+

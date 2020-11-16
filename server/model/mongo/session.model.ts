@@ -13,7 +13,7 @@ export class Session extends Document {
   @Prop()
   token!: string;
 
-  @Prop({ default: Date.now, expires: config.sessionExpire })
+  @Prop({ default: Date.now, expires: config.expire.session })
   createdAt?: Date;
 }
 

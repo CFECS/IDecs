@@ -8,7 +8,7 @@ export class ReqSignupBodyDto {
   @ValidateIf((object) => isEmpty(object.phone))
   email?: string;
 
-  @IsPhoneNumber(null)
+  @IsPhoneNumber('CN')
   @ValidateIf((object) => isEmpty(object.email))
   phone?: string;
 

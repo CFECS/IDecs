@@ -35,7 +35,7 @@ export class JwtUtil {
   }
 
   static signAccessToken(payload: JwtPayload): string {
-    return this.signToken(payload, config.sessionExpire);
+    return this.signToken(payload, config.expire.session);
   }
 
   async verifyToken(token: string, type: TokenTypeEnum): Promise<JwtPayload> {
