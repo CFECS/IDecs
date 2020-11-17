@@ -1,0 +1,1 @@
+__NUXT_JSONP__("/en", (function(a,b){return {data:[{document:{slug:"index",toc:[],body:{type:"root",children:[]},dir:"\u002Fen",path:"\u002Fen\u002Findex",extension:".md",createdAt:a,updatedAt:a,to:"\u002F"},prev:b,next:b}],fetch:[],mutations:[]}}("2020-11-17T15:07:16.415Z",null)));
