@@ -9,22 +9,22 @@ import { NotificationService } from './notification.service';
 export class NotificationController {
   constructor(private readonly notificationService: NotificationService) {}
 
-  @Post('sms')
+  @Post('/sms')
   async sms(@Body() phoneBodyDto: ReqOtpSendPhoneBodyDto): Promise<void> {
     await this.notificationService.sms(phoneBodyDto.phone, phoneBodyDto.type);
   }
 
-  @Post('sms/verify')
+  @Post('/sms/verify')
   async smsVerify(@Body() phoneBodyDto: ReqOtpVerifyPhoneBodyDto): Promise<void> {
     await this.notificationService.smsVerify(phoneBodyDto.phone, phoneBodyDto.code, phoneBodyDto.type);
   }
 
-  @Post('email')
+  @Post('/email')
   async email(@Body() emailBodyDto: ReqOtpSendEmailBodyDto): Promise<void> {
     await this.notificationService.email(emailBodyDto.email, emailBodyDto.type);
   }
 
-  @Post('email/verify')
+  @Post('/email/verify')
   async emailVerify(@Body() emailBodyDto: ReqOtpVerifyEmailBodyDto): Promise<void> {
     await this.notificationService.emailVerify(emailBodyDto.email, emailBodyDto.code, emailBodyDto.type);
   }

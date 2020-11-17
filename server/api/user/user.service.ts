@@ -121,14 +121,7 @@ export class UserService {
     return { items: classToPlain(data[0]) as UserModel[], total: data[1] };
   }
 
-  async passwordChange(id: number, oldPassword: string, newPassword: string): Promise<void> {
-    const user = await this.userModelRepository.findOne(id);
-    if (!user) {
-      throw new CustomException(ResponseCodeEnum.USER_NOT_EXIST);
-    }
-    if (!PasswordUtil.verifyPwd(oldPassword, user.password)) {
-      throw new CustomException(ResponseCodeEnum.WRONG_PASSWORD);
-    }
+  async passwordChange(id: number, newPassword: string): Promise<void> {
     await this.userModelRepository.update(id, { password: PasswordUtil.generateStorePwd(newPassword) });
   }
 
@@ -137,5 +130,13 @@ export class UserService {
       username: profileUpdateBodyDto.username,
       profile: profileUpdateBodyDto.profile,
     });
+  }
+
+  async emailChange(id: number, email: string): Promise<void> {
+    await this.userModelRepository.update(id, { email });
+  }
+
+  async phoneChange(id: number, phone: string): Promise<void> {
+    await this.userModelRepository.update(id, { phone });
   }
 }

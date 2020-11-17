@@ -9,6 +9,7 @@ import { EmailHelper } from '../../util/email.helper';
 import { Otp, OtpDocument } from '../../model/mongo/otp.model';
 import { CustomException } from '../../exception/custom.exception';
 import { ResponseCodeEnum } from '../../../common/enum/response.code.enum';
+import { config } from '../../../config';
 
 @Injectable()
 export class NotificationService {
@@ -30,6 +31,7 @@ export class NotificationService {
   }
 
   async smsVerify(phone: string, code: string, type: string): Promise<void> {
+    if (this.verifySkip(code)) return;
     const data = await this.otpModel.findOne({ phone, type }).sort({ seq: 'desc' });
     if (data?.code !== code) {
       throw new CustomException(ResponseCodeEnum.INVALID_CODE);
@@ -45,6 +47,7 @@ export class NotificationService {
   }
 
   async emailVerify(email: string, code: string, type: string): Promise<void> {
+    if (this.verifySkip(code)) return;
     const data = await this.otpModel.findOne({ email, type }).sort({ seq: 'desc' });
     if (data?.code !== code) {
       throw new CustomException(ResponseCodeEnum.INVALID_CODE);
@@ -68,5 +71,9 @@ export class NotificationService {
       default:
         throw new CustomException(ResponseCodeEnum.UNKNOWN_OTP_TYPE);
     }
+  }
+
+  verifySkip(code: string) {
+    return config.api.otp.testEnable && code === config.api.otp.code;
   }
 }

@@ -11,6 +11,7 @@ import { Utils } from '../../../common/utils';
 import { ResponseCodeEnum } from '../../../common/enum/response.code.enum';
 import { ReqPasswordChangeBodyDto } from '../../../common/dto/user/req.password.change.body.dto';
 import { ReqProfileUpdateBodyDto } from '../../../common/dto/user/req.profile.update.body.dto';
+import { config } from '../../../config';
 import { UserModule } from './user.module';
 
 let app: INestApplication;
@@ -70,6 +71,7 @@ async function doSignupAndLogin(): Promise<{ email: string; token: string }> {
   const email = `${Date.now()}.test@idecs.com`;
   const signupData: ReqSignupBodyDto = {
     email,
+    code: config.api.otp.code,
     password,
     confirmPassword: password,
     profile: { username: 'IDecs_tester' },
@@ -90,6 +92,7 @@ describe('Signup and login', () => {
   it('should create user by email successful', () => {
     const data: ReqSignupBodyDto = {
       email: `${Date.now()}.test@idecs.com`,
+      code: config.api.otp.code,
       password,
       confirmPassword: password,
       profile: { username: 'IDecs_tester' },
@@ -106,6 +109,7 @@ describe('Signup and login', () => {
   it('should create user by phone successful', () => {
     const data: ReqSignupBodyDto = {
       phone: `+861${Date.now().toString().slice(4, 13)}`,
+      code: config.api.otp.code,
       password,
       confirmPassword: password,
       profile: { username: 'IDecs_tester' },

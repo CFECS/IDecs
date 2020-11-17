@@ -19,6 +19,9 @@ mongoDB:
 
 api:
   secret: RrGPfx1sn79q
+  otp:
+    testEnable: true
+    code: '890980'
 
 passwordReg: ^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\W_]).{8,20}$
 
