@@ -2,6 +2,9 @@ import theme from '@nuxt/content-theme-docs';
 
 export default theme({
   rootDir: 'docs/',
+  router: {
+    base: '/IDecs/',
+  },
   docs: {
     primaryColor: '#4aa271',
   },
