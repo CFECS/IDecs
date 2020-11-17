@@ -20,7 +20,7 @@ export class BaseResponse<T> {
     return response;
   }
 
-  static failed<T>(code: string, detail: string[] | string): BaseResponse<T> {
+  static failed<T>(code: string, detail: any): BaseResponse<T> {
     const response = new BaseResponse<T>();
     response.head = {
       code,

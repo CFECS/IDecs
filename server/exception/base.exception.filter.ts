@@ -1,12 +1,4 @@
-import {
-  ArgumentsHost,
-  BadRequestException,
-  Catch,
-  ExceptionFilter,
-  HttpException,
-  HttpStatus,
-  Logger,
-} from '@nestjs/common';
+import { ArgumentsHost, BadRequestException, Catch, ExceptionFilter, HttpStatus, Logger } from '@nestjs/common';
 import { BaseResponse } from '../common/base.response';
 import { ResponseCodeEnum } from '../../common/enum/response.code.enum';
 import { CustomException } from './custom.exception';
@@ -24,9 +16,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     } else if (exception instanceof BadRequestException) {
       const msg = (exception.getResponse() as any).message;
       return response.status(HttpStatus.OK).json(BaseResponse.failed(ResponseCodeEnum.WRONG_PARAMETERS, msg));
-    } else if (exception instanceof HttpException) {
-      return response.status(exception.getStatus()).json(exception.getResponse());
     }
-    return response.status(HttpStatus.INTERNAL_SERVER_ERROR).send((<any>exception)?.message);
+    return response.status(HttpStatus.OK).json(BaseResponse.failed(ResponseCodeEnum.UNKNOWN_ERROR, exception));
   }
 }
