@@ -12,6 +12,7 @@
     "lint": "eslint --ext .ts,.js,.vue ./",
     "lint:fix": "yarn run lint --fix",
     "test": "jest",
+    "build:docs": "nuxt-ts generate --config-file build/docs.config.ts",
     "build": "run-s clean:dist compile:client generate:client copy:.nuxt copy:client copy:config compile:server",
     "clean:dist": "rimraf dist",
     "compile:server": "tsc -p tsconfig.build.json",
