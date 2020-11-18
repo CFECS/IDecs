@@ -5,7 +5,7 @@ import { ReqOtpSendEmailBodyDto } from '../../../common/dto/notification/req.otp
 import { ReqOtpVerifyEmailBodyDto } from '../../../common/dto/notification/req.otp.verify.email.body.dto';
 import { NotificationService } from './notification.service';
 
-@Controller()
+@Controller('/api')
 export class NotificationController {
   constructor(private readonly notificationService: NotificationService) {}
 

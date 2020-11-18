@@ -7,7 +7,15 @@ import { RequestAo } from './request.ao';
 
 @Injectable()
 export class GatewayMiddleware implements NestMiddleware {
-  private readonly whitelist = ['/api/user/signup', '/api/user/login', '/api/user/ticket/validate'];
+  private readonly whitelist = [
+    '/api/user/signup',
+    '/api/user/login',
+    '/api/user/ticket/validate',
+    '/api/sms',
+    '/api/email',
+    '/api/sms/verify',
+    '/api/email/verify',
+  ];
 
   constructor(private readonly logger: Logger, private readonly jwtUtil: JwtUtil) {}
 
