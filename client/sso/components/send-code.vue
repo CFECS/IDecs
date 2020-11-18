@@ -68,9 +68,9 @@ export default defineComponent({
       timer.value = null;
     };
 
-    const queryTime = Cookies.get(`IDecs_${props.method}_${NotifyTypeEnum[props.type]}`);
+    const queryTime: any = Cookies.get(`IDecs_${props.method}_${NotifyTypeEnum[props.type]}`);
     if (queryTime) {
-      const time = Math.round(60 - (+Date.now() - queryTime) / 1000);
+      const time = Math.round(60 - (+Date.now() - Number(queryTime)) / 1000);
       start(time);
     }
 
@@ -80,7 +80,9 @@ export default defineComponent({
       if (valid) {
         try {
           await $axios.post(url.value[0], body.value);
-          Cookies.set(`IDecs_${props.method}_${NotifyTypeEnum[props.type]}`, +Date.now(), { expires: 1 / 24 / 60 });
+          Cookies.set(`IDecs_${props.method}_${NotifyTypeEnum[props.type]}`, String(+Date.now()), {
+            expires: 1 / 24 / 60,
+          });
           start();
           loading.value = false;
         } catch (err) {
