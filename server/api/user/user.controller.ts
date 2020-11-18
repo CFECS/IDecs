@@ -96,14 +96,11 @@ export class UserController {
   }
 
   @Put('/password/reset/phone')
-  async passwordResetByPhone(
-    @Req() req: RequestAo,
-    @Body() passwordResetBodyDto: ReqPasswordResetBodyDto,
-  ): Promise<void> {
+  async passwordResetByPhone(@Body() passwordResetBodyDto: ReqPasswordResetBodyDto): Promise<void> {
     if (passwordResetBodyDto.newPassword !== passwordResetBodyDto.confirmPassword) {
       throw new CustomException(ResponseCodeEnum.INCONSISTENT_PASSWORD);
     }
-    const user = await this.userService.getById(req.payload.profile?.id);
+    const user = await this.userService.getByPhone(passwordResetBodyDto.phone);
     if (!user) {
       throw new CustomException(ResponseCodeEnum.USER_NOT_EXIST);
     }
@@ -112,18 +109,15 @@ export class UserController {
       passwordResetBodyDto.code,
       NotifyTypeEnum[NotifyTypeEnum.RESET_PASSWORD],
     );
-    await this.userService.passwordChange(req.payload.profile?.id, passwordResetBodyDto.newPassword);
+    await this.userService.passwordChange(user.id, passwordResetBodyDto.newPassword);
   }
 
   @Put('/password/reset/email')
-  async passwordResetByEmail(
-    @Req() req: RequestAo,
-    @Body() passwordResetBodyDto: ReqPasswordResetBodyDto,
-  ): Promise<void> {
+  async passwordResetByEmail(@Body() passwordResetBodyDto: ReqPasswordResetBodyDto): Promise<void> {
     if (passwordResetBodyDto.newPassword !== passwordResetBodyDto.confirmPassword) {
       throw new CustomException(ResponseCodeEnum.INCONSISTENT_PASSWORD);
     }
-    const user = await this.userService.getById(req.payload.profile?.id);
+    const user = await this.userService.getByEmail(passwordResetBodyDto.email);
     if (!user) {
       throw new CustomException(ResponseCodeEnum.USER_NOT_EXIST);
     }
@@ -132,7 +126,7 @@ export class UserController {
       passwordResetBodyDto.code,
       NotifyTypeEnum[NotifyTypeEnum.RESET_PASSWORD],
     );
-    await this.userService.passwordChange(req.payload.profile?.id, passwordResetBodyDto.newPassword);
+    await this.userService.passwordChange(user.id, passwordResetBodyDto.newPassword);
   }
 
   @Put('/email/change')
