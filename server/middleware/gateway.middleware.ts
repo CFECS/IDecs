@@ -31,14 +31,10 @@ export class GatewayMiddleware implements NestMiddleware {
     );
     // api key
     const timestamp = Number.parseInt(req.header('timestamp') || '0');
-
     if (Date.now() - timestamp > 1000 * 60) {
       this.logger.error('timestamp mismatching');
       throw new UnauthorizedException();
     }
-
-    this.logger.log(Utils.generateApiKey(timestamp, req.baseUrl));
-
     if (req.header('api-key') !== Utils.generateApiKey(timestamp, req.baseUrl)) {
       this.logger.error('api-key error');
       throw new UnauthorizedException();
