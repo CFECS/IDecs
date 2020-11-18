@@ -101,7 +101,7 @@ export default defineComponent({
           loading.value = true;
           const { dialCode, phone, code, newPassword, confirmPassword } = state.params;
           try {
-            await $axios.post('/user/password/reset/phone', {
+            await $axios.put('/user/password/reset/phone', {
               phone: dialCode + phone,
               newPassword,
               code,

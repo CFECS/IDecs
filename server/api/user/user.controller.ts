@@ -96,7 +96,10 @@ export class UserController {
   }
 
   @Put('/password/reset/phone')
-  async passwordResetByPhone(@Req() req: RequestAo, passwordResetBodyDto: ReqPasswordResetBodyDto): Promise<void> {
+  async passwordResetByPhone(
+    @Req() req: RequestAo,
+    @Body() passwordResetBodyDto: ReqPasswordResetBodyDto,
+  ): Promise<void> {
     if (passwordResetBodyDto.newPassword !== passwordResetBodyDto.confirmPassword) {
       throw new CustomException(ResponseCodeEnum.INCONSISTENT_PASSWORD);
     }
@@ -113,7 +116,10 @@ export class UserController {
   }
 
   @Put('/password/reset/email')
-  async passwordResetByEmail(@Req() req: RequestAo, passwordResetBodyDto: ReqPasswordResetBodyDto): Promise<void> {
+  async passwordResetByEmail(
+    @Req() req: RequestAo,
+    @Body() passwordResetBodyDto: ReqPasswordResetBodyDto,
+  ): Promise<void> {
     if (passwordResetBodyDto.newPassword !== passwordResetBodyDto.confirmPassword) {
       throw new CustomException(ResponseCodeEnum.INCONSISTENT_PASSWORD);
     }
@@ -130,7 +136,10 @@ export class UserController {
   }
 
   @Put('/email/change')
-  async emailChange(@Req() req: RequestAo, emailOrPhoneChangeBodyDto: ReqEmailOrPhoneChangeBodyDto): Promise<void> {
+  async emailChange(
+    @Req() req: RequestAo,
+    @Body() emailOrPhoneChangeBodyDto: ReqEmailOrPhoneChangeBodyDto,
+  ): Promise<void> {
     await this.notificationService.emailVerify(
       emailOrPhoneChangeBodyDto.email,
       emailOrPhoneChangeBodyDto.code,
@@ -140,7 +149,10 @@ export class UserController {
   }
 
   @Put('/phone/change')
-  async phoneChange(@Req() req: RequestAo, emailOrPhoneChangeBodyDto: ReqEmailOrPhoneChangeBodyDto): Promise<void> {
+  async phoneChange(
+    @Req() req: RequestAo,
+    @Body() emailOrPhoneChangeBodyDto: ReqEmailOrPhoneChangeBodyDto,
+  ): Promise<void> {
     await this.notificationService.smsVerify(
       emailOrPhoneChangeBodyDto.phone,
       emailOrPhoneChangeBodyDto.code,

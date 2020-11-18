@@ -95,7 +95,7 @@ export default defineComponent({
         if (valid) {
           loading.value = true;
           try {
-            await $axios.post('/user/password/reset/email', state.params);
+            await $axios.put('/user/password/reset/email', state.params);
             loading.value = false;
             root.$router.back();
           } catch (err) {
