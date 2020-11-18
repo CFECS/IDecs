@@ -17,12 +17,6 @@ export default theme({
         file: 'zh-CN.js',
         name: '简体中文',
       },
-      {
-        code: 'en',
-        iso: 'en-US',
-        file: 'en-US.js',
-        name: 'English',
-      },
     ],
     defaultLocale: 'zh-CN',
   },
