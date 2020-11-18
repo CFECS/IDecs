@@ -57,6 +57,6 @@ email:
   info:
     from: 1234567@qq.com
     subject: test email
-    html: hello idecs
-    codeVarPlaceHolder: {{code}}
+    html: 'hello IDecs {{code}}'
+    codeVarPlaceHolder: '{{code}}'
 
