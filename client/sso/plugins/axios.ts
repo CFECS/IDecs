@@ -10,14 +10,18 @@ const StatusErrorMessage: any = {
 };
 
 const ResponseErrorMessage: any = {
-  I_00003: '用户已存在，请更换用户名~',
-  I_00006: '用户不存在，请更换用户名~',
-  I_00007: '密码错误，请重新输入~',
+  I_00004: '用户已存在，请更换用户~',
+  I_00007: '用户不存在，请更换用户~',
+  I_00008: '密码错误，请重新输入~',
+  I_00012: '短信验证码发送失败，请稍后重试~',
+  I_00013: '未知的短信供应商，请修改配置项~',
+  I_00014: '邮箱验证码发送失败，请稍微重试~',
+  I_00016: '验证码错误，请重新输入~',
 };
 
 export default ({ env, app }: any, inject: any) => {
   const instance = axios.create({
-    baseURL: '/api/user',
+    baseURL: '/api',
     withCredentials: true,
   });
 

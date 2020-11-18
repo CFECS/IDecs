@@ -7,30 +7,23 @@
       @submit="handleSubmit"
       @submit.native.prevent
     )
-      a-form-model-item(prop="phone")
-        a-input(v-model="params.phone" placeholder="手机号" size="large")
-          a-select(
-            slot="addonBefore"
-            v-model="params.dialCode"
-            :style="{ width: '70px' }"
-            :dropdown-match-select-width="false"
-            option-label-prop="value"
-          )
-            a-select-option(v-for="code in $countryDialCodes()" :key="code.value" :value="code.value") {{ code.label }}
+      a-form-model-item(prop="email")
+        a-input(v-model="params.email" placeholder="邮箱" size="large")
+          a-icon(slot="prefix" type="user" style="color: rgba(0, 0, 0, 0.25)")
 
       a-form-model-item(prop="code" class="verify-code")
-        a-input(v-model="params.code" placeholder="短信验证码" size="large")
+        a-input(v-model="params.code" placeholder="邮箱验证码" size="large")
           a-icon(slot="prefix" type="safety-certificate" style="color: rgba(0, 0, 0, 0.25)")
           send-code(
             slot="addonAfter"
-            method="sms"
-            :value="params.dialCode + params.phone"
-            :type="0"
+            method="email"
+            :value="params.email"
+            :type="1"
             :before-send="beforeSend"
           )
 
-      a-form-model-item(prop="password")
-        a-input(v-model="params.password" type="password" placeholder="密码" size="large")
+      a-form-model-item(prop="newPassword")
+        a-input(v-model="params.newPassword" type="password" placeholder="新密码" size="large")
           a-icon(slot="prefix" type="lock" style="color: rgba(0, 0, 0, 0.25)")
 
       a-form-model-item(prop="confirmPassword")
@@ -38,13 +31,11 @@
           a-icon(slot="prefix" type="lock" style="color: rgba(0, 0, 0, 0.25)")
 
       a-form-model-item
-        a-button(type="primary" :loading="loading" html-type="submit" block size="large") 注册
+        a-button(type="primary" :loading="loading" html-type="submit" block size="large") 确认修改
 
     .form-footer
-      span
-        span 已有账号，
-        a(@click="$router.back()") 立即登录
-      nuxt-link(to="/register/email" replace) 邮箱注册
+      a(@click="$router.back()") 返回登录
+      nuxt-link(to="/forgot-password/phone" replace) 通过手机号修改密码
 </template>
 
 <script lang="ts">
@@ -54,26 +45,24 @@ export default defineComponent({
   name: 'PhoneRegister',
 
   setup(props, { root }) {
-    const { $axios, $checkPhone, $checkPassword }: any = useContext();
+    const { $axios, $checkPassword }: any = useContext();
 
     const signupForm: any = ref(null);
     const loading = ref(false);
 
     const state = reactive({
       params: {
-        dialCode: '+86',
-        phone: '',
+        email: '',
         code: '',
-        password: '',
+        newPassword: '',
         confirmPassword: '',
-        profile: {},
       },
     });
 
     const checkConfirmPass = (rule: any, value: string, callback: any) => {
       if (!value) {
         callback(new Error('请再次输入密码'));
-      } else if (value !== state.params.password) {
+      } else if (value !== state.params.newPassword) {
         callback(new Error('两次密码不一致'));
       } else {
         callback();
@@ -81,16 +70,19 @@ export default defineComponent({
     };
 
     const rules: any = {
-      phone: [{ validator: $checkPhone, trigger: 'change' }],
-      code: [{ required: true, message: '请输入短信验证码', trigger: 'change' }],
-      password: [{ validator: $checkPassword, trigger: 'change' }],
+      email: [
+        { required: true, message: '请输入邮箱', trigger: 'change' },
+        { type: 'email', message: '请输入正确的邮箱' },
+      ],
+      code: [{ required: true, message: '请输入邮箱验证码', trigger: 'change' }],
+      newPassword: [{ validator: $checkPassword, trigger: 'change' }],
       confirmPassword: [{ validator: checkConfirmPass, trigger: 'change' }],
     };
 
     const beforeSend = () => {
       return new Promise((resolve) => {
-        if (!state.params.phone) {
-          signupForm.value.validateField('phone');
+        if (!state.params.email) {
+          signupForm.value.validateField('email');
           resolve(false);
         } else {
           resolve(true);
@@ -102,15 +94,8 @@ export default defineComponent({
       signupForm.value.validate(async (valid: boolean) => {
         if (valid) {
           loading.value = true;
-          const { dialCode, phone, code, password, confirmPassword, profile } = state.params;
           try {
-            await $axios.post('/user/signup', {
-              phone: dialCode + phone,
-              password,
-              code,
-              confirmPassword,
-              profile,
-            });
+            await $axios.post('/user/password/reset/email', state.params);
             loading.value = false;
             root.$router.back();
           } catch (err) {

@@ -1,6 +1,6 @@
 <template lang="pug">
   div
-    a-tabs(v-model="tab" size="large")
+    a-tabs(v-model="tab" size="large" @change="saveKey")
       a-tab-pane(key="phone" tab="手机号登录")
         a-form-model(
           ref="loginForm"
@@ -23,13 +23,13 @@
             a-input(v-model="phoneForm.password" type="password" placeholder="密码" size="large")
               a-icon(slot="prefix" type="lock" style="color: rgba(0, 0, 0, 0.25)")
           a-form-model-item
-            a-button(type="primary" html-type="submit" block size="large") 登录
+            a-button(type="primary" :loading="loading" html-type="submit" block size="large") 登录
 
         .form-footer
           span
             span 暂无账号，
             nuxt-link(to="/register/phone") 立即注册
-          nuxt-link(to="/forgot-password") 忘记密码
+          nuxt-link(to="/forgot-password/phone") 忘记密码
 
       a-tab-pane(key="email" tab="邮箱登录")
         a-form-model(
@@ -46,17 +46,18 @@
             a-input(v-model="emailForm.password" type="password" placeholder="密码" size="large")
               a-icon(slot="prefix" type="lock" style="color: rgba(0, 0, 0, 0.25)")
           a-form-model-item
-            a-button(type="primary" html-type="submit" block size="large") 登录
+            a-button(type="primary" :loading="loading" html-type="submit" block size="large") 登录
 
         .form-footer
           span
             span 暂无账号，
-            nuxt-link(to="/register/phone") 立即注册
-          nuxt-link(to="/forgot-password") 忘记密码
+            nuxt-link(to="/register/email") 立即注册
+          nuxt-link(to="/forgot-password/email") 忘记密码
 </template>
 
 <script lang="ts">
-import { defineComponent, useContext, reactive, ref, computed } from '@nuxtjs/composition-api';
+import { defineComponent, useContext, reactive, ref } from '@nuxtjs/composition-api';
+import * as Cookies from 'js-cookie';
 import { LoginTypeEnum } from '../../../common/enum/login.type.enum';
 
 export default defineComponent({
@@ -68,7 +69,7 @@ export default defineComponent({
     const loginForm: any = ref(null);
 
     const state = reactive({
-      tab: 'phone',
+      tab: Cookies.get('IDecs_login_tabs_key') || 'phone',
       phoneForm: {
         dialCode: '+86',
         identity: '',
@@ -80,8 +81,8 @@ export default defineComponent({
         password: '',
         type: LoginTypeEnum.PASSWORD,
       },
-      loading: false,
     });
+    const loading = ref(false);
 
     const phoneRules = {
       identity: [{ validator: $checkPhone, trigger: 'change' }],
@@ -96,10 +97,14 @@ export default defineComponent({
       password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
     };
 
+    const saveKey = (key: string) => {
+      Cookies.set('IDecs_login_tabs_key', key);
+    };
+
     const handleSubmit = () => {
       loginForm.value.validate(async (valid: boolean) => {
         if (valid) {
-          state.loading = true;
+          loading.value = true;
           try {
             const { dialCode, identity, password, type } = state.phoneForm;
 
@@ -112,10 +117,10 @@ export default defineComponent({
                   }
                 : state.emailForm;
 
-            await $axios.post('/login', params);
-            state.loading = false;
+            await $axios.post('/user/login', params);
+            loading.value = false;
           } catch (err) {
-            state.loading = false;
+            loading.value = false;
           }
         }
       });
@@ -124,8 +129,10 @@ export default defineComponent({
     return {
       loginForm,
       ...state,
+      loading,
       phoneRules,
       emailRules,
+      saveKey,
       handleSubmit,
     };
   },

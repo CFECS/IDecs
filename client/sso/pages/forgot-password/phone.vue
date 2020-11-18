@@ -25,12 +25,12 @@
             slot="addonAfter"
             method="sms"
             :value="params.dialCode + params.phone"
-            :type="0"
+            :type="1"
             :before-send="beforeSend"
           )
 
-      a-form-model-item(prop="password")
-        a-input(v-model="params.password" type="password" placeholder="密码" size="large")
+      a-form-model-item(prop="newPassword")
+        a-input(v-model="params.newPassword" type="password" placeholder="新密码" size="large")
           a-icon(slot="prefix" type="lock" style="color: rgba(0, 0, 0, 0.25)")
 
       a-form-model-item(prop="confirmPassword")
@@ -38,13 +38,11 @@
           a-icon(slot="prefix" type="lock" style="color: rgba(0, 0, 0, 0.25)")
 
       a-form-model-item
-        a-button(type="primary" :loading="loading" html-type="submit" block size="large") 注册
+        a-button(type="primary" :loading="loading" html-type="submit" block size="large") 确认修改
 
     .form-footer
-      span
-        span 已有账号，
-        a(@click="$router.back()") 立即登录
-      nuxt-link(to="/register/email" replace) 邮箱注册
+      a(@click="$router.back()") 返回登录
+      nuxt-link(to="/forgot-password/email" replace) 通过邮箱修改密码
 </template>
 
 <script lang="ts">
@@ -64,16 +62,15 @@ export default defineComponent({
         dialCode: '+86',
         phone: '',
         code: '',
-        password: '',
+        newPassword: '',
         confirmPassword: '',
-        profile: {},
       },
     });
 
     const checkConfirmPass = (rule: any, value: string, callback: any) => {
       if (!value) {
         callback(new Error('请再次输入密码'));
-      } else if (value !== state.params.password) {
+      } else if (value !== state.params.newPassword) {
         callback(new Error('两次密码不一致'));
       } else {
         callback();
@@ -83,7 +80,7 @@ export default defineComponent({
     const rules: any = {
       phone: [{ validator: $checkPhone, trigger: 'change' }],
       code: [{ required: true, message: '请输入短信验证码', trigger: 'change' }],
-      password: [{ validator: $checkPassword, trigger: 'change' }],
+      newPassword: [{ validator: $checkPassword, trigger: 'change' }],
       confirmPassword: [{ validator: checkConfirmPass, trigger: 'change' }],
     };
 
@@ -102,14 +99,13 @@ export default defineComponent({
       signupForm.value.validate(async (valid: boolean) => {
         if (valid) {
           loading.value = true;
-          const { dialCode, phone, code, password, confirmPassword, profile } = state.params;
+          const { dialCode, phone, code, newPassword, confirmPassword } = state.params;
           try {
-            await $axios.post('/user/signup', {
+            await $axios.post('/user/password/reset/phone', {
               phone: dialCode + phone,
-              password,
+              newPassword,
               code,
               confirmPassword,
-              profile,
             });
             loading.value = false;
             root.$router.back();

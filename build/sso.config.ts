@@ -4,7 +4,9 @@ import { config } from '../config';
 const nuxtConfig: NuxtConfig = {
   ssr: false,
   telemetry: false,
+  target: 'static',
   srcDir: 'client/sso',
+  components: true,
   env: config,
   loading: { color: '#4aa271' },
   css: ['ant-design-vue/dist/antd.less', '~/styles/main.less'],
@@ -12,7 +14,6 @@ const nuxtConfig: NuxtConfig = {
     less: ['~/styles/variables.less'],
   },
   plugins: ['~/plugins/antd-ui', '~/plugins/axios', '~/plugins/tools'],
-  components: true,
   buildModules: ['@nuxt/typescript-build', '@nuxtjs/composition-api'],
   modules: ['@nuxtjs/style-resources'],
   render: {
