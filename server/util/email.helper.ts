@@ -15,7 +15,7 @@ export class EmailHelper {
 
   async sendEmail(code: string, email: string) {
     const params: Mail.Options = { to: email, from: config.email.info.from, subject: config.email.info.subject };
-    params.html = config.email.info.html.replaceAll(config.email.info.codeVarPlaceHolder, code);
+    params.html = config.email.info.html.replace(config.email.info.codeVarPlaceHolder, code);
     const response = await this.transporter.sendMail(params);
     this.logger.debug(response);
     if (response.rejected.length > 0) {

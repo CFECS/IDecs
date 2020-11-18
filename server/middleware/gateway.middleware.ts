@@ -43,8 +43,8 @@ export class GatewayMiddleware implements NestMiddleware {
       this.logger.error('api-key error');
       throw new UnauthorizedException();
     }
+    // verify token
     if (!this.whitelist.includes(req.baseUrl)) {
-      // validate token
       req.payload = await this.jwtUtil.verifyToken(req.cookies.token, TokenTypeEnum.ACCESS_TOKEN);
     }
     next();
