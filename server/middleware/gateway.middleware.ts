@@ -15,7 +15,6 @@ export class GatewayMiddleware implements NestMiddleware {
     '/api/email',
     '/api/sms/verify',
     '/api/email/verify',
-    '/api/email/verify',
     '/api/user/password/reset/phone',
     '/api/user/password/reset/email',
   ];
