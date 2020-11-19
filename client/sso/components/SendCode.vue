@@ -6,7 +6,7 @@
 import { Component, Prop, Vue } from 'nuxt-property-decorator';
 import * as Cookies from 'js-cookie';
 import { NotifyTypeEnum } from '../../../common/enum/notify.type.enum';
-import { SMSRequestURLEnum, EmailRequestURLEnum } from '../dto/types';
+import { SMSRequestURLEnum, EmailRequestURLEnum } from '../types/dto';
 
 @Component
 export default class SendCode extends Vue {

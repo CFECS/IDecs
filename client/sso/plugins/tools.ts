@@ -1,6 +1,6 @@
 import { Plugin } from '@nuxt/types';
 import * as scrypt from 'scrypt-async';
-import { DialCodeDto } from '../dto/types';
+import { DialCodeDto } from '../types/dto';
 
 declare module 'vue/types/vue' {
   interface Vue {
@@ -8,6 +8,7 @@ declare module 'vue/types/vue' {
     $countryDialCodes(): DialCodeDto[];
     $checkPhone(rule: any, value: string, callback: any): void;
     $checkPassword(rule: any, value: string, callback: any): void;
+    $generateTitle(title: string): string;
   }
 }
 
@@ -65,6 +66,10 @@ const Tools: Plugin = (_, inject) => {
     } else {
       callback();
     }
+  });
+
+  inject('generateTitle', (title: string): string => {
+    return `${title}-IDecs是一个低成本、完全开放、易于配置的身份管理服务`;
   });
 };
 

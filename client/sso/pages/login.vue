@@ -108,12 +108,12 @@ export default class Login extends Vue {
 
   loading = false;
 
-  phoneRules: any = {
+  phoneRules: Record<string, any> = {
     identity: [{ validator: this.$checkPhone, trigger: 'change' }],
     password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
   };
 
-  emailRules: any = {
+  emailRules: Record<string, any> = {
     identity: [
       { required: true, message: '请输入邮箱', trigger: 'change' },
       { type: 'email', message: '请输入正确的邮箱' },

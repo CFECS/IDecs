@@ -67,7 +67,7 @@ export default class EmailForgotPassword extends Vue {
     }
   }
 
-  rules: any = {
+  rules: Record<string, any> = {
     email: [
       { required: true, message: '请输入邮箱', trigger: 'change' },
       { type: 'email', message: '请输入正确的邮箱' },

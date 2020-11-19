@@ -2,7 +2,7 @@ import { Plugin } from '@nuxt/types';
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
 import * as dayjs from 'dayjs';
 import { message } from 'ant-design-vue';
-import { SYSTEM_ERROR, STATUS_ERROR, RESPONSE_ERROR } from '../dto/constants';
+import { SYSTEM_ERROR, STATUS_ERROR, RESPONSE_ERROR } from '../types/constants';
 
 declare module 'vue/types/vue' {
   interface Vue {

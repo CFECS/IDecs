@@ -17,6 +17,3 @@ export class DialCodeDto {
   @IsString()
   readonly value!: string;
 }
-export interface StringKeyAndValue {
-  [propName: string]: string;
-}

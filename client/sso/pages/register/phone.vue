@@ -87,7 +87,7 @@ export default class PhoneRegister extends Vue {
     }
   }
 
-  rules: any = {
+  rules: Record<string, any> = {
     phone: [{ validator: this.$checkPhone, trigger: 'change' }],
     code: [{ required: true, message: '请输入短信验证码', trigger: 'change' }],
     password: [{ validator: this.$checkPassword, trigger: 'change' }],
