@@ -1,11 +1,11 @@
 import { Plugin } from '@nuxt/types';
 import * as scrypt from 'scrypt-async';
-import { DialCodes } from '../dto/types';
+import { DialCodeDto } from '../dto/types';
 
 declare module 'vue/types/vue' {
   interface Vue {
     $generateApiKey(password: any, salt: any): Promise<any>;
-    $countryDialCodes(): DialCodes[];
+    $countryDialCodes(): DialCodeDto[];
     $checkPhone(rule: any, value: string, callback: any): void;
     $checkPassword(rule: any, value: string, callback: any): void;
   }
@@ -34,7 +34,7 @@ const Tools: Plugin = (_, inject) => {
     },
   );
 
-  inject('countryDialCodes', (): DialCodes[] => [
+  inject('countryDialCodes', (): DialCodeDto[] => [
     { label: '+86', value: '+86' },
     { label: '+852', value: '+852' },
     { label: '+853', value: '+853' },

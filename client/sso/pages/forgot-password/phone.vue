@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-form-model ref="signupForm" :model="params" :rules="rules" @submit="handleSubmit" @submit.native.prevent>
+    <a-form-model ref="forgotForm" :model="params" :rules="rules" @submit="handleSubmit" @submit.native.prevent>
       <a-form-model-item prop="phone">
         <a-input v-model="params.phone" placeholder="手机号" size="large">
           <a-select

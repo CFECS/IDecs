@@ -1,3 +1,5 @@
+import { IsString } from 'class-validator';
+
 export enum SMSRequestURLEnum {
   SEND = '/sms',
   VERIFY = '/sms/verify',
@@ -8,11 +10,13 @@ export enum EmailRequestURLEnum {
   VERIFY = '/email/verify',
 }
 
-export interface DialCodes {
-  label: string;
-  value: string;
-}
+export class DialCodeDto {
+  @IsString()
+  readonly label!: string;
 
+  @IsString()
+  readonly value!: string;
+}
 export interface StringKeyAndValue {
   [propName: string]: string;
 }
