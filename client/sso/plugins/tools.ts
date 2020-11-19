@@ -1,26 +1,40 @@
+import { Plugin } from '@nuxt/types';
 import * as scrypt from 'scrypt-async';
+import { DialCodes } from '../dto/types';
 
-export default (_: any, inject: any) => {
-  inject('generateApiKey', function (password: any, salt: any): Promise<any> {
-    return new Promise((resolve) => {
-      scrypt(
-        password,
-        salt,
-        {
-          N: 16384,
-          r: 8,
-          p: 1,
-          dkLen: 64,
-          encoding: 'hex',
-        },
-        (derivedKey: any) => {
-          resolve(derivedKey);
-        },
-      );
-    });
-  });
+declare module 'vue/types/vue' {
+  interface Vue {
+    $generateApiKey(password: any, salt: any): Promise<any>;
+    $countryDialCodes(): DialCodes[];
+    $checkPhone(rule: any, value: string, callback: any): void;
+    $checkPassword(rule: any, value: string, callback: any): void;
+  }
+}
 
-  inject('countryDialCodes', () => [
+const Tools: Plugin = (_, inject) => {
+  inject(
+    'generateApiKey',
+    (password: any, salt: any): Promise<any> => {
+      return new Promise((resolve) => {
+        scrypt(
+          password,
+          salt,
+          {
+            N: 16384,
+            r: 8,
+            p: 1,
+            dkLen: 64,
+            encoding: 'hex',
+          },
+          (derivedKey: any) => {
+            resolve(derivedKey);
+          },
+        );
+      });
+    },
+  );
+
+  inject('countryDialCodes', (): DialCodes[] => [
     { label: '+86', value: '+86' },
     { label: '+852', value: '+852' },
     { label: '+853', value: '+853' },
@@ -33,7 +47,7 @@ export default (_: any, inject: any) => {
     { label: '+82', value: '+82' },
   ]);
 
-  inject('checkPhone', (rule: any, value: string, callback: any) => {
+  inject('checkPhone', (_: any, value: string, callback: any): void => {
     if (!value) {
       callback(new Error('请输入手机号'));
     } else if (!/^\d+$/.test(value)) {
@@ -43,7 +57,7 @@ export default (_: any, inject: any) => {
     }
   });
 
-  inject('checkPassword', (rule: any, value: string, callback: any) => {
+  inject('checkPassword', (_: any, value: string, callback: any): void => {
     if (!value) {
       callback(new Error('请输入密码'));
     } else if (!/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\W_]).{8,20}$/.test(value)) {
@@ -53,3 +67,5 @@ export default (_: any, inject: any) => {
     }
   });
 };
+
+export default Tools;

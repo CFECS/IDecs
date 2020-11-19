@@ -2,14 +2,15 @@
   <div></div>
 </template>
 
-<script>
-import { defineComponent } from '@nuxtjs/composition-api';
+<script lang="ts">
+import { Component, Vue } from 'nuxt-property-decorator';
 
-export default defineComponent({
+@Component
+export default class Index extends Vue {
   created() {
     this.$router.replace('/login');
-  },
-});
+  }
+}
 </script>
 
 <style></style>

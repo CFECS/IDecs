@@ -1,64 +1,55 @@
-import axios from 'axios';
+import { Plugin } from '@nuxt/types';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
 import * as dayjs from 'dayjs';
 import { message } from 'ant-design-vue';
+import { SYSTEM_ERROR, STATUS_ERROR, RESPONSE_ERROR } from '../dto/constants';
 
-const DefaultErrorMessage = '服务器发生错误，请联系相关人员~';
+declare module 'vue/types/vue' {
+  interface Vue {
+    $axios: any;
+  }
+}
 
-const StatusErrorMessage: any = {
-  401: '暂无权限操作~',
-  504: '网络超时，请稍后再试~',
-};
-
-const ResponseErrorMessage: any = {
-  I_00004: '用户已存在，请更换用户~',
-  I_00007: '用户不存在，请更换用户~',
-  I_00008: '密码错误，请重新输入~',
-  I_00012: '短信验证码发送失败，请稍后重试~',
-  I_00013: '未知的短信供应商，请修改配置项~',
-  I_00014: '邮箱验证码发送失败，请稍微重试~',
-  I_00016: '验证码错误，请重新输入~',
-};
-
-export default ({ env, app }: any, inject: any) => {
-  const instance = axios.create({
+const Axios: Plugin = ({ env, app }, inject) => {
+  const instance: AxiosInstance = axios.create({
     baseURL: '/api',
     withCredentials: true,
   });
 
   instance.interceptors.request.use(
-    async (config) => {
+    async (config: AxiosRequestConfig) => {
       const timestamp: number = dayjs().valueOf() * 1000;
       const password: string = timestamp + ':' + config.baseURL + config.url;
       config.headers.common.timestamp = timestamp;
       config.headers.common['api-key'] = await app.$generateApiKey(password, env.api.secret);
       return config;
     },
-    function (error) {
-      return Promise.reject(error);
-    },
+    (error: AxiosError) => Promise.reject(error),
   );
 
   instance.interceptors.response.use(
-    function (response) {
+    (response: AxiosResponse) => {
       if (!response || !response.data) {
-        message.error(DefaultErrorMessage);
-        return Promise.reject(new Error(DefaultErrorMessage));
+        message.error(SYSTEM_ERROR);
+        return Promise.reject(new Error(SYSTEM_ERROR));
       } else {
-        const code: string = response.data.head.code;
+        const code: any = response.data.head.code;
         if (code !== 'I_00000') {
-          const errorMessage = ResponseErrorMessage[code] || DefaultErrorMessage;
+          const errorMessage = RESPONSE_ERROR[code] || SYSTEM_ERROR;
           message.error(errorMessage);
           return Promise.reject(new Error(errorMessage));
         }
       }
       return response;
     },
-    function (error) {
-      const status = error.response.status;
-      message.error(StatusErrorMessage[status] || DefaultErrorMessage);
+    (error: any) => {
+      const status: any = error.response.status;
+      message.error(STATUS_ERROR[status] || SYSTEM_ERROR);
       return Promise.reject(error);
     },
   );
 
   inject('axios', instance);
 };
+
+export default Axios;
