@@ -16,6 +16,9 @@ const nuxtConfig: NuxtConfig = {
   plugins: ['~/plugins/antd-ui', '~/plugins/axios', '~/plugins/tools'],
   buildModules: ['@nuxt/typescript-build'],
   modules: ['@nuxtjs/style-resources'],
+  router: {
+    middleware: 'auth',
+  },
   render: {
     bundleRenderer: {
       shouldPreload: (_, type: string) => {

@@ -8,7 +8,25 @@ export const PAGE_TITLE: Record<string, string> = {
   default: 'IDecs',
 };
 
-export const SYSTEM_ERROR = '服务器发生错误，请联系相关人员~';
+export const PAGE_ERROR: Record<string | number, any> = {
+  401: {
+    status: '403',
+    title: 401,
+    description: '对不起，您暂无权限访问该页面~',
+  },
+  404: {
+    status: '404',
+    title: 404,
+    description: '对不起，您访问的页面不存在~',
+  },
+  500: {
+    status: '500',
+    title: 500,
+    description: '系统错误，请联系相关人员~',
+  },
+};
+
+export const SYSTEM_ERROR = '系统错误，请联系相关人员~';
 
 export const STATUS_ERROR: Record<string, string> = {
   401: '暂无权限操作~',

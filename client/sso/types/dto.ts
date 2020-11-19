@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 
 export enum SMSRequestURLEnum {
   SEND = '/sms',
@@ -16,4 +16,14 @@ export class DialCodeDto {
 
   @IsString()
   readonly value!: string;
+}
+export class NuxtError {
+  @IsString()
+  readonly message?: string;
+
+  @IsString()
+  readonly path?: string;
+
+  @IsNumber()
+  readonly statusCode?: number;
 }
