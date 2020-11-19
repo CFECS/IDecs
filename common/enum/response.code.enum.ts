@@ -17,4 +17,5 @@ export enum ResponseCodeEnum {
   UNKNOWN_OTP_TYPE = 'I_00015',
   INVALID_CODE = 'I_00016',
   EMAIL_OR_PHONE_NUMBER_NEEDED = 'I_00017',
+  UNAUTHORIZED = 'I_00018',
 }
