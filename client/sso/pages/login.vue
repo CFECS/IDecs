@@ -140,6 +140,13 @@ export default class Login extends Vue {
         try {
           await this.$axios.post('/user/login', params);
           this.loading = false;
+
+          const redirect: any = this.$route.query.redirect || window.sessionStorage.getItem('IDecs_redirect');
+          if (!redirect) {
+            this.$nuxt.error({ statusCode: 401 });
+          } else {
+            window.sessionStorage.setItem('IDecs_redirect', redirect);
+          }
         } catch (err) {
           this.loading = false;
         }
