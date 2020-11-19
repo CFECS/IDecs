@@ -14,7 +14,7 @@ const nuxtConfig: NuxtConfig = {
     less: ['~/styles/variables.less'],
   },
   plugins: ['~/plugins/antd-ui', '~/plugins/axios', '~/plugins/tools'],
-  buildModules: ['@nuxt/typescript-build', '@nuxtjs/composition-api'],
+  buildModules: ['@nuxt/typescript-build'],
   modules: ['@nuxtjs/style-resources'],
   render: {
     bundleRenderer: {
