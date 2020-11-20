@@ -5,8 +5,17 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'nuxt-property-decorator';
 import * as Cookies from 'js-cookie';
-import { NotifyTypeEnum } from '../../common/enum/notify.type.enum';
-import { SMSRequestURLEnum, EmailRequestURLEnum } from '../types/dto';
+import { NotifyTypeEnum } from '../types/enum/notify.type.enum';
+
+export enum SMSRequestURLEnum {
+  SEND = '/sms',
+  VERIFY = '/sms/verify',
+}
+
+export enum EmailRequestURLEnum {
+  SEND = '/email',
+  VERIFY = '/email/verify',
+}
 
 @Component
 export default class SendCode extends Vue {

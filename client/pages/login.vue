@@ -85,8 +85,9 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
 import * as Cookies from 'js-cookie';
-import { LoginTypeEnum } from '../../common/enum/login.type.enum';
-import { ReqLoginBodyDto } from '../../common/dto/user/req.login.body.dto';
+import { LoginTypeEnum } from '../types/enum/login.type.enum';
+import { ReqLoginBodyDto } from '../types/dto/user/req.login.body.dto';
+import User from '~/store/user';
 
 @Component
 export default class Login extends Vue {
@@ -148,8 +149,9 @@ export default class Login extends Vue {
         this.loading = true;
         const params: ReqLoginBodyDto = this.pickParams();
         try {
-          await this.$axios.post('/user/login', params);
+          await User.login(params);
           this.loading = false;
+          this.$router.push('/');
         } catch (err) {
           this.loading = false;
         }

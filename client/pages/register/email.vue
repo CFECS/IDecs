@@ -43,8 +43,9 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
-import { ReqSignupBodyDto } from '../../../common/dto/user/req.signup.body.dto';
-import { NotifyTypeEnum } from '../../../common/enum/notify.type.enum';
+import User from '@/store/user';
+import { ReqSignupBodyDto } from '../../types/dto/user/req.signup.body.dto';
+import { NotifyTypeEnum } from '../../types/enum/notify.type.enum';
 
 @Component
 export default class EmailRegister extends Vue {
@@ -108,9 +109,9 @@ export default class EmailRegister extends Vue {
       if (valid) {
         this.loading = true;
         try {
-          await this.$axios.post('/user/signup', this.params);
+          await User.signup(this.params);
           this.loading = false;
-          this.$router.back();
+          this.$router.push('/login');
         } catch (err) {
           this.loading = false;
         }

@@ -2,6 +2,7 @@ import { Plugin } from '@nuxt/types';
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
 import * as dayjs from 'dayjs';
 import { message } from 'ant-design-vue';
+import { injectAxiosToStore } from '../store/axios';
 import { SYSTEM_ERROR, STATUS_ERROR, RESPONSE_ERROR } from '../types/constants';
 
 declare module 'vue/types/vue' {
@@ -49,6 +50,7 @@ const Axios: Plugin = ({ env, app }, inject) => {
     },
   );
 
+  injectAxiosToStore(instance);
   inject('axios', instance);
 };
 

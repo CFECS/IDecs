@@ -58,8 +58,9 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
-import { ReqSignupBodyDto } from '../../../common/dto/user/req.signup.body.dto';
-import { NotifyTypeEnum } from '../../../common/enum/notify.type.enum';
+import User from '@/store/user';
+import { ReqSignupBodyDto } from '../../types/dto/user/req.signup.body.dto';
+import { NotifyTypeEnum } from '../../types/enum/notify.type.enum';
 
 @Component
 export default class PhoneRegister extends Vue {
@@ -122,12 +123,12 @@ export default class PhoneRegister extends Vue {
       if (valid) {
         this.loading = true;
         try {
-          await this.$axios.post('/user/signup', {
+          await User.signup({
             ...this.params,
             phone: this.dialCode + this.params.phone,
           });
           this.loading = false;
-          this.$router.back();
+          this.$router.push('/login');
         } catch (err) {
           this.loading = false;
         }

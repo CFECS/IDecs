@@ -56,8 +56,9 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
-import { ReqPasswordResetBodyDto } from '../../../common/dto//user/req.password.reset.body.dto';
-import { NotifyTypeEnum } from '../../../common/enum/notify.type.enum';
+import User from '@/store/user';
+import { ReqPasswordResetBodyDto } from '../../types/dto//user/req.password.reset.body.dto';
+import { NotifyTypeEnum } from '../../types/enum/notify.type.enum';
 
 @Component
 export default class PhoneForgotPassword extends Vue {
@@ -120,12 +121,12 @@ export default class PhoneForgotPassword extends Vue {
       if (valid) {
         this.loading = true;
         try {
-          await this.$axios.put('/user/password/reset/phone', {
+          await User.resetPasswordByPhone({
             ...this.params,
             phone: this.dialCode + this.params.phone,
           });
           this.loading = false;
-          this.$router.back();
+          this.$router.push('/login');
         } catch (err) {
           this.loading = false;
         }

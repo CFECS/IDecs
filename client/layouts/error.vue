@@ -12,7 +12,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'nuxt-property-decorator';
 import { PAGE_ERROR } from '../types/constants';
-import { NuxtError } from '../types/dto';
+import { NuxtError } from '../types/dto/common';
 
 @Component
 export default class ErrorLayouts extends Vue {
