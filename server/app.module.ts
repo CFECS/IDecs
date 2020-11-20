@@ -15,7 +15,7 @@ import { NotificationModule } from './api/notification/notification.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({ ...config.database, entities: [`${__dirname}/model/rds/*.ts`] }),
+    TypeOrmModule.forRoot({ ...config.rds, entities: [`${__dirname}/model/rds/*.ts`] }),
     MongooseModule.forRoot(config.mongoDB.uri, { useCreateIndex: true }),
     GlobalModule,
     UserModule,

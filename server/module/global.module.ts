@@ -1,11 +1,11 @@
 import { Global, Logger, Module } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserModel } from '../model/rds/user.model';
+import { UserDao } from '../dao/user.dao';
 
 @Global()
 @Module({
-  imports: [TypeOrmModule.forFeature([UserModel])],
+  imports: [TypeOrmModule.forFeature([UserDao])],
   providers: [Repository, Logger],
   exports: [Repository, Logger, TypeOrmModule],
 })
