@@ -5,7 +5,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'nuxt-property-decorator';
 import * as Cookies from 'js-cookie';
-import { NotifyTypeEnum } from '../../../common/enum/notify.type.enum';
+import { NotifyTypeEnum } from '../../common/enum/notify.type.enum';
 import { SMSRequestURLEnum, EmailRequestURLEnum } from '../types/dto';
 
 @Component

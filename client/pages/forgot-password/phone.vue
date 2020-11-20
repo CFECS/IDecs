@@ -56,8 +56,8 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
-import { ReqPasswordResetBodyDto } from '../../../../common/dto//user/req.password.reset.body.dto';
-import { NotifyTypeEnum } from '../../../../common/enum/notify.type.enum';
+import { ReqPasswordResetBodyDto } from '../../../common/dto//user/req.password.reset.body.dto';
+import { NotifyTypeEnum } from '../../../common/enum/notify.type.enum';
 
 @Component
 export default class PhoneForgotPassword extends Vue {

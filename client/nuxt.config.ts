@@ -5,7 +5,7 @@ const nuxtConfig: NuxtConfig = {
   ssr: false,
   telemetry: false,
   target: 'static',
-  srcDir: 'client/sso',
+  srcDir: 'client',
   components: true,
   env: config,
   loading: { color: '#4aa271' },
@@ -16,9 +16,6 @@ const nuxtConfig: NuxtConfig = {
   plugins: ['~/plugins/antd-ui', '~/plugins/axios', '~/plugins/tools'],
   buildModules: ['@nuxt/typescript-build'],
   modules: ['@nuxtjs/style-resources'],
-  router: {
-    middleware: 'auth',
-  },
   render: {
     bundleRenderer: {
       shouldPreload: (_, type: string) => {
