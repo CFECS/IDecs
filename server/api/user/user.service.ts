@@ -20,6 +20,9 @@ import { ResTokenValidateDto } from '../../../common/dto/user/res.token.validate
 import { ResPaginationDto } from '../../../common/dto/res.pagination.dto';
 import { ReqProfileUpdateBodyDto } from '../../../common/dto/user/req.profile.update.body.dto';
 import { UserDao } from '../../dao/rds/user.dao';
+import { NotifyTypeEnum } from '../../../common/enum/notify.type.enum';
+import { ReqPasswordResetBodyDto } from '../../../common/dto/user/req.password.reset.body.dto';
+import { NotificationService } from '../notification/notification.service';
 
 @Injectable()
 export class UserService {
@@ -28,9 +31,25 @@ export class UserService {
     @InjectModel(Session.name)
     private readonly sessionModel: Model<SessionDocument>,
     private readonly jwtUtil: JwtUtil,
+    private readonly notificationService: NotificationService,
   ) {}
 
   async signup(signupBodyDto: ReqSignupBodyDto): Promise<void> {
+    if (signupBodyDto.email) {
+      await this.notificationService.emailVerify(
+        signupBodyDto.email,
+        signupBodyDto.code,
+        NotifyTypeEnum[NotifyTypeEnum.REGISTER],
+      );
+    } else if (signupBodyDto.phone) {
+      await this.notificationService.smsVerify(
+        signupBodyDto.phone,
+        signupBodyDto.code,
+        NotifyTypeEnum[NotifyTypeEnum.REGISTER],
+      );
+    } else {
+      throw new CustomException(ResponseCodeEnum.EMAIL_OR_PHONE_NUMBER_NEEDED);
+    }
     const identity = signupBodyDto.email ? signupBodyDto.email : signupBodyDto.phone;
     if (await this.checkUserExisted(<string>identity)) {
       throw new CustomException(ResponseCodeEnum.ALREADY_EXISTED_USER);
@@ -117,11 +136,39 @@ export class UserService {
     });
   }
 
-  async emailChange(id: number, email: string): Promise<void> {
+  async emailChange(id: number, email: string, code: string): Promise<void> {
+    await this.notificationService.emailVerify(email, code, NotifyTypeEnum[NotifyTypeEnum.BINDING]);
     await this.userDao.update(id, { email });
   }
 
-  async phoneChange(id: number, phone: string): Promise<void> {
+  async phoneChange(id: number, phone: string, code: string): Promise<void> {
+    await this.notificationService.smsVerify(phone, code, NotifyTypeEnum[NotifyTypeEnum.BINDING]);
     await this.userDao.update(id, { phone });
+  }
+
+  async passwordResetByPhone(passwordResetBodyDto: ReqPasswordResetBodyDto) {
+    const user = await this.userDao.getOneByPhone(passwordResetBodyDto.phone);
+    if (!user) {
+      throw new CustomException(ResponseCodeEnum.USER_NOT_EXIST);
+    }
+    await this.notificationService.smsVerify(
+      user.phone,
+      passwordResetBodyDto.code,
+      NotifyTypeEnum[NotifyTypeEnum.RESET_PASSWORD],
+    );
+    await this.passwordChange(user.id, passwordResetBodyDto.newPassword);
+  }
+
+  async passwordResetByEmail(passwordResetBodyDto: ReqPasswordResetBodyDto) {
+    const user = await this.userDao.getOneByEmail(passwordResetBodyDto.email);
+    if (!user) {
+      throw new CustomException(ResponseCodeEnum.USER_NOT_EXIST);
+    }
+    await this.notificationService.emailVerify(
+      user.email,
+      passwordResetBodyDto.code,
+      NotifyTypeEnum[NotifyTypeEnum.RESET_PASSWORD],
+    );
+    await this.passwordChange(user.id, passwordResetBodyDto.newPassword);
   }
 }

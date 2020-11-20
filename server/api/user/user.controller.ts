@@ -11,8 +11,6 @@ import { ReqPaginationBaseDto } from '../../../common/dto/req.pagination.base.dt
 import { ResPaginationDto } from '../../../common/dto/res.pagination.dto';
 import { ReqPasswordChangeBodyDto } from '../../../common/dto/user/req.password.change.body.dto';
 import { ReqProfileUpdateBodyDto } from '../../../common/dto/user/req.profile.update.body.dto';
-import { NotificationService } from '../notification/notification.service';
-import { NotifyTypeEnum } from '../../../common/enum/notify.type.enum';
 import { ReqPasswordResetBodyDto } from '../../../common/dto/user/req.password.reset.body.dto';
 import { ReqEmailOrPhoneChangeBodyDto } from '../../../common/dto/user/req.email.or.phone.change.body.dto';
 import { PasswordUtil } from '../../util/password.util';
@@ -20,27 +18,12 @@ import { UserService } from './user.service';
 
 @Controller('/api/user')
 export class UserController {
-  constructor(private readonly userService: UserService, private readonly notificationService: NotificationService) {}
+  constructor(private readonly userService: UserService) {}
 
   @Post('/signup')
   async signup(@Body() signupBodyDto: ReqSignupBodyDto): Promise<void> {
     if (signupBodyDto.password !== signupBodyDto.confirmPassword) {
       throw new CustomException(ResponseCodeEnum.INCONSISTENT_PASSWORD);
-    }
-    if (signupBodyDto.email) {
-      await this.notificationService.emailVerify(
-        signupBodyDto.email,
-        signupBodyDto.code,
-        NotifyTypeEnum[NotifyTypeEnum.REGISTER],
-      );
-    } else if (signupBodyDto.phone) {
-      await this.notificationService.smsVerify(
-        signupBodyDto.phone,
-        signupBodyDto.code,
-        NotifyTypeEnum[NotifyTypeEnum.REGISTER],
-      );
-    } else {
-      throw new CustomException(ResponseCodeEnum.EMAIL_OR_PHONE_NUMBER_NEEDED);
     }
     await this.userService.signup(signupBodyDto);
   }
@@ -100,16 +83,7 @@ export class UserController {
     if (passwordResetBodyDto.newPassword !== passwordResetBodyDto.confirmPassword) {
       throw new CustomException(ResponseCodeEnum.INCONSISTENT_PASSWORD);
     }
-    const user = await this.userService.getByPhone(passwordResetBodyDto.phone);
-    if (!user) {
-      throw new CustomException(ResponseCodeEnum.USER_NOT_EXIST);
-    }
-    await this.notificationService.smsVerify(
-      user.phone,
-      passwordResetBodyDto.code,
-      NotifyTypeEnum[NotifyTypeEnum.RESET_PASSWORD],
-    );
-    await this.userService.passwordChange(user.id, passwordResetBodyDto.newPassword);
+    await this.userService.passwordResetByPhone(passwordResetBodyDto);
   }
 
   @Put('/password/reset/email')
@@ -117,16 +91,7 @@ export class UserController {
     if (passwordResetBodyDto.newPassword !== passwordResetBodyDto.confirmPassword) {
       throw new CustomException(ResponseCodeEnum.INCONSISTENT_PASSWORD);
     }
-    const user = await this.userService.getByEmail(passwordResetBodyDto.email);
-    if (!user) {
-      throw new CustomException(ResponseCodeEnum.USER_NOT_EXIST);
-    }
-    await this.notificationService.emailVerify(
-      user.email,
-      passwordResetBodyDto.code,
-      NotifyTypeEnum[NotifyTypeEnum.RESET_PASSWORD],
-    );
-    await this.userService.passwordChange(user.id, passwordResetBodyDto.newPassword);
+    await this.userService.passwordResetByEmail(passwordResetBodyDto);
   }
 
   @Put('/email/change')
@@ -134,12 +99,11 @@ export class UserController {
     @Req() req: RequestAo,
     @Body() emailOrPhoneChangeBodyDto: ReqEmailOrPhoneChangeBodyDto,
   ): Promise<void> {
-    await this.notificationService.emailVerify(
+    await this.userService.emailChange(
+      req.payload.profile?.id,
       emailOrPhoneChangeBodyDto.email,
       emailOrPhoneChangeBodyDto.code,
-      NotifyTypeEnum[NotifyTypeEnum.BINDING],
     );
-    await this.userService.emailChange(req.payload.profile?.id, emailOrPhoneChangeBodyDto.email);
   }
 
   @Put('/phone/change')
@@ -147,11 +111,10 @@ export class UserController {
     @Req() req: RequestAo,
     @Body() emailOrPhoneChangeBodyDto: ReqEmailOrPhoneChangeBodyDto,
   ): Promise<void> {
-    await this.notificationService.smsVerify(
+    await this.userService.phoneChange(
+      req.payload.profile?.id,
       emailOrPhoneChangeBodyDto.phone,
       emailOrPhoneChangeBodyDto.code,
-      NotifyTypeEnum[NotifyTypeEnum.BINDING],
     );
-    await this.userService.phoneChange(req.payload.profile?.id, emailOrPhoneChangeBodyDto.phone);
   }
 }
