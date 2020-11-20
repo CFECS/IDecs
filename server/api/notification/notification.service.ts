@@ -1,7 +1,8 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { UserService } from '../user/user.service';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { NotifyTypeEnum } from '../../../common/enum/notify.type.enum';
 import { CodeGenerateHelper } from '../../util/code.generate.util';
 import { SmsHelper } from '../../util/sms.helper';
@@ -10,20 +11,22 @@ import { Otp, OtpDocument } from '../../model/mongo/otp.model';
 import { CustomException } from '../../exception/custom.exception';
 import { ResponseCodeEnum } from '../../../common/enum/response.code.enum';
 import { config } from '../../../config';
+import { UserModel } from '../../model/rds/user.model';
 
 @Injectable()
 export class NotificationService {
   constructor(
     private readonly emailHelper: EmailHelper,
     private readonly smsHelper: SmsHelper,
-    @Inject(forwardRef(() => UserService))
-    private readonly userService: UserService,
     @InjectModel(Otp.name)
     private readonly otpModel: Model<OtpDocument>,
+    @InjectRepository(UserModel)
+    private readonly userModelRepository: Repository<UserModel>,
   ) {}
 
   async sms(phone: string, type: string): Promise<void> {
-    await this.typeCheck(type, phone);
+    const user = await this.userModelRepository.findOne({ phone });
+    await this.typeCheck(type, user);
     const code = CodeGenerateHelper.generateNumberCode(6);
     const otp = await this.otpModel.findOne({ phone, type }).sort({ seq: 'desc' });
     await this.otpModel.create({ phone, code, type, seq: otp ? otp.seq + 1 : 0 });
@@ -39,7 +42,8 @@ export class NotificationService {
   }
 
   async email(email: string, type: string): Promise<void> {
-    await this.typeCheck(type, email);
+    const user = await this.userModelRepository.findOne({ email });
+    await this.typeCheck(type, user);
     const code = CodeGenerateHelper.generateNumberCode(6);
     const otp = await this.otpModel.findOne({ email, type }).sort({ seq: 'desc' });
     await this.otpModel.create({ email, code, type, seq: otp ? otp.seq + 1 : 0 });
@@ -54,8 +58,7 @@ export class NotificationService {
     }
   }
 
-  async typeCheck(type: string, identity: string): Promise<void> {
-    const user = await this.userService.checkUserExisted(identity);
+  typeCheck(type: string, user?: UserModel) {
     switch (type) {
       case NotifyTypeEnum[NotifyTypeEnum.REGISTER]:
       case NotifyTypeEnum[NotifyTypeEnum.BINDING]:

@@ -11,6 +11,7 @@ import { GatewayMiddleware } from './middleware/gateway.middleware';
 import { ResponseInterceptor } from './middleware/response.interceptor';
 import { AllExceptionsFilter } from './exception/base.exception.filter';
 import { NuxtController } from './nuxt.controller';
+import { NotificationModule } from './api/notification/notification.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { NuxtController } from './nuxt.controller';
     MongooseModule.forRoot(config.mongoDB.uri, { useCreateIndex: true }),
     GlobalModule,
     UserModule,
+    NotificationModule,
   ],
   controllers: [AppController, NuxtController],
   providers: [
