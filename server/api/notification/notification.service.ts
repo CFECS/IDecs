@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { NotifyTypeEnum } from '../../../common/enum/notify.type.enum';
 import { CodeGenerateHelper } from '../../util/code.generate.util';
 import { SmsHelper } from '../../util/sms.helper';
@@ -12,6 +10,7 @@ import { CustomException } from '../../exception/custom.exception';
 import { ResponseCodeEnum } from '../../../common/enum/response.code.enum';
 import { config } from '../../../config';
 import { UserModel } from '../../model/rds/user.model';
+import { UserDao } from '../../dao/rds/user.dao';
 
 @Injectable()
 export class NotificationService {
@@ -20,12 +19,11 @@ export class NotificationService {
     private readonly smsHelper: SmsHelper,
     @InjectModel(Otp.name)
     private readonly otpModel: Model<OtpDocument>,
-    @InjectRepository(UserModel)
-    private readonly userModelRepository: Repository<UserModel>,
+    private readonly userDao: UserDao,
   ) {}
 
   async sms(phone: string, type: string): Promise<void> {
-    const user = await this.userModelRepository.findOne({ phone });
+    const user = await this.userDao.findOne({ phone });
     await this.typeCheck(type, user);
     const code = CodeGenerateHelper.generateNumberCode(6);
     const otp = await this.otpModel.findOne({ phone, type }).sort({ seq: 'desc' });
@@ -42,7 +40,7 @@ export class NotificationService {
   }
 
   async email(email: string, type: string): Promise<void> {
-    const user = await this.userModelRepository.findOne({ email });
+    const user = await this.userDao.findOne({ email });
     await this.typeCheck(type, user);
     const code = CodeGenerateHelper.generateNumberCode(6);
     const otp = await this.otpModel.findOne({ email, type }).sort({ seq: 'desc' });

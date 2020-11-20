@@ -1,6 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { isEmail, isPhoneNumber } from 'class-validator';
@@ -21,12 +19,12 @@ import { ResLoginDto } from '../../../common/dto/user/res.login.dto';
 import { ResTokenValidateDto } from '../../../common/dto/user/res.token.validate.dto';
 import { ResPaginationDto } from '../../../common/dto/res.pagination.dto';
 import { ReqProfileUpdateBodyDto } from '../../../common/dto/user/req.profile.update.body.dto';
+import { UserDao } from '../../dao/rds/user.dao';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(UserModel)
-    private readonly userModelRepository: Repository<UserModel>,
+    private readonly userDao: UserDao,
     @InjectModel(Session.name)
     private readonly sessionModel: Model<SessionDocument>,
     private readonly jwtUtil: JwtUtil,
@@ -38,7 +36,7 @@ export class UserService {
       throw new CustomException(ResponseCodeEnum.ALREADY_EXISTED_USER);
     }
     signupBodyDto.password = PasswordUtil.generateStorePwd(signupBodyDto.password);
-    await this.userModelRepository.insert(signupBodyDto);
+    await this.userDao.insert(signupBodyDto);
   }
 
   async login(loginBodyDto: ReqLoginBodyDto): Promise<ResLoginDto> {
@@ -89,54 +87,41 @@ export class UserService {
   async checkUserExisted(identity: string): Promise<UserModel | undefined> {
     let user;
     if (isEmail(identity)) {
-      user = await this.getByEmail(identity);
+      user = await this.userDao.getOneByEmail(identity);
     } else if (isPhoneNumber(identity, null)) {
-      user = await this.getByPhone(identity);
+      user = await this.userDao.getOneByPhone(identity);
     }
     return user;
   }
 
-  getByEmail(email: string): Promise<UserModel | undefined> {
-    return this.userModelRepository.findOne({ email });
-  }
-
-  getByPhone(phone: string): Promise<UserModel | undefined> {
-    return this.userModelRepository.findOne({ phone });
-  }
-
   async getById(id: number): Promise<UserModel | undefined> {
-    return classToPlain(await this.userModelRepository.findOne(id)) as UserModel;
+    return classToPlain(await this.userDao.findOne(id)) as UserModel;
   }
 
   async removeById(id: number): Promise<void> {
-    await this.userModelRepository.softDelete(id);
+    await this.userDao.softDelete(id);
   }
 
-  async userPagination(page: number, limit: number): Promise<ResPaginationDto<UserModel>> {
-    const data = await this.userModelRepository.findAndCount({
-      skip: limit * (page - 1),
-      take: limit,
-      order: { id: 'ASC' },
-    });
-    return { items: classToPlain(data[0]) as UserModel[], total: data[1] };
+  userPagination(page: number, limit: number): Promise<ResPaginationDto<UserModel>> {
+    return this.userDao.queryPagination(page, limit);
   }
 
   async passwordChange(id: number, newPassword: string): Promise<void> {
-    await this.userModelRepository.update(id, { password: PasswordUtil.generateStorePwd(newPassword) });
+    await this.userDao.update(id, { password: PasswordUtil.generateStorePwd(newPassword) });
   }
 
   async profileUpdate(id: number, profileUpdateBodyDto: ReqProfileUpdateBodyDto): Promise<void> {
-    await this.userModelRepository.update(id, {
+    await this.userDao.update(id, {
       username: profileUpdateBodyDto.username,
       profile: profileUpdateBodyDto.profile,
     });
   }
 
   async emailChange(id: number, email: string): Promise<void> {
-    await this.userModelRepository.update(id, { email });
+    await this.userDao.update(id, { email });
   }
 
   async phoneChange(id: number, phone: string): Promise<void> {
-    await this.userModelRepository.update(id, { phone });
+    await this.userDao.update(id, { phone });
   }
 }
