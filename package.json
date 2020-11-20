@@ -5,9 +5,8 @@
   "private": true,
   "scripts": {
     "dev": "cross-env IS_NUXT_ENABLED=true nodemon",
-    "dev:client-sso": "nuxt-ts --config-file build/sso.config.ts",
-    "dev:client-console": "nuxt-ts --config-file build/console.config.ts",
-    "dev:docs": "nuxt-ts --config-file build/docs.config.ts",
+    "dev:client": "nuxt-ts --config-file client/nuxt.config.ts",
+    "dev:docs": "nuxt-ts --config-file docs/nuxt.config.ts",
     "dev:server": "nodemon",
     "lint": "eslint --ext .ts,.js,.vue ./",
     "lint:fix": "yarn run lint --fix",

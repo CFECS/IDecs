@@ -58,8 +58,8 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
-import { ReqSignupBodyDto } from '../../../../common/dto/user/req.signup.body.dto';
-import { NotifyTypeEnum } from '../../../../common/enum/notify.type.enum';
+import { ReqSignupBodyDto } from '../../../common/dto/user/req.signup.body.dto';
+import { NotifyTypeEnum } from '../../../common/enum/notify.type.enum';
 
 @Component
 export default class PhoneRegister extends Vue {

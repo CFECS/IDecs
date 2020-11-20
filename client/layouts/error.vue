@@ -24,6 +24,7 @@ export default class ErrorLayouts extends Vue {
   }
 
   get ErrorDto(): Record<string, string | number> {
+    console.log(this.error);
     return PAGE_ERROR[this.error.statusCode || 500];
   }
 }

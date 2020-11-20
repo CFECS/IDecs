@@ -85,8 +85,8 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
 import * as Cookies from 'js-cookie';
-import { LoginTypeEnum } from '../../../common/enum/login.type.enum';
-import { ReqLoginBodyDto } from '../../../common/dto/user/req.login.body.dto';
+import { LoginTypeEnum } from '../../common/enum/login.type.enum';
+import { ReqLoginBodyDto } from '../../common/dto/user/req.login.body.dto';
 
 @Component
 export default class Login extends Vue {
@@ -140,13 +140,6 @@ export default class Login extends Vue {
         try {
           await this.$axios.post('/user/login', params);
           this.loading = false;
-
-          const redirect: any = this.$route.query.redirect || window.sessionStorage.getItem('IDecs_redirect');
-          if (!redirect) {
-            this.$nuxt.error({ statusCode: 401 });
-          } else {
-            window.sessionStorage.setItem('IDecs_redirect', redirect);
-          }
         } catch (err) {
           this.loading = false;
         }
