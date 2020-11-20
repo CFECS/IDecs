@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-form-model ref="forgotForm" :model="params" :rules="rules" @submit="handleSubmit" @submit.native.prevent>
+    <a-form-model ref="phoneForgotForm" :model="params" :rules="rules" @submit="handleSubmit" @submit.native.prevent>
       <a-form-model-item prop="phone">
         <a-input v-model="params.phone" placeholder="手机号" size="large">
           <a-select
@@ -48,7 +48,7 @@
     </a-form-model>
 
     <div class="form-footer">
-      <a @click="$router.back()">返回登录</a>
+      <nuxt-link to="/login">立即登录</nuxt-link>
       <nuxt-link to="/forgot-password/email" replace>通过邮箱修改密码</nuxt-link>
     </div>
   </div>
@@ -61,6 +61,16 @@ import { NotifyTypeEnum } from '../../../common/enum/notify.type.enum';
 
 @Component
 export default class PhoneForgotPassword extends Vue {
+  layout() {
+    return 'auth';
+  }
+
+  head() {
+    return {
+      title: this.$generateTitle('手机号修改密码'),
+    };
+  }
+
   private dialCode = '+86';
 
   private params: ReqPasswordResetBodyDto = {
@@ -86,16 +96,16 @@ export default class PhoneForgotPassword extends Vue {
   }
 
   rules: Record<string, any> = {
-    phone: [{ validator: this.$checkPhone, trigger: 'change' }],
-    code: [{ required: true, message: '请输入短信验证码', trigger: 'change' }],
-    newPassword: [{ validator: this.$checkPassword, trigger: 'change' }],
-    confirmPassword: [{ validator: this.checkConfirmPass, trigger: 'change' }],
+    phone: [{ validator: this.$checkPhone, trigger: 'blur' }],
+    code: [{ required: true, message: '请输入短信验证码', trigger: 'blur' }],
+    newPassword: [{ validator: this.$checkPassword, trigger: 'blur' }],
+    confirmPassword: [{ validator: this.checkConfirmPass, trigger: 'blur' }],
   };
 
   beforeSend(): Promise<any> {
     return new Promise((resolve) => {
       if (!this.params.phone) {
-        const { validateField }: any = this.$refs.forgotForm;
+        const { validateField }: any = this.$refs.phoneForgotForm;
         validateField('phone');
         resolve(false);
       } else {
@@ -105,7 +115,7 @@ export default class PhoneForgotPassword extends Vue {
   }
 
   handleSubmit(): void {
-    const { validate }: any = this.$refs.forgotForm;
+    const { validate }: any = this.$refs.phoneForgotForm;
     validate(async (valid: boolean) => {
       if (valid) {
         this.loading = true;

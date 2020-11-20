@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-form-model ref="signupForm" :model="params" :rules="rules" @submit="handleSubmit" @submit.native.prevent>
+    <a-form-model ref="phoneSignupForm" :model="params" :rules="rules" @submit="handleSubmit" @submit.native.prevent>
       <a-form-model-item prop="phone">
         <a-input v-model="params.phone" placeholder="手机号" size="large">
           <a-select
@@ -50,7 +50,7 @@
     <div class="form-footer">
       <span>
         <span>已有账号，</span>
-        <a @click="$router.back()">立即登录</a>
+        <nuxt-link to="/login">立即登录</nuxt-link>
       </span>
       <nuxt-link to="/register/email" replace>邮箱注册</nuxt-link>
     </div>
@@ -63,6 +63,16 @@ import { NotifyTypeEnum } from '../../../common/enum/notify.type.enum';
 
 @Component
 export default class PhoneRegister extends Vue {
+  layout() {
+    return 'auth';
+  }
+
+  head() {
+    return {
+      title: this.$generateTitle('手机号注册'),
+    };
+  }
+
   private dialCode = '+86';
 
   private params: ReqSignupBodyDto = {
@@ -88,16 +98,16 @@ export default class PhoneRegister extends Vue {
   }
 
   rules: Record<string, any> = {
-    phone: [{ validator: this.$checkPhone, trigger: 'change' }],
-    code: [{ required: true, message: '请输入短信验证码', trigger: 'change' }],
-    password: [{ validator: this.$checkPassword, trigger: 'change' }],
-    confirmPassword: [{ validator: this.checkConfirmPass, trigger: 'change' }],
+    phone: [{ validator: this.$checkPhone, trigger: 'blur' }],
+    code: [{ required: true, message: '请输入短信验证码', trigger: 'blur' }],
+    password: [{ validator: this.$checkPassword, trigger: 'blur' }],
+    confirmPassword: [{ validator: this.checkConfirmPass, trigger: 'blur' }],
   };
 
   beforeSend(): Promise<any> {
     return new Promise((resolve) => {
       if (!this.params.phone) {
-        const { validateField }: any = this.$refs.signupForm;
+        const { validateField }: any = this.$refs.phoneSignupForm;
         validateField('phone');
         resolve(false);
       } else {
@@ -107,7 +117,7 @@ export default class PhoneRegister extends Vue {
   }
 
   handleSubmit(): void {
-    const { validate }: any = this.$refs.signupForm;
+    const { validate }: any = this.$refs.phoneSignupForm;
     validate(async (valid: boolean) => {
       if (valid) {
         this.loading = true;

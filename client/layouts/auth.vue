@@ -1,0 +1,100 @@
+<template>
+  <div class="auth-layouts">
+    <div class="page">
+      <div class="logo" />
+      <div class="description">IDecs 低成本、完全开放、易于配置的身份管理服务</div>
+      <Nuxt />
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import { Component, Vue } from 'nuxt-property-decorator';
+
+@Component
+export default class AuthLayouts extends Vue {}
+</script>
+
+<style lang="less">
+.auth-layouts {
+  height: 100%;
+  background: url('/bg.jpg') no-repeat center center;
+  background-size: cover;
+
+  .page {
+    position: absolute;
+    top: 50%;
+    right: 60px;
+    width: 440px;
+    max-width: 100%;
+    transform: translateY(-50%);
+    padding: 20px 24px;
+    background-color: rgba(255, 255, 255, 0.7);
+    box-shadow: @box-shadow-base;
+
+    .logo {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto;
+      background: url('/favicon.png') no-repeat center center;
+      background-size: contain;
+    }
+
+    .description {
+      text-align: center;
+      margin: 12px 0 16px;
+      color: @text-color-secondary;
+    }
+
+    .form-footer {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+  }
+
+  .ant-input,
+  .ant-input-group-addon,
+  .ant-btn-primary[disabled] {
+    background: transparent !important;
+  }
+
+  .ant-tabs-nav {
+    width: 100%;
+
+    .ant-tabs-tab {
+      width: 50%;
+      text-align: center;
+      margin-right: 0;
+    }
+  }
+
+  .verify-code {
+    .ant-input-group .ant-input {
+      border-radius: @border-radius-base;
+    }
+
+    .ant-input-group-addon {
+      border: none;
+      padding: 0 0 0 10px;
+
+      > button {
+        border: none !important;
+      }
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .auth-layouts {
+      background: #fff;
+    }
+    .page {
+      right: 50%;
+      transform: translate(50%, -60%);
+      padding: 0 15px;
+      background-color: transparent;
+      box-shadow: none;
+    }
+  }
+}
+</style>

@@ -16,12 +16,18 @@ import { NuxtError } from '../types/dto';
 
 @Component
 export default class ErrorLayouts extends Vue {
-  @Prop({ type: Object })
-  error!: NuxtError;
-
   layout() {
     return 'empty';
   }
+
+  head() {
+    return {
+      title: this.$generateTitle('错误页'),
+    };
+  }
+
+  @Prop({ type: Object })
+  error!: NuxtError;
 
   get ErrorDto(): Record<string, string | number> {
     console.log(this.error);

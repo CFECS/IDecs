@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-form-model ref="signupForm" :model="params" :rules="rules" @submit="handleSubmit" @submit.native.prevent>
+    <a-form-model ref="emailSignupForm" :model="params" :rules="rules" @submit="handleSubmit" @submit.native.prevent>
       <a-form-model-item prop="email">
         <a-input v-model="params.email" placeholder="邮箱" size="large">
           <a-icon slot="prefix" type="user" style="color: rgba(0, 0, 0, 0.25)"></a-icon>
@@ -34,7 +34,7 @@
     <div class="form-footer">
       <span>
         <span>已有账号，</span>
-        <a @click="$router.back()">立即登录</a>
+        <nuxt-link to="/login">立即登录</nuxt-link>
       </span>
       <nuxt-link to="/register/phone" replace>手机号注册</nuxt-link>
     </div>
@@ -48,6 +48,16 @@ import { NotifyTypeEnum } from '../../../common/enum/notify.type.enum';
 
 @Component
 export default class EmailRegister extends Vue {
+  layout() {
+    return 'auth';
+  }
+
+  head() {
+    return {
+      title: this.$generateTitle('邮箱注册'),
+    };
+  }
+
   private params: ReqSignupBodyDto = {
     email: '',
     code: '',
@@ -72,18 +82,18 @@ export default class EmailRegister extends Vue {
 
   rules: Record<string, any> = {
     email: [
-      { required: true, message: '请输入邮箱', trigger: 'change' },
+      { required: true, message: '请输入邮箱', trigger: 'blur' },
       { type: 'email', message: '请输入正确的邮箱' },
     ],
-    code: [{ required: true, message: '请输入邮箱验证码', trigger: 'change' }],
-    password: [{ validator: this.$checkPassword, trigger: 'change' }],
-    confirmPassword: [{ validator: this.checkConfirmPass, trigger: 'change' }],
+    code: [{ required: true, message: '请输入邮箱验证码', trigger: 'blur' }],
+    password: [{ validator: this.$checkPassword, trigger: 'blur' }],
+    confirmPassword: [{ validator: this.checkConfirmPass, trigger: 'blur' }],
   };
 
   beforeSend(): Promise<any> {
     return new Promise((resolve) => {
       if (!this.params.email) {
-        const { validateField }: any = this.$refs.signupForm;
+        const { validateField }: any = this.$refs.emailSignupForm;
         validateField('email');
         resolve(false);
       } else {
@@ -93,7 +103,7 @@ export default class EmailRegister extends Vue {
   }
 
   handleSubmit(): void {
-    const { validate }: any = this.$refs.signupForm;
+    const { validate }: any = this.$refs.emailSignupForm;
     validate(async (valid: boolean) => {
       if (valid) {
         this.loading = true;

@@ -3,7 +3,7 @@
     <a-tabs v-model="tab" size="large" @change="saveKey">
       <a-tab-pane key="phone" tab="手机号登录">
         <a-form-model
-          ref="loginForm"
+          ref="phoneLoginForm"
           :model="phoneForm"
           :rules="phoneRules"
           @submit="handleSubmit"
@@ -47,7 +47,7 @@
 
       <a-tab-pane key="email" tab="邮箱登录">
         <a-form-model
-          ref="loginForm"
+          ref="emailLoginForm"
           :model="emailForm"
           :rules="emailRules"
           @submit="handleSubmit"
@@ -90,6 +90,16 @@ import { ReqLoginBodyDto } from '../../common/dto/user/req.login.body.dto';
 
 @Component
 export default class Login extends Vue {
+  layout() {
+    return 'auth';
+  }
+
+  head() {
+    return {
+      title: this.$generateTitle('登录'),
+    };
+  }
+
   private tab: string = Cookies.get('IDecs_login_tabs_key') || 'phone';
 
   private dialCode = '+86';
@@ -109,13 +119,13 @@ export default class Login extends Vue {
   loading = false;
 
   phoneRules: Record<string, any> = {
-    identity: [{ validator: this.$checkPhone, trigger: 'change' }],
+    identity: [{ validator: this.$checkPhone, trigger: 'blur' }],
     password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
   };
 
   emailRules: Record<string, any> = {
     identity: [
-      { required: true, message: '请输入邮箱', trigger: 'change' },
+      { required: true, message: '请输入邮箱', trigger: 'blur' },
       { type: 'email', message: '请输入正确的邮箱' },
     ],
     password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
@@ -132,7 +142,7 @@ export default class Login extends Vue {
   }
 
   public handleSubmit(): void {
-    const loginForm: any = this.$refs.loginForm;
+    const loginForm: any = this.tab === 'phone' ? this.$refs.phoneLoginForm : this.$refs.emailLoginForm;
     loginForm.validate(async (valid: boolean) => {
       if (valid) {
         this.loading = true;

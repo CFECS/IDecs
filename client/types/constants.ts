@@ -1,13 +1,3 @@
-export const PAGE_TITLE: Record<string, string> = {
-  index: '首页',
-  login: '登录',
-  'register-phone': '手机号注册',
-  'register-email': '邮箱注册',
-  'forgot-password-phone': '手机号修改密码',
-  'forgot-password-email': '邮箱修改密码',
-  default: 'IDecs',
-};
-
 export const PAGE_ERROR: Record<string | number, any> = {
   401: {
     status: '403',
