@@ -1,7 +1,7 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { classToPlain } from 'class-transformer';
-import { UserModel } from '../../model/rds/user.model';
-import { ResPaginationDto } from '../../../common/dto/res.pagination.dto';
+import { UserModel } from '../model/rds/user.model';
+import { ResPaginationDto } from '../../common/dto/res.pagination.dto';
 
 @EntityRepository(UserModel)
 export class UserDao extends Repository<UserModel> {

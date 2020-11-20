@@ -1,7 +1,7 @@
 import { Global, Logger, Module } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserDao } from '../dao/rds/user.dao';
+import { UserDao } from '../dao/user.dao';
 
 @Global()
 @Module({

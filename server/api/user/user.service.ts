@@ -19,7 +19,7 @@ import { ResLoginDto } from '../../../common/dto/user/res.login.dto';
 import { ResTokenValidateDto } from '../../../common/dto/user/res.token.validate.dto';
 import { ResPaginationDto } from '../../../common/dto/res.pagination.dto';
 import { ReqProfileUpdateBodyDto } from '../../../common/dto/user/req.profile.update.body.dto';
-import { UserDao } from '../../dao/rds/user.dao';
+import { UserDao } from '../../dao/user.dao';
 import { NotifyTypeEnum } from '../../../common/enum/notify.type.enum';
 import { ReqPasswordResetBodyDto } from '../../../common/dto/user/req.password.reset.body.dto';
 import { NotificationService } from '../notification/notification.service';

@@ -10,7 +10,7 @@ import { CustomException } from '../../exception/custom.exception';
 import { ResponseCodeEnum } from '../../../common/enum/response.code.enum';
 import { config } from '../../../config';
 import { UserModel } from '../../model/rds/user.model';
-import { UserDao } from '../../dao/rds/user.dao';
+import { UserDao } from '../../dao/user.dao';
 
 @Injectable()
 export class NotificationService {
