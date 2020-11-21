@@ -3,12 +3,12 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
 import { Constants } from '../common/constants';
-import { TokenTypeEnum } from '../../common/enum/token.type.enum';
+import { TokenTypeEnum } from '../enum/token.type.enum';
 import { CustomException } from '../exception/custom.exception';
-import { ResponseCodeEnum } from '../../common/enum/response.code.enum';
+import { ResponseCodeEnum } from '../enum/response.code.enum';
 import { Session, SessionDocument } from '../model/mongo/session.model';
-import { Utils } from '../../common/utils';
 import { config } from '../../config';
+import { Utils } from './utils';
 
 export interface JwtPayload {
   sub: string;

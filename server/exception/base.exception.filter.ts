@@ -8,7 +8,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { BaseResponse } from '../common/base.response';
-import { ResponseCodeEnum } from '../../common/enum/response.code.enum';
+import { ResponseCodeEnum } from '../enum/response.code.enum';
 import { CustomException } from './custom.exception';
 
 @Catch()

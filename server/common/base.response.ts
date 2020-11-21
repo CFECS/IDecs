@@ -1,4 +1,4 @@
-import { ResponseCodeEnum } from '../../common/enum/response.code.enum';
+import { ResponseCodeEnum } from '../enum/response.code.enum';
 
 interface ResponseHeader {
   code: string;

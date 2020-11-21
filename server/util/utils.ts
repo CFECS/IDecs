@@ -1,5 +1,5 @@
 import { scryptSync } from 'crypto';
-import { config } from '../config';
+import { config } from '../../config';
 
 export class Utils {
   static generateApiKey(timestamp: number, baseUrl: string): string {

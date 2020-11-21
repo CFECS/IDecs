@@ -4,7 +4,7 @@ import { SendSmsRequest } from 'tencentcloud-sdk-nodejs/src/services/sms/v201907
 import { Injectable, Logger } from '@nestjs/common';
 import { config } from '../../config';
 import { CustomException } from '../exception/custom.exception';
-import { ResponseCodeEnum } from '../../common/enum/response.code.enum';
+import { ResponseCodeEnum } from '../enum/response.code.enum';
 
 @Injectable()
 export class SmsHelper {
