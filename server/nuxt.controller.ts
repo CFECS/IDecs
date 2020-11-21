@@ -1,4 +1,4 @@
-import { Controller, Get, Req, Res } from '@nestjs/common';
+import { Controller, Get, Module, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { Builder, Nuxt } from 'nuxt';
 import config from '../client/nuxt.config';
@@ -26,3 +26,8 @@ export class NuxtController {
     }
   }
 }
+
+@Module({
+  controllers: [NuxtController],
+})
+export class NuxtModule {}
