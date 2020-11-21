@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Title>个人信息</Title>
+    <Title>个人中心</Title>
   </div>
 </template>
 

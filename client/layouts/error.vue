@@ -1,6 +1,10 @@
 <template>
   <div class="error-page">
-    <a-result :status="ErrorDto.status" :title="ErrorDto.title" :sub-title="ErrorDto.description">
+    <a-result
+      :status="String(error.statusCode)"
+      :title="String(error.statusCode)"
+      :sub-title="$t(`common.errorPage.${error.statusCode || 500}`)"
+    >
       <template #extra>
         <a-button type="primary" @click="$router.back()"> 返回上一页 </a-button>
         <a-button @click="$router.push('/')"> 回到首页 </a-button>
@@ -11,28 +15,19 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'nuxt-property-decorator';
-import { PAGE_ERROR } from '../types/constants';
 import { NuxtError } from '../types/dto/common';
 
-@Component
-export default class ErrorLayouts extends Vue {
-  layout() {
-    return 'empty';
-  }
-
+@Component({
+  layout: 'empty',
   head() {
     return {
       title: this.$generateTitle('错误页'),
     };
-  }
-
+  },
+})
+export default class ErrorLayouts extends Vue {
   @Prop({ type: Object })
   error!: NuxtError;
-
-  get ErrorDto(): Record<string, string | number> {
-    console.log(this.error);
-    return PAGE_ERROR[this.error.statusCode || 500];
-  }
 }
 </script>
 

@@ -3,7 +3,7 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } f
 import * as dayjs from 'dayjs';
 import { message } from 'ant-design-vue';
 import { injectAxiosToStore } from '../store/axios';
-import { SYSTEM_ERROR, STATUS_ERROR, RESPONSE_ERROR } from '../types/constants';
+import { SYSTEM_ERROR, STATUS_ERROR, RESPONSE_ERROR } from '../types/constants/tips';
 
 declare module 'vue/types/vue' {
   interface Vue {
@@ -36,12 +36,16 @@ const Axios: Plugin = ({ env, app }, inject) => {
       } else {
         const code: any = response.data.head.code;
         if (code !== 'I_00000') {
+          if (['I_00009', 'I_00010', 'I_00011'].includes(code)) {
+            window.sessionStorage.removeItem('IDecs_token');
+            window.location.reload();
+          }
           const errorMessage = RESPONSE_ERROR[code] || SYSTEM_ERROR;
           message.error(errorMessage);
           return Promise.reject(new Error(errorMessage));
         }
       }
-      return response;
+      return response.data.data;
     },
     (error: any) => {
       const status: any = error.response.status;

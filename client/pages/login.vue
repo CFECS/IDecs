@@ -89,18 +89,15 @@ import { LoginTypeEnum } from '../types/enum/login.type.enum';
 import { ReqLoginBodyDto } from '../types/dto/user/req.login.body.dto';
 import User from '~/store/user';
 
-@Component
-export default class Login extends Vue {
-  layout() {
-    return 'auth';
-  }
-
+@Component({
+  layout: 'auth',
   head() {
     return {
       title: this.$generateTitle('登录'),
     };
-  }
-
+  },
+})
+export default class Login extends Vue {
   private tab: string = Cookies.get('IDecs_login_tabs_key') || 'phone';
 
   private dialCode = '+86';

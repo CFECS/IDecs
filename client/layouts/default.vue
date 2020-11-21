@@ -12,8 +12,23 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
+import User from '@/store/user';
 
-@Component
+@Component({
+  async middleware(context: any) {
+    const token: string | null = sessionStorage.getItem('IDecs_token');
+    if (!token) {
+      if (User.ticket) {
+        const isOk: boolean = await User.validateTicket({ ticket: User.ticket });
+        if (!isOk) {
+          context.redirect('/login');
+        }
+      } else {
+        context.redirect('/login');
+      }
+    }
+  },
+})
 export default class DefaultLayouts extends Vue {}
 </script>
 

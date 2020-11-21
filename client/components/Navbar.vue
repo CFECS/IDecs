@@ -3,29 +3,35 @@
     <a-icon class="trigger" :type="collapsed ? 'menu-unfold' : 'menu-fold'" @click="trigger" />
 
     <div class="right">
-      <div class="section">
-        <a-dropdown :trigger="['click']" placement="bottomRight">
-          <a-avatar icon="user" />
-          <a-menu slot="overlay">
-            <a-menu-item key="0">
-              <nuxt-link to="/personal">个人信息</nuxt-link>
-            </a-menu-item>
-            <a-menu-divider />
-            <a-menu-item key="2">
-              <nuxt-link to="/login">退出登录</nuxt-link>
-            </a-menu-item>
-          </a-menu>
-        </a-dropdown>
-      </div>
+      <a-dropdown :trigger="['click']" placement="bottomRight">
+        <div class="section">
+          <Avatar username="Li Ziping" :size="40" />
+        </div>
+        <a-menu slot="overlay">
+          <a-menu-item key="0">
+            <nuxt-link to="/personal"> <a-icon type="user" /> 个人中心 </nuxt-link>
+          </a-menu-item>
+          <a-menu-item key="1">
+            <nuxt-link to="/personal"> <a-icon type="setting" /> 修改密码 </nuxt-link>
+          </a-menu-item>
+          <a-menu-divider />
+          <a-menu-item key="2">
+            <nuxt-link to="/login"> <a-icon type="poweroff" /> 退出登录 </nuxt-link>
+          </a-menu-item>
+        </a-menu>
+      </a-dropdown>
     </div>
   </a-layout-header>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator';
+import Avatar from 'vue-avatar';
 import Common from '~/store/common';
 
-@Component
+@Component({
+  components: { Avatar },
+})
 export default class Navbar extends Vue {
   get collapsed() {
     return Common.collapsed;
@@ -60,8 +66,14 @@ export default class Navbar extends Vue {
 
   .section {
     display: inline-block;
+    line-height: 64px;
     padding: 0 12px;
     cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    &.hover:hover {
+      background-color: #f8f8f9;
+    }
   }
 }
 </style>

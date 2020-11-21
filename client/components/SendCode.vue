@@ -5,17 +5,8 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'nuxt-property-decorator';
 import * as Cookies from 'js-cookie';
+import Notification from '@/store/notification';
 import { NotifyTypeEnum } from '../types/enum/notify.type.enum';
-
-export enum SMSRequestURLEnum {
-  SEND = '/sms',
-  VERIFY = '/sms/verify',
-}
-
-export enum EmailRequestURLEnum {
-  SEND = '/email',
-  VERIFY = '/email/verify',
-}
 
 @Component
 export default class SendCode extends Vue {
@@ -37,15 +28,8 @@ export default class SendCode extends Vue {
 
   loading = false;
 
-  get RequestURL(): any {
-    return this.method === 'sms' ? SMSRequestURLEnum : EmailRequestURLEnum;
-  }
-
-  get RequestBody(): any {
-    return {
-      [this.method === 'sms' ? 'phone' : 'email']: this.value,
-      type: NotifyTypeEnum[this.type],
-    };
+  get Request(): any {
+    return this.method === 'sms' ? Notification.sendSms : Notification.sendEmail;
   }
 
   get disabled(): boolean {
@@ -84,7 +68,10 @@ export default class SendCode extends Vue {
     const valid: boolean = await this.beforeSend();
     if (valid) {
       try {
-        await this.$axios.post(this.RequestURL.SEND, this.RequestBody);
+        await this.Request({
+          [this.method === 'sms' ? 'phone' : 'email']: this.value,
+          type: NotifyTypeEnum[this.type],
+        });
         Cookies.set(`IDecs_${this.method}_${NotifyTypeEnum[this.type]}`, String(+Date.now()), {
           expires: 1 / 24 / 60,
         });

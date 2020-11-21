@@ -60,18 +60,15 @@ import User from '@/store/user';
 import { ReqPasswordResetBodyDto } from '../../types/dto//user/req.password.reset.body.dto';
 import { NotifyTypeEnum } from '../../types/enum/notify.type.enum';
 
-@Component
-export default class PhoneForgotPassword extends Vue {
-  layout() {
-    return 'auth';
-  }
-
+@Component({
+  layout: 'auth',
   head() {
     return {
       title: this.$generateTitle('手机号修改密码'),
     };
-  }
-
+  },
+})
+export default class PhoneForgotPassword extends Vue {
   private dialCode = '+86';
 
   private params: ReqPasswordResetBodyDto = {

@@ -1,3 +1,5 @@
+import { readFileSync } from 'fs';
+import { safeLoad } from 'js-yaml';
 import { NuxtConfig } from '@nuxt/types';
 import { config } from '../config';
 
@@ -15,14 +17,32 @@ const nuxtConfig: NuxtConfig = {
   },
   plugins: ['~/plugins/antd-ui', '~/plugins/axios', '~/plugins/tools'],
   buildModules: ['@nuxt/typescript-build'],
-  modules: ['@nuxtjs/style-resources'],
-  render: {
-    bundleRenderer: {
-      shouldPreload: (_, type: string) => {
-        return ['script', 'style', 'font'].includes(type);
+  modules: [
+    '@nuxtjs/style-resources',
+    [
+      'nuxt-i18n',
+      {
+        strategy: 'no_prefix',
+        detectBrowserLanguage: {
+          useCookie: true,
+          alwaysRedirect: true,
+          cookieKey: 'IDecs_i18n',
+        },
+        defaultLocale: 'en',
+        locales: ['en', 'zh-cn'],
+        vueI18n: {
+          fallbackLocale: 'en',
+          messages: {
+            en: safeLoad(readFileSync('./client/locales/en.yaml', 'utf8')),
+            'zh-cn': safeLoad(readFileSync('./client/locales/zh-cn.yaml', 'utf8')),
+          },
+        },
       },
-    },
-  },
+    ],
+  ],
+  // router: {
+  //   middleware: ['auth'],
+  // },
   build: {
     extractCSS: true,
     optimizeCSS: true,
@@ -61,6 +81,12 @@ const nuxtConfig: NuxtConfig = {
           'primary-color': '#4aa271',
         },
       },
+    },
+    extend(config: any) {
+      config.module.rules.push({
+        test: /\.ya?ml$/,
+        use: 'js-yaml-loader',
+      });
     },
   },
 };

@@ -11,7 +11,14 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
 
-@Component
+@Component({
+  middleware(context: any) {
+    const token: string | null = sessionStorage.getItem('IDecs_token');
+    if (token) {
+      context.redirect('/');
+    }
+  },
+})
 export default class AuthLayouts extends Vue {}
 </script>
 

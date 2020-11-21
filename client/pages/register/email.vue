@@ -47,18 +47,15 @@ import User from '@/store/user';
 import { ReqSignupBodyDto } from '../../types/dto/user/req.signup.body.dto';
 import { NotifyTypeEnum } from '../../types/enum/notify.type.enum';
 
-@Component
-export default class EmailRegister extends Vue {
-  layout() {
-    return 'auth';
-  }
-
+@Component({
+  layout: 'auth',
   head() {
     return {
       title: this.$generateTitle('邮箱注册'),
     };
-  }
-
+  },
+})
+export default class EmailRegister extends Vue {
   private params: ReqSignupBodyDto = {
     email: '',
     code: '',

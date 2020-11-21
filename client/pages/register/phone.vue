@@ -62,18 +62,15 @@ import User from '@/store/user';
 import { ReqSignupBodyDto } from '../../types/dto/user/req.signup.body.dto';
 import { NotifyTypeEnum } from '../../types/enum/notify.type.enum';
 
-@Component
-export default class PhoneRegister extends Vue {
-  layout() {
-    return 'auth';
-  }
-
+@Component({
+  layout: 'auth',
   head() {
     return {
       title: this.$generateTitle('手机号注册'),
     };
-  }
-
+  },
+})
+export default class PhoneRegister extends Vue {
   private dialCode = '+86';
 
   private params: ReqSignupBodyDto = {
