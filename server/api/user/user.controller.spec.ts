@@ -12,7 +12,6 @@ import { ResponseCodeEnum } from '../../enum/response.code.enum';
 import { ReqPasswordChangeBodyDto } from '../../dto/user/req.password.change.body.dto';
 import { ReqProfileUpdateBodyDto } from '../../dto/user/req.profile.update.body.dto';
 import { config } from '../../../config';
-import { UserModule } from './user.module';
 
 let app: INestApplication;
 let agent: SuperAgentTest;
@@ -20,7 +19,7 @@ const password = 'IDecs@2020';
 
 beforeAll(async () => {
   const module: TestingModule = await Test.createTestingModule({
-    imports: [UserModule, AppModule],
+    imports: [AppModule],
   }).compile();
   app = module.createNestApplication();
   app.use(cookieParser());
@@ -34,10 +33,11 @@ afterAll(async () => {
   await app.close();
 });
 
-function setHeaders(agent: SuperAgentTest, baseUrl: string): void {
+function setHeaders(agent: SuperAgentTest, baseUrl: string): SuperAgentTest {
   const now = Date.now();
   agent.set('timestamp', now.toString());
   agent.set('api-key', Utils.generateApiKey(now, baseUrl));
+  return agent;
 }
 
 function doLoginByPassword(email: string, password: string): Promise<string> {
@@ -47,15 +47,13 @@ function doLoginByPassword(email: string, password: string): Promise<string> {
     type: LoginTypeEnum.PASSWORD,
   };
   let url = '/api/user/login';
-  setHeaders(agent, url);
-  return agent
+  return setHeaders(agent, url)
     .post(url)
     .send(loginData)
     .expect(201)
     .then((res) => {
       url = '/api/user/ticket/validate';
-      setHeaders(agent, url);
-      return agent
+      return setHeaders(agent, url)
         .get(url)
         .query({ ticket: res.body.data.ticket })
         .expect(200)
@@ -77,8 +75,7 @@ async function doSignupAndLogin(): Promise<{ email: string; token: string }> {
     profile: { username: 'IDecs_tester' },
   };
   const url = '/api/user/signup';
-  setHeaders(agent, url);
-  const token = await agent
+  const token = await setHeaders(agent, url)
     .post(url)
     .send(signupData)
     .expect(201)
@@ -98,8 +95,7 @@ describe('Signup and login', () => {
       profile: { username: 'IDecs_tester' },
     };
     const url = '/api/user/signup';
-    setHeaders(agent, url);
-    return agent
+    return setHeaders(agent, url)
       .post(url)
       .send(data)
       .expect(201)
@@ -115,8 +111,7 @@ describe('Signup and login', () => {
       profile: { username: 'IDecs_tester' },
     };
     const url = '/api/user/signup';
-    setHeaders(agent, url);
-    return agent
+    return setHeaders(agent, url)
       .post(url)
       .send(data)
       .expect(201)
@@ -138,8 +133,7 @@ describe('UserController', () => {
 
   it('should get self successful', () => {
     const url = '/api/user';
-    setHeaders(agent, url);
-    return agent
+    return setHeaders(agent, url)
       .get(url)
       .expect(200)
       .then((res) => expect(res.body.head.code).toEqual(ResponseCodeEnum.OK));
@@ -147,8 +141,7 @@ describe('UserController', () => {
 
   it('should get user by id successful', () => {
     const url = '/api/user/10';
-    setHeaders(agent, url);
-    return agent
+    return setHeaders(agent, url)
       .get(url)
       .expect(200)
       .then((res) => expect(res.body.head.code).toEqual(ResponseCodeEnum.OK));
@@ -156,8 +149,7 @@ describe('UserController', () => {
 
   it('should delete user by id successful', () => {
     const url = '/api/user/12';
-    setHeaders(agent, url);
-    return agent
+    return setHeaders(agent, url)
       .delete(url)
       .expect(200)
       .then((res) => expect(res.body.head.code).toEqual(ResponseCodeEnum.OK));
@@ -165,8 +157,7 @@ describe('UserController', () => {
 
   it('should get user pagination successful', () => {
     const url = '/api/user/pagination';
-    setHeaders(agent, url);
-    return agent
+    return setHeaders(agent, url)
       .get(url)
       .expect(200)
       .then((res) => expect(res.body.head.code).toEqual(ResponseCodeEnum.OK));
@@ -174,14 +165,13 @@ describe('UserController', () => {
 
   it('should update password successful', () => {
     const url = '/api/user/password/change';
-    setHeaders(agent, url);
     const newPassword = 'IDecs!2020';
     const updatePasswordData: ReqPasswordChangeBodyDto = {
       oldPassword: password,
       newPassword,
       confirmPassword: newPassword,
     };
-    return agent
+    return setHeaders(agent, url)
       .put(url)
       .send(updatePasswordData)
       .expect(200)
@@ -192,14 +182,13 @@ describe('UserController', () => {
 
   it('should update profile successful', () => {
     const url = '/api/user/profile';
-    setHeaders(agent, url);
     const data: ReqProfileUpdateBodyDto = {
       username: 'haha',
       profile: {
         test: 'prefect',
       },
     };
-    return agent
+    return setHeaders(agent, url)
       .put(url)
       .send(data)
       .expect(200)
