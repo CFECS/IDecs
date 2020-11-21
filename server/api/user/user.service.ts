@@ -113,8 +113,9 @@ export class UserService {
     return user;
   }
 
-  async getById(id: number): Promise<UserModel | undefined> {
-    return classToPlain(await this.userDao.findOne(id)) as UserModel;
+  async getById(id: number, withPassword = false): Promise<UserModel | undefined> {
+    const user = await this.userDao.findOne(id);
+    return withPassword ? user : (classToPlain(user) as UserModel);
   }
 
   async removeById(id: number): Promise<void> {

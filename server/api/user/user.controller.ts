@@ -48,22 +48,12 @@ export class UserController {
     return this.userService.userPagination(paginationBaseDto.page, paginationBaseDto.limit);
   }
 
-  @Get('/:id')
-  getById(@Param('id') id: number): Promise<UserModel | undefined> {
-    return this.userService.getById(id);
-  }
-
-  @Delete('/:id')
-  async removeById(@Param('id') id: number): Promise<void> {
-    await this.userService.removeById(id);
-  }
-
   @Put('/password/change')
   async passwordChange(@Req() req: RequestAo, @Body() passwordChangeBodyDto: ReqPasswordChangeBodyDto): Promise<void> {
     if (passwordChangeBodyDto.newPassword !== passwordChangeBodyDto.confirmPassword) {
       throw new CustomException(ResponseCodeEnum.INCONSISTENT_PASSWORD);
     }
-    const user = await this.userService.getById(req.payload.profile?.id);
+    const user = await this.userService.getById(req.payload.profile?.id, true);
     if (!user) {
       throw new CustomException(ResponseCodeEnum.USER_NOT_EXIST);
     }
@@ -95,26 +85,22 @@ export class UserController {
   }
 
   @Put('/email/change')
-  async emailChange(
-    @Req() req: RequestAo,
-    @Body() emailOrPhoneChangeBodyDto: ReqEmailOrPhoneChangeBodyDto,
-  ): Promise<void> {
-    await this.userService.emailChange(
-      req.payload.profile?.id,
-      emailOrPhoneChangeBodyDto.email,
-      emailOrPhoneChangeBodyDto.code,
-    );
+  async emailChange(@Req() req: RequestAo, @Body() changeBodyDto: ReqEmailOrPhoneChangeBodyDto): Promise<void> {
+    await this.userService.emailChange(req.payload.profile?.id, changeBodyDto.email, changeBodyDto.code);
   }
 
   @Put('/phone/change')
-  async phoneChange(
-    @Req() req: RequestAo,
-    @Body() emailOrPhoneChangeBodyDto: ReqEmailOrPhoneChangeBodyDto,
-  ): Promise<void> {
-    await this.userService.phoneChange(
-      req.payload.profile?.id,
-      emailOrPhoneChangeBodyDto.phone,
-      emailOrPhoneChangeBodyDto.code,
-    );
+  async phoneChange(@Req() req: RequestAo, @Body() changeBodyDto: ReqEmailOrPhoneChangeBodyDto): Promise<void> {
+    await this.userService.phoneChange(req.payload.profile?.id, changeBodyDto.phone, changeBodyDto.code);
+  }
+
+  @Get('/:id')
+  getById(@Param('id') id: number): Promise<UserModel | undefined> {
+    return this.userService.getById(id);
+  }
+
+  @Delete('/:id')
+  async removeById(@Param('id') id: number): Promise<void> {
+    await this.userService.removeById(id);
   }
 }
