@@ -40,9 +40,6 @@ const nuxtConfig: NuxtConfig = {
       },
     ],
   ],
-  // router: {
-  //   middleware: ['auth'],
-  // },
   build: {
     extractCSS: true,
     optimizeCSS: true,
