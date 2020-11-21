@@ -8,18 +8,81 @@ COMMON:
   SYSTEM_ERROR: 系统错误，请联系相关人员~
 
   STATUS_ERROR:
-   401: 暂无权限操作~
-   500: 网络超时，请稍后再试~
+    401: 暂无权限操作~
+    500: 网络超时，请稍后再试~
 
   API_ERROR:
-   I_00004: 用户已存在，请更换用户~
-   I_00007: 用户不存在，请更换用户~
-   I_00008: 密码错误，请重新输入~
-   I_00009: 未知的登陆信息，请重新登录~
-   I_00010: 登录过期，请重新登录~
-   I_00011: 无效的登录信息，请重新登录~
-   I_00012: 短信验证码发送失败，请稍后重试~
-   I_00013: 未知的短信供应商，请修改配置项~
-   I_00014: 邮箱验证码发送失败，请稍微重试~
-   I_00016: 验证码错误，请重新输入~
-   I_00018: 暂无权限操作~
+    I_00004: 用户已存在，请更换用户~
+    I_00007: 用户不存在，请更换用户~
+    I_00008: 密码错误，请重新输入~
+    I_00009: 未知的登陆信息，请重新登录~
+    I_00010: 登录过期，请重新登录~
+    I_00011: 无效的登录信息，请重新登录~
+    I_00012: 短信验证码发送失败，请稍后重试~
+    I_00013: 未知的短信供应商，请修改配置项~
+    I_00014: 邮箱验证码发送失败，请稍微重试~
+    I_00016: 验证码错误，请重新输入~
+    I_00018: 暂无权限操作~
+
+  PAGE_TITLE:
+    DEFAULT: IDecs是一个低成本、完全开放、易于配置的身份管理服务
+    INDEX: 首页
+    LOGIN: 登录
+    EMAIL_REGISTER: 邮箱注册
+    PHONE_REGISTER: 手机号注册
+    EMAIL_FORGOT_PASSWORD: 邮箱修改密码
+    PHONE_FORGOT_PASSWORD: 手机号修改密码
+
+  LAYOUTS:
+    NAME: IDecs 身份管理
+    DESCRIPTION: IDecs 低成本、完全开放、易于配置的身份管理服务
+    RETURN_BACK: 返回上一页
+    RETURN_HOME: 返回首页
+    PERSONAL: 个人中心
+    CHANGE_PASSWORD: 修改密码
+    LAGOUT: 退出登录
+    USER_MANAGEMENT: 用户管理
+    APPLICATION_MANAGEMENT: 应用管理
+    APPLICATION_LIST: 应用列表
+    APPLICATION_MONITOR: 应用监控
+    DEVELOP_MANAGEMENT: 开发管理
+    SMS_MANAGEMENT: 短信管理
+    EMAIL_MANAGEMENT: 邮件管理
+    LOG_MANAGEMENT: 日志管理
+    VERIFY_CODE: 验证码
+    OPERATION_RECORD: 操作记录
+
+  VALIDATE:
+    REQUIRED: 请输入手机号
+    PHONE_FORMAT: 请输入正确的手机号
+    PHONE_CODE: 请输入短信验证码
+    EMAIL_REQUIRED: 请输入邮箱
+    EMAIL_FORMAT: 请输入正确的邮箱
+    EMAIL_CODE: 请输入邮箱验证码
+    PASSWORD_REQUIRED: 请输入密码
+    PASSWORD_FORMAT: 密码必须是8-20位字母（大小写）、数字及特殊字符组合
+    PASSWORD_CONFIRM: 请再次输入密码
+    PASSWORD_NOT_SAME: 两次密码不一致
+
+AUTH:
+  LOGIN_BY_PHONE: 手机号登录
+  LOGIN_BY_EMAIL: 邮箱登录
+  PHONE: 手机号
+  PHONE_CODE: 短信验证码
+  EMAIL: 邮箱
+  EMAIL_CODE: 邮箱验证码
+  PASSWORD: 密码
+  NEW_PASSWORD: 新密码
+  PASSWORD_CONFIRM: 确认密码
+  LOGIN: 登录
+  REGISTER: 注册
+  NO_ACCOUNT: 暂无账号，
+  NOW_REGISTER: 立即注册
+  FOTGOT_PASSWORD: 忘记密码
+  HAS_ACCOUNT: 已有账号，
+  NOW_LOGIN: 立即登录
+  PHONE_REGISTER: 手机号注册
+  EMAIL_REGISTER: 邮箱注册
+  CONFIRM_CHANGE: 确认修改
+  CHANGE_BY_PHONE: 通过手机号修改密码
+  CHANGE_BY_EMAIL: 通过邮箱修改密码

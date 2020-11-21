@@ -1,25 +1,88 @@
 ---
 COMMON:
   ERROR_PAGE:
-    401: 对不起，您暂无权限访问该页面~
-    404: 对不起，您访问的页面不存在~
-    500: 系统错误，请联系相关人员~
+    401: Sorry, you do not have permission to access this page at the moment~
+    404: Sorry, the page you visited does not exist~
+    500: System error, please contact relevant personnel~
 
-  SYSTEM_ERROR: 系统错误，请联系相关人员~
+  SYSTEM_ERROR: System error, please contact relevant personnel~
 
   STATUS_ERROR:
-   401: 暂无权限操作~
-   500: 网络超时，请稍后再试~
+    401: No permission to operate yet~
+    500: Network timeout, please try again later~
 
   API_ERROR:
-   I_00004: 用户已存在，请更换用户~
-   I_00007: 用户不存在，请更换用户~
-   I_00008: 密码错误，请重新输入~
-   I_00009: 未知的登陆信息，请重新登录~
-   I_00010: 登录过期，请重新登录~
-   I_00011: 无效的登录信息，请重新登录~
-   I_00012: 短信验证码发送失败，请稍后重试~
-   I_00013: 未知的短信供应商，请修改配置项~
-   I_00014: 邮箱验证码发送失败，请稍微重试~
-   I_00016: 验证码错误，请重新输入~
-   I_00018: 暂无权限操作~
+    I_00004: The user already exists, please change the user~
+    I_00007: The user does not exist, please change the user~
+    I_00008: The password is wrong, please re-enter~
+    I_00009: Unknown login information, please log in again~
+    I_00010: Login expired, please log in again~
+    I_00011: Invalid login information, please log in again~
+    I_00012: Failed to send SMS verification code, please try again later~
+    I_00013: Unknown SMS provider, please modify the configuration item~
+    I_00014: Failed to send the email verification code, please try again~
+    I_00016: The verification code is wrong, please re-enter~
+    I_00018: No permission to operate yet~
+
+  PAGE_TITLE:
+    DEFAULT: IDecs is a low-cost, fully open and easy to configure identity management service
+    INDEX: Home
+    LOGIN: Login
+    EMAIL_REGISTER: Email registration
+    PHONE_REGISTER: mobile phone number registration
+    EMAIL_FORGOT_PASSWORD: Email change password
+    PHONE_FORGOT_PASSWORD: Mobile phone number change password
+
+  LAYOUTS:
+    NAME: IDecs identity management
+    DESCRIPTION: IDecs is a low-cost, fully open, and easy-to-configure identity management service
+    RETURN_BACK: Return to the previous page
+    RETURN_HOME: return home
+    PERSONAL: Personal Center
+    CHANGE_PASSWORD: Change password
+    LAGOUT: Logout
+    USER_MANAGEMENT: user management
+    APPLICATION_MANAGEMENT: Application management
+    APPLICATION_LIST: Application list
+    APPLICATION_MONITOR: Application monitoring
+    DEVELOP_MANAGEMENT: Development management
+    SMS_MANAGEMENT: SMS management
+    EMAIL_MANAGEMENT: Mail management
+    LOG_MANAGEMENT: log management
+    VERIFY_CODE: Verification code
+    OPERATION_RECORD: Operation record
+
+  VALIDATE:
+    REQUIRED: Please enter your phone number
+    PHONE_FORMAT: Please enter the correct phone number
+    PHONE_CODE: Please enter SMS verification code
+    EMAIL_REQUIRED: Please enter email
+    EMAIL_FORMAT: Please enter the correct email address
+    EMAIL_CODE: Please enter the email verification code
+    PASSWORD_REQUIRED: Please enter your password
+    PASSWORD_FORMAT: The password must be a combination of 8-20 letters (upper and lower case), numbers and special characters
+    PASSWORD_CONFIRM: Please enter the password again
+    PASSWORD_NOT_SAME: The two passwords are inconsistent
+
+AUTH:
+  LOGIN_BY_PHONE: Mobile phone number login
+  LOGIN_BY_EMAIL: Email login
+  PHONE: mobile phone number
+  PHONE_CODE: SMS verification code
+  EMAIL: Email
+  EMAIL_CODE: Email verification code
+  PASSWORD: Password
+  NEW_PASSWORD: New password
+  PASSWORD_CONFIRM: Confirm password
+  LOGIN: Login
+  REGISTER: Register
+  NO_ACCOUNT: No account,
+  NOW_REGISTER: Register now
+  FOTGOT_PASSWORD: Forgot password
+  HAS_ACCOUNT: already has an account,
+  NOW_LOGIN: Log in now
+  PHONE_REGISTER: mobile phone number registration
+  EMAIL_REGISTER: Email registration
+  CONFIRM_CHANGE: Confirm modification
+  CHANGE_BY_PHONE: Change password by mobile phone number
+  CHANGE_BY_EMAIL: Change password by email
