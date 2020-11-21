@@ -3,7 +3,7 @@
     <a-result
       :status="String(error.statusCode)"
       :title="String(error.statusCode)"
-      :sub-title="$t(`common.errorPage.${error.statusCode || 500}`)"
+      :sub-title="$t(`COMMON.ERROR_PAGE.${error.statusCode || 500}`)"
     >
       <template #extra>
         <a-button type="primary" @click="$router.back()"> 返回上一页 </a-button>
