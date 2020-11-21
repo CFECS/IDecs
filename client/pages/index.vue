@@ -5,12 +5,14 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
 
-@Component
+@Component({
+ head() {
+   return {
+     title: this.$generateTitle('首页'),
+   };
+ }
+})
 export default class Index extends Vue {
-  head() {
-    return {
-      title: this.$generateTitle('首页'),
-    };
-  }
+
 }
 </script>
