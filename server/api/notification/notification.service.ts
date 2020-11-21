@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { NotifyTypeEnum } from '../../../common/enum/notify.type.enum';
+import { NotifyTypeEnum } from '../../enum/notify.type.enum';
 import { CodeGenerateHelper } from '../../util/code.generate.util';
 import { SmsHelper } from '../../util/sms.helper';
 import { EmailHelper } from '../../util/email.helper';
 import { Otp, OtpDocument } from '../../model/mongo/otp.model';
 import { CustomException } from '../../exception/custom.exception';
-import { ResponseCodeEnum } from '../../../common/enum/response.code.enum';
+import { ResponseCodeEnum } from '../../enum/response.code.enum';
 import { config } from '../../../config';
 import { UserModel } from '../../model/rds/user.model';
 import { UserDao } from '../../dao/user.dao';

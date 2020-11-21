@@ -1,6 +1,6 @@
 import { IsString, Matches } from 'class-validator';
 import { config } from '../../../config';
-import { BaseResponse } from '../../../server/common/base.response';
+import { BaseResponse } from '../../common/base.response';
 import { ResponseCodeEnum } from '../../enum/response.code.enum';
 
 export class ReqPasswordChangeBodyDto {

@@ -1,8 +1,8 @@
 import { Injectable, Logger, NestMiddleware, UnauthorizedException } from '@nestjs/common';
 import { Response } from 'express';
 import { JwtUtil } from '../util/jwt.util';
-import { TokenTypeEnum } from '../../common/enum/token.type.enum';
-import { Utils } from '../../common/utils';
+import { TokenTypeEnum } from '../enum/token.type.enum';
+import { Utils } from '../util/utils';
 import { RequestAo } from './request.ao';
 
 @Injectable()

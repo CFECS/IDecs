@@ -1,8 +1,8 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { ReqOtpSendPhoneBodyDto } from '../../../common/dto/notification/req.otp.send.phone.body.dto';
-import { ReqOtpVerifyPhoneBodyDto } from '../../../common/dto/notification/req.otp.verify.phone.body.dto';
-import { ReqOtpSendEmailBodyDto } from '../../../common/dto/notification/req.otp.send.email.body.dto';
-import { ReqOtpVerifyEmailBodyDto } from '../../../common/dto/notification/req.otp.verify.email.body.dto';
+import { ReqOtpSendPhoneBodyDto } from '../../dto/notification/req.otp.send.phone.body.dto';
+import { ReqOtpVerifyPhoneBodyDto } from '../../dto/notification/req.otp.verify.phone.body.dto';
+import { ReqOtpSendEmailBodyDto } from '../../dto/notification/req.otp.send.email.body.dto';
+import { ReqOtpVerifyEmailBodyDto } from '../../dto/notification/req.otp.verify.email.body.dto';
 import { NotificationService } from './notification.service';
 
 @Controller('/api')

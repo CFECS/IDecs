@@ -1,18 +1,18 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query, Req } from '@nestjs/common';
 import { UserModel } from '../../model/rds/user.model';
 import { CustomException } from '../../exception/custom.exception';
-import { ResponseCodeEnum } from '../../../common/enum/response.code.enum';
-import { ReqSignupBodyDto } from '../../../common/dto/user/req.signup.body.dto';
-import { ReqLoginBodyDto } from '../../../common/dto/user/req.login.body.dto';
-import { ResLoginDto } from '../../../common/dto/user/res.login.dto';
-import { ResTokenValidateDto } from '../../../common/dto/user/res.token.validate.dto';
+import { ResponseCodeEnum } from '../../enum/response.code.enum';
+import { ReqSignupBodyDto } from '../../dto/user/req.signup.body.dto';
+import { ReqLoginBodyDto } from '../../dto/user/req.login.body.dto';
+import { ResLoginDto } from '../../dto/user/res.login.dto';
+import { ResTokenValidateDto } from '../../dto/user/res.token.validate.dto';
 import { RequestAo } from '../../middleware/request.ao';
-import { ReqPaginationBaseDto } from '../../../common/dto/req.pagination.base.dto';
-import { ResPaginationDto } from '../../../common/dto/res.pagination.dto';
-import { ReqPasswordChangeBodyDto } from '../../../common/dto/user/req.password.change.body.dto';
-import { ReqProfileUpdateBodyDto } from '../../../common/dto/user/req.profile.update.body.dto';
-import { ReqPasswordResetBodyDto } from '../../../common/dto/user/req.password.reset.body.dto';
-import { ReqEmailOrPhoneChangeBodyDto } from '../../../common/dto/user/req.email.or.phone.change.body.dto';
+import { ReqPaginationBaseDto } from '../../dto/req.pagination.base.dto';
+import { ResPaginationDto } from '../../dto/res.pagination.dto';
+import { ReqPasswordChangeBodyDto } from '../../dto/user/req.password.change.body.dto';
+import { ReqProfileUpdateBodyDto } from '../../dto/user/req.profile.update.body.dto';
+import { ReqPasswordResetBodyDto } from '../../dto/user/req.password.reset.body.dto';
+import { ReqEmailOrPhoneChangeBodyDto } from '../../dto/user/req.email.or.phone.change.body.dto';
 import { PasswordUtil } from '../../util/password.util';
 import { UserService } from './user.service';
 
@@ -48,22 +48,12 @@ export class UserController {
     return this.userService.userPagination(paginationBaseDto.page, paginationBaseDto.limit);
   }
 
-  @Get('/:id')
-  getById(@Param('id') id: number): Promise<UserModel | undefined> {
-    return this.userService.getById(id);
-  }
-
-  @Delete('/:id')
-  async removeById(@Param('id') id: number): Promise<void> {
-    await this.userService.removeById(id);
-  }
-
   @Put('/password/change')
   async passwordChange(@Req() req: RequestAo, @Body() passwordChangeBodyDto: ReqPasswordChangeBodyDto): Promise<void> {
     if (passwordChangeBodyDto.newPassword !== passwordChangeBodyDto.confirmPassword) {
       throw new CustomException(ResponseCodeEnum.INCONSISTENT_PASSWORD);
     }
-    const user = await this.userService.getById(req.payload.profile?.id);
+    const user = await this.userService.getById(req.payload.profile?.id, true);
     if (!user) {
       throw new CustomException(ResponseCodeEnum.USER_NOT_EXIST);
     }
@@ -95,26 +85,22 @@ export class UserController {
   }
 
   @Put('/email/change')
-  async emailChange(
-    @Req() req: RequestAo,
-    @Body() emailOrPhoneChangeBodyDto: ReqEmailOrPhoneChangeBodyDto,
-  ): Promise<void> {
-    await this.userService.emailChange(
-      req.payload.profile?.id,
-      emailOrPhoneChangeBodyDto.email,
-      emailOrPhoneChangeBodyDto.code,
-    );
+  async emailChange(@Req() req: RequestAo, @Body() changeBodyDto: ReqEmailOrPhoneChangeBodyDto): Promise<void> {
+    await this.userService.emailChange(req.payload.profile?.id, changeBodyDto.email, changeBodyDto.code);
   }
 
   @Put('/phone/change')
-  async phoneChange(
-    @Req() req: RequestAo,
-    @Body() emailOrPhoneChangeBodyDto: ReqEmailOrPhoneChangeBodyDto,
-  ): Promise<void> {
-    await this.userService.phoneChange(
-      req.payload.profile?.id,
-      emailOrPhoneChangeBodyDto.phone,
-      emailOrPhoneChangeBodyDto.code,
-    );
+  async phoneChange(@Req() req: RequestAo, @Body() changeBodyDto: ReqEmailOrPhoneChangeBodyDto): Promise<void> {
+    await this.userService.phoneChange(req.payload.profile?.id, changeBodyDto.phone, changeBodyDto.code);
+  }
+
+  @Get('/:id')
+  getById(@Param('id') id: number): Promise<UserModel | undefined> {
+    return this.userService.getById(id);
+  }
+
+  @Delete('/:id')
+  async removeById(@Param('id') id: number): Promise<void> {
+    await this.userService.removeById(id);
   }
 }
