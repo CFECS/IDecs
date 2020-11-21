@@ -36,6 +36,8 @@ COMMON:
   LAYOUTS:
     NAME: IDecs identity management
     DESCRIPTION: IDecs is a low-cost, fully open, and easy-to-configure identity management service
+    AWAIT_RESEND: {time} seconds
+    GET_OTP_CODE: Get verification code
     RETURN_BACK: Return to the previous page
     RETURN_HOME: return home
     PERSONAL: Personal Center
