@@ -10,6 +10,7 @@ import { ResponseInterceptor } from './middleware/response.interceptor';
 import { AllExceptionsFilter } from './exception/base.exception.filter';
 import { NotificationModule } from './api/notification/notification.module';
 import { NuxtModule } from './nuxt.controller';
+import { ProjectModule } from './api/project/project.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { NuxtModule } from './nuxt.controller';
     GlobalModule,
     UserModule,
     NotificationModule,
+    ProjectModule,
     NuxtModule,
   ],
   controllers: [],

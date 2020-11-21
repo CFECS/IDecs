@@ -2,7 +2,7 @@ import { Column, Entity } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { BaseModel } from './base.model';
 
-@Entity('user')
+@Entity({ name: 'user', orderBy: { id: 'ASC' } })
 export class UserModel extends BaseModel {
   @Column({ length: 64, nullable: true })
   username!: string;

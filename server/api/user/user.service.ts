@@ -123,7 +123,7 @@ export class UserService {
   }
 
   userPagination(page: number, limit: number): Promise<ResPaginationDto<UserModel>> {
-    return this.userDao.queryPagination(page, limit);
+    return this.userDao.queryPagination(page, limit, true);
   }
 
   async passwordChange(id: number, newPassword: string): Promise<void> {

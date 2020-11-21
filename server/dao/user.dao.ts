@@ -1,24 +1,14 @@
-import { EntityRepository, Repository } from 'typeorm';
-import { classToPlain } from 'class-transformer';
+import { EntityRepository } from 'typeorm';
 import { UserModel } from '../model/rds/user.model';
-import { ResPaginationDto } from '../dto/res.pagination.dto';
+import { BaseDao } from './base.dao';
 
 @EntityRepository(UserModel)
-export class UserDao extends Repository<UserModel> {
+export class UserDao extends BaseDao<UserModel> {
   getOneByEmail(email: string): Promise<UserModel | undefined> {
     return this.findOne({ email });
   }
 
   getOneByPhone(phone: string): Promise<UserModel | undefined> {
     return this.findOne({ phone });
-  }
-
-  async queryPagination(page: number, limit: number): Promise<ResPaginationDto<UserModel>> {
-    const data = await this.findAndCount({
-      skip: limit * (page - 1),
-      take: limit,
-      order: { id: 'ASC' },
-    });
-    return { items: classToPlain(data[0]) as UserModel[], total: data[1] };
   }
 }

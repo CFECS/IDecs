@@ -8,13 +8,20 @@ import { CustomException } from '../exception/custom.exception';
 import { ResponseCodeEnum } from '../enum/response.code.enum';
 import { Session, SessionDocument } from '../model/mongo/session.model';
 import { config } from '../../config';
+import { UserModel } from '../model/rds/user.model';
 import { Utils } from './utils';
 
-export interface JwtPayload {
+interface TicketPayload {
   sub: string;
   type: TokenTypeEnum;
-  sessionId?: string;
-  profile?: Record<string, any>;
+}
+
+interface TokenPayload extends TicketPayload {
+  sessionId: string;
+}
+
+export interface JwtPayload extends TokenPayload {
+  profile: UserModel;
 }
 
 @Injectable()
@@ -26,15 +33,15 @@ export class JwtUtil {
     private readonly sessionModel: Model<SessionDocument>,
   ) {}
 
-  static signToken(payload: JwtPayload, expiresIn: string | number): string {
+  static signToken(payload: TicketPayload | TokenPayload, expiresIn: string | number): string {
     return sign(payload, Constants.JWT_SECRET, { expiresIn, ...this.jwtOption });
   }
 
-  static signTicket(payload: JwtPayload): string {
+  static signTicket(payload: TicketPayload): string {
     return this.signToken(payload, '5m');
   }
 
-  static signAccessToken(payload: JwtPayload): string {
+  static signAccessToken(payload: TokenPayload): string {
     return this.signToken(payload, config.expire.session);
   }
 
@@ -57,7 +64,7 @@ export class JwtUtil {
       if (session?.token !== token || Utils.decodeBase64(jwtPayload.sub) !== session?.profile.id.toString()) {
         throw new CustomException(ResponseCodeEnum.INVALID_TOKEN);
       }
-      jwtPayload.profile = session.profile;
+      jwtPayload.profile = session.profile as UserModel;
     }
     return jwtPayload;
   }
