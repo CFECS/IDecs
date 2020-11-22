@@ -8,7 +8,10 @@ export class Session extends Document {
   sessionId!: string;
 
   @Prop()
-  profile!: Record<string, any>;
+  userId!: number;
+
+  @Prop()
+  auths!: Record<string, any>;
 
   @Prop()
   token!: string;

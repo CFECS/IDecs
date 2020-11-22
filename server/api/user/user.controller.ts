@@ -40,7 +40,7 @@ export class UserController {
 
   @Get()
   getSelf(@Req() req: RequestAo): Promise<UserModel | undefined> {
-    return this.userService.getById(req.payload.profile.id);
+    return this.userService.getById(req.payload.userId);
   }
 
   @Get('/pagination')
@@ -53,19 +53,19 @@ export class UserController {
     if (passwordChangeBodyDto.newPassword !== passwordChangeBodyDto.confirmPassword) {
       throw new CustomException(ResponseCodeEnum.INCONSISTENT_PASSWORD);
     }
-    const user = await this.userService.getById(req.payload.profile.id, true);
+    const user = await this.userService.getById(req.payload.userId, true);
     if (!user) {
       throw new CustomException(ResponseCodeEnum.USER_NOT_EXIST);
     }
     if (!PasswordUtil.verifyPwd(passwordChangeBodyDto.oldPassword, user.password)) {
       throw new CustomException(ResponseCodeEnum.WRONG_PASSWORD);
     }
-    await this.userService.passwordChange(req.payload.profile.id, passwordChangeBodyDto.newPassword);
+    await this.userService.passwordChange(req.payload.userId, passwordChangeBodyDto.newPassword);
   }
 
   @Put('/profile')
   async profileUpdate(@Req() req: RequestAo, @Body() profileUpdateBodyDto: ReqProfileUpdateBodyDto): Promise<void> {
-    await this.userService.profileUpdate(req.payload.profile.id, profileUpdateBodyDto);
+    await this.userService.profileUpdate(req.payload.userId, profileUpdateBodyDto);
   }
 
   @Put('/password/reset/phone')
@@ -86,12 +86,12 @@ export class UserController {
 
   @Put('/email/change')
   async emailChange(@Req() req: RequestAo, @Body() changeBodyDto: ReqEmailOrPhoneChangeBodyDto): Promise<void> {
-    await this.userService.emailChange(req.payload.profile.id, changeBodyDto.email, changeBodyDto.code);
+    await this.userService.emailChange(req.payload.userId, changeBodyDto.email, changeBodyDto.code);
   }
 
   @Put('/phone/change')
   async phoneChange(@Req() req: RequestAo, @Body() changeBodyDto: ReqEmailOrPhoneChangeBodyDto): Promise<void> {
-    await this.userService.phoneChange(req.payload.profile.id, changeBodyDto.phone, changeBodyDto.code);
+    await this.userService.phoneChange(req.payload.userId, changeBodyDto.phone, changeBodyDto.code);
   }
 
   @Get('/:id')

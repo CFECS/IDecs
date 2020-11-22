@@ -12,12 +12,12 @@ export class ProjectController {
 
   @Post()
   add(@Body() bodyDto: ReqAddOrUpdateBodyDto, @Req() req: RequestAo) {
-    return this.projectService.add(bodyDto, req.payload.profile.id);
+    return this.projectService.add(bodyDto, req.payload.userId);
   }
 
   @Put('/:id')
   updateById(@Param('id') id: number, @Body() bodyDto: ReqAddOrUpdateBodyDto, @Req() req: RequestAo) {
-    return this.projectService.updateById(id, bodyDto, req.payload.profile.id);
+    return this.projectService.updateById(id, bodyDto, req.payload.userId);
   }
 
   @Delete('/:id')

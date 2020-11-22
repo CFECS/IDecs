@@ -14,7 +14,6 @@ import { ReqLoginBodyDto } from '../../dto/user/req.login.body.dto';
 import { LoginTypeEnum } from '../../enum/login.type.enum';
 import { JwtUtil } from '../../util/jwt.util';
 import { TokenTypeEnum } from '../../enum/token.type.enum';
-import { Utils } from '../../util/utils';
 import { ResLoginDto } from '../../dto/user/res.login.dto';
 import { ResTokenValidateDto } from '../../dto/user/res.token.validate.dto';
 import { ResPaginationDto } from '../../dto/res.pagination.dto';
@@ -23,6 +22,7 @@ import { UserDao } from '../../dao/user.dao';
 import { NotifyTypeEnum } from '../../enum/notify.type.enum';
 import { ReqPasswordResetBodyDto } from '../../dto/user/req.password.reset.body.dto';
 import { NotificationService } from '../notification/notification.service';
+import { Utils } from '../../util/utils';
 
 @Injectable()
 export class UserService {
@@ -84,20 +84,19 @@ export class UserService {
 
   async validateTicket(ticket: string): Promise<ResTokenValidateDto> {
     const payload = await this.jwtUtil.verifyToken(ticket, TokenTypeEnum.TICKET);
-    const userId = Utils.decodeBase64(payload.sub);
-    const user = await this.getById(Number.parseInt(userId));
+    const user = await this.getById(payload.userId);
     if (!user) {
       throw new CustomException(ResponseCodeEnum.USER_NOT_EXIST);
     }
     const sessionId = generate();
     const token = JwtUtil.signAccessToken({
-      sub: Utils.toBase64(user.id.toString()),
-      sessionId,
+      sub: sessionId,
       type: TokenTypeEnum.ACCESS_TOKEN,
     });
     await this.sessionModel.create({
       sessionId,
-      profile: user,
+      userId: payload.userId,
+      auths: {},
       token,
     });
     return { token };

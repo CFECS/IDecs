@@ -8,20 +8,16 @@ import { CustomException } from '../exception/custom.exception';
 import { ResponseCodeEnum } from '../enum/response.code.enum';
 import { Session, SessionDocument } from '../model/mongo/session.model';
 import { config } from '../../config';
-import { UserModel } from '../model/rds/user.model';
 import { Utils } from './utils';
 
-interface TicketPayload {
+interface TokenPayload {
   sub: string;
   type: TokenTypeEnum;
 }
 
-interface TokenPayload extends TicketPayload {
-  sessionId: string;
-}
-
 export interface JwtPayload extends TokenPayload {
-  profile: UserModel;
+  userId: number;
+  auths: Record<string, any>;
 }
 
 @Injectable()
@@ -33,11 +29,11 @@ export class JwtUtil {
     private readonly sessionModel: Model<SessionDocument>,
   ) {}
 
-  static signToken(payload: TicketPayload | TokenPayload, expiresIn: string | number): string {
+  static signToken(payload: TokenPayload, expiresIn: string | number): string {
     return sign(payload, Constants.JWT_SECRET, { expiresIn, ...this.jwtOption });
   }
 
-  static signTicket(payload: TicketPayload): string {
+  static signTicket(payload: TokenPayload): string {
     return this.signToken(payload, '5m');
   }
 
@@ -59,12 +55,15 @@ export class JwtUtil {
     if (jwtPayload?.type !== type) {
       throw new CustomException(ResponseCodeEnum.UNKNOWN_TOKEN_TYPE);
     }
-    if (jwtPayload?.type === TokenTypeEnum.ACCESS_TOKEN) {
-      const session = await this.sessionModel.findOne({ sessionId: jwtPayload.sessionId });
-      if (session?.token !== token || Utils.decodeBase64(jwtPayload.sub) !== session?.profile.id.toString()) {
+    if (jwtPayload?.type === TokenTypeEnum.TICKET) {
+      jwtPayload.userId = Number.parseInt(Utils.decodeBase64(jwtPayload.sub));
+    } else if (jwtPayload?.type === TokenTypeEnum.ACCESS_TOKEN) {
+      const session = await this.sessionModel.findOne({ sessionId: jwtPayload.sub });
+      if (session?.token !== token) {
         throw new CustomException(ResponseCodeEnum.INVALID_TOKEN);
       }
-      jwtPayload.profile = session.profile as UserModel;
+      jwtPayload.userId = session.userId;
+      jwtPayload.auths = session.auths;
     }
     return jwtPayload;
   }
