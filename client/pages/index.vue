@@ -6,13 +6,11 @@
 import { Component, Vue } from 'nuxt-property-decorator';
 
 @Component({
- head() {
-   return {
-     title: this.$generateTitle('首页'),
-   };
- }
+  head() {
+    return {
+      title: this.$generateTitle('首页'),
+    };
+  },
 })
-export default class Index extends Vue {
-
-}
+export default class Index extends Vue {}
 </script>

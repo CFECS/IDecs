@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProjectDao } from '../../dao/project.dao';
 import { ProjectService } from './project.service';
 import { ProjectController } from './project.controller';
 
 @Module({
-  providers: [ProjectService, ProjectDao],
+  imports: [TypeOrmModule.forFeature([ProjectDao])],
   controllers: [ProjectController],
+  providers: [ProjectService],
 })
 export class ProjectModule {}

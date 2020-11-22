@@ -1,5 +1,6 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { BaseModel } from './base.model';
+import { UserModel } from './user.model';
 
 @Entity({ name: 'project', orderBy: { id: 'ASC' } })
 export class ProjectModel extends BaseModel {
@@ -10,11 +11,14 @@ export class ProjectModel extends BaseModel {
   description!: string;
 
   @Column()
-  createdBy!: number;
+  createdById!: number;
 
   @Column()
-  updatedBy!: number;
+  updatedById!: number;
 
-  @Column({ nullable: true })
-  deletedBy!: number;
+  @ManyToOne(() => UserModel)
+  createdBy!: UserModel;
+
+  @ManyToOne(() => UserModel)
+  updatedBy!: UserModel;
 }

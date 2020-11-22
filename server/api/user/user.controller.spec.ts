@@ -1,4 +1,4 @@
-import { INestApplication } from '@nestjs/common';
+import { HttpStatus, INestApplication } from '@nestjs/common';
 import { SuperAgentTest } from 'supertest';
 import { ReqSignupBodyDto } from '../../dto/user/req.signup.body.dto';
 import { ResponseCodeEnum } from '../../enum/response.code.enum';
@@ -31,7 +31,7 @@ describe('Signup and login', () => {
     return BaseTest.setHeaders(agent, url)
       .post(url)
       .send(data)
-      .expect(201)
+      .expect(HttpStatus.CREATED)
       .then((res) => expect(res.body.head.code).toEqual(ResponseCodeEnum.OK));
   });
 
@@ -47,7 +47,7 @@ describe('Signup and login', () => {
     return BaseTest.setHeaders(agent, url)
       .post(url)
       .send(data)
-      .expect(201)
+      .expect(HttpStatus.CREATED)
       .then((res) => expect(res.body.head.code).toEqual(ResponseCodeEnum.OK));
   });
 
@@ -68,7 +68,7 @@ describe('UserController', () => {
     const url = '/api/user';
     return BaseTest.setHeaders(agent, url)
       .get(url)
-      .expect(200)
+      .expect(HttpStatus.OK)
       .then((res) => expect(res.body.head.code).toEqual(ResponseCodeEnum.OK));
   });
 
@@ -76,7 +76,7 @@ describe('UserController', () => {
     const url = '/api/user/10';
     return BaseTest.setHeaders(agent, url)
       .get(url)
-      .expect(200)
+      .expect(HttpStatus.OK)
       .then((res) => expect(res.body.head.code).toEqual(ResponseCodeEnum.OK));
   });
 
@@ -84,7 +84,7 @@ describe('UserController', () => {
     const url = '/api/user/12';
     return BaseTest.setHeaders(agent, url)
       .delete(url)
-      .expect(200)
+      .expect(HttpStatus.OK)
       .then((res) => expect(res.body.head.code).toEqual(ResponseCodeEnum.OK));
   });
 
@@ -92,7 +92,7 @@ describe('UserController', () => {
     const url = '/api/user/pagination';
     return BaseTest.setHeaders(agent, url)
       .get(url)
-      .expect(200)
+      .expect(HttpStatus.OK)
       .then((res) => expect(res.body.head.code).toEqual(ResponseCodeEnum.OK));
   });
 
@@ -107,7 +107,7 @@ describe('UserController', () => {
     return BaseTest.setHeaders(agent, url)
       .put(url)
       .send(updatePasswordData)
-      .expect(200)
+      .expect(HttpStatus.OK)
       .then(() => {
         return BaseTest.doLoginByPassword(agent, email, newPassword);
       });
@@ -117,6 +117,7 @@ describe('UserController', () => {
     const url = '/api/user/profile';
     const data: ReqProfileUpdateBodyDto = {
       username: 'haha',
+      avatar: '',
       profile: {
         test: 'prefect',
       },
@@ -124,7 +125,7 @@ describe('UserController', () => {
     return BaseTest.setHeaders(agent, url)
       .put(url)
       .send(data)
-      .expect(200)
+      .expect(HttpStatus.OK)
       .then((res) => expect(res.body.head.code).toEqual(ResponseCodeEnum.OK));
   });
 });

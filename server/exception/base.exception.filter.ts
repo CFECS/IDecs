@@ -15,8 +15,8 @@ import { CustomException } from './custom.exception';
 export class AllExceptionsFilter implements ExceptionFilter {
   constructor(private readonly logger: Logger) {}
 
-  catch(exception: Error, host: ArgumentsHost): void {
-    this.logger.error(exception.message, exception.stack);
+  catch(exception: any, host: ArgumentsHost): void {
+    this.logger.error(exception.response, exception.stack);
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
     if (exception instanceof CustomException) {

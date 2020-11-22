@@ -36,7 +36,7 @@ COMMON:
   LAYOUTS:
     NAME: IDecs 身份管理
     DESCRIPTION: IDecs 低成本、完全开放、易于配置的身份管理服务
-    AWAIT_RESEND: {time}秒后重新获取
+    AWAIT_RESEND: '{time}秒后重新获取'
     GET_OTP_CODE: 获取验证码
     TIPS: 提示
     OFFLINE: 当前网络状态不佳，为确保您的良好使用，请检查网络连接是否正常~
