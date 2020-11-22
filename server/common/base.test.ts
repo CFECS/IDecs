@@ -3,7 +3,7 @@ import * as request from 'supertest';
 import { SuperAgentTest } from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as cookieParser from 'cookie-parser';
-import { AppModule } from '../app.module';
+import { AppModule } from '../module/app.module';
 import { Utils } from '../util/utils';
 import { ReqLoginBodyDto } from '../dto/user/req.login.body.dto';
 import { LoginTypeEnum } from '../enum/login.type.enum';

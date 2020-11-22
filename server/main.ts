@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { LogLevel } from '@nestjs/common/services/logger.service';
 import { config } from '../config';
-import { AppModule } from './app.module';
+import { AppModule } from './module/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
