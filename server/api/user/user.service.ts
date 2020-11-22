@@ -133,6 +133,7 @@ export class UserService {
   async profileUpdate(id: number, profileUpdateBodyDto: ReqProfileUpdateBodyDto): Promise<void> {
     await this.userDao.update(id, {
       username: profileUpdateBodyDto.username,
+      avatar: profileUpdateBodyDto.avatar,
       profile: profileUpdateBodyDto.profile,
     });
   }

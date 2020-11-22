@@ -10,6 +10,9 @@ export class UserModel extends BaseModel {
   @Column({ length: 128, nullable: true })
   email!: string;
 
+  @Column({ length: 1024, nullable: true })
+  avatar!: string;
+
   @Column({ length: 16, nullable: true })
   phone!: string;
 
