@@ -3,11 +3,11 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } f
 import * as dayjs from 'dayjs';
 import { message } from 'ant-design-vue';
 import { injectAxiosToStore } from '../store/axios';
-import { SYSTEM_ERROR, STATUS_ERROR, RESPONSE_ERROR } from '../types/constants/tips';
 
 declare module 'vue/types/vue' {
   interface Vue {
     $axios: any;
+    $t: any;
   }
 }
 
@@ -31,8 +31,8 @@ const Axios: Plugin = ({ env, app }, inject) => {
   instance.interceptors.response.use(
     (response: AxiosResponse) => {
       if (!response || !response.data) {
-        message.error(SYSTEM_ERROR);
-        return Promise.reject(new Error(SYSTEM_ERROR));
+        message.error(app.i18n.t(`COMMON.SYSTEM_ERROR`) as string);
+        return Promise.reject(new Error(app.i18n.t(`COMMON.SYSTEM_ERROR`) as string));
       } else {
         const code: any = response.data.head.code;
         if (code !== 'I_00000') {
@@ -40,7 +40,13 @@ const Axios: Plugin = ({ env, app }, inject) => {
             window.sessionStorage.removeItem('IDecs_token');
             window.location.reload();
           }
-          const errorMessage = RESPONSE_ERROR[code] || SYSTEM_ERROR;
+
+          let errorMessage = '';
+          if (app.i18n.te(`COMMON.API_ERROR.${code}`)) {
+            errorMessage = app.i18n.t(`COMMON.API_ERROR.${code}`) as string;
+          } else {
+            errorMessage = app.i18n.t(`COMMON.SYSTEM_ERROR`) as string;
+          }
           message.error(errorMessage);
           return Promise.reject(new Error(errorMessage));
         }
@@ -49,7 +55,13 @@ const Axios: Plugin = ({ env, app }, inject) => {
     },
     (error: any) => {
       const status: any = error.response.status;
-      message.error(STATUS_ERROR[status] || SYSTEM_ERROR);
+      let errorMessage = '';
+      if (app.i18n.te(`COMMON.STATUS_ERROR.${status}`)) {
+        errorMessage = app.i18n.t(`COMMON.STATUS_ERROR.${status}`) as string;
+      } else {
+        errorMessage = app.i18n.t(`COMMON.SYSTEM_ERROR`) as string;
+      }
+      message.error(errorMessage);
       return Promise.reject(error);
     },
   );

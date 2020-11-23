@@ -2727,6 +2727,13 @@
   resolved "https://registry.yarnpkg.com/@types/voucher-code-generator/-/voucher-code-generator-1.1.0.tgz#79dc2604b647c5351ce01667fc621373e0dd700a"
   integrity sha512-P5ECIOn5KfKVYlFyjqKN5cSLfu4umzytAGlYhQbFChbAfWgf1IqrgxpVA8TkiMqQAzXLB+Tnk9qMFEtYeesgPg==
 
+"@types/vue-i18n@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@types/vue-i18n/-/vue-i18n-7.0.0.tgz#ace0de742b3a0398b6fa6b3956d6e583377c3081"
+  integrity sha512-4e3EvN4k+B6eTq1qWDFW1wpzCgz+8nNCn6LAQTkcRoGJx9rVO5iYzyEogFTi9RwBJ588+Rx0nUwRFjKUYPe/BQ==
+  dependencies:
+    vue-i18n "*"
+
 "@types/webpack-bundle-analyzer@^3.8.0":
   version "3.9.0"
   resolved "https://registry.yarnpkg.com/@types/webpack-bundle-analyzer/-/webpack-bundle-analyzer-3.9.0.tgz#bf2f3fd7f1fe6a71dff8968afeb12785d1ce737b"
@@ -15105,6 +15112,11 @@ vue-hot-reload-api@^2.3.0:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz#532955cc1eb208a3d990b3a9f9a70574657e08f2"
   integrity sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==
+
+vue-i18n@*:
+  version "8.22.2"
+  resolved "https://registry.yarnpkg.com/vue-i18n/-/vue-i18n-8.22.2.tgz#58299a5a050e67b4f799d96fee7dd8bd269e0907"
+  integrity sha512-rb569fVJInPUgS/bbCxEQ9DrAoFTntuJvYoK4Fpk2VfNbA09WzdTKk57ppjz3S+ps9hW+p9H+2ASgMvojedkow==
 
 vue-i18n@^8.18.1:
   version "8.22.1"

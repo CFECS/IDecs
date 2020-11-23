@@ -12,7 +12,7 @@ declare module 'vue/types/vue' {
   }
 }
 
-const Tools: Plugin = ({ env }, inject) => {
+const Tools: Plugin = ({ env, app }, inject) => {
   inject(
     'generateApiKey',
     (password: any, salt: any): Promise<any> => {
@@ -50,9 +50,9 @@ const Tools: Plugin = ({ env }, inject) => {
 
   inject('checkPhone', (_: any, value: string, callback: any): void => {
     if (!value) {
-      callback(new Error('请输入手机号'));
+      callback(new Error(app.i18n.t('COMMON.VALIDATE.REQUIRED') as string));
     } else if (!/^\d+$/.test(value)) {
-      callback(new Error('请输入正确的手机号'));
+      callback(new Error(app.i18n.t('COMMON.VALIDATE.PHONE_FORMAT') as string));
     } else {
       callback();
     }
@@ -60,16 +60,16 @@ const Tools: Plugin = ({ env }, inject) => {
 
   inject('checkPassword', (_: any, value: string, callback: any): void => {
     if (!value) {
-      callback(new Error('请输入密码'));
+      callback(new Error(app.i18n.t('COMMON.VALIDATE.PASSWORD_REQUIRED') as string));
     } else if (!env.passwordReg.test(value)) {
-      callback(new Error('密码必须是8-20位字母（大小写）、数字及特殊字符组合'));
+      callback(new Error(app.i18n.t('COMMON.VALIDATE.PASSWORD_FORMAT') as string));
     } else {
       callback();
     }
   });
 
   inject('generateTitle', (title: string): string => {
-    return `${title}-IDecs是一个低成本、完全开放、易于配置的身份管理服务`;
+    return `${title}-${app.i18n.t('COMMON.PAGE_TITLE.DEFAULT') as string}`;
   });
 };
 

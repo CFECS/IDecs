@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-tabs v-model="tab" size="large" @change="saveKey">
-      <a-tab-pane key="phone" tab="手机号登录">
+      <a-tab-pane key="phone" :tab="$t('AUTH.LOGIN_BY_PHONE')">
         <a-form-model
           ref="phoneLoginForm"
           :model="phoneForm"
@@ -10,7 +10,7 @@
           @submit.native.prevent
         >
           <a-form-model-item prop="identity">
-            <a-input v-model="phoneForm.identity" placeholder="手机号" size="large">
+            <a-input v-model="phoneForm.identity" :placeholder="$t('AUTH.PHONE')" size="large">
               <a-select
                 slot="addonBefore"
                 v-model="dialCode"
@@ -26,26 +26,28 @@
           </a-form-model-item>
 
           <a-form-model-item prop="password">
-            <a-input v-model="phoneForm.password" type="password" placeholder="密码" size="large">
+            <a-input v-model="phoneForm.password" type="password" :placeholder="$t('AUTH.PASSWORD')" size="large">
               <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, 0.25)"></a-icon>
             </a-input>
           </a-form-model-item>
 
           <a-form-model-item>
-            <a-button type="primary" :loading="loading" html-type="submit" block size="large">登录</a-button>
+            <a-button type="primary" :loading="loading" html-type="submit" block size="large">
+              {{ $t('AUTH.LOGIN') }}
+            </a-button>
           </a-form-model-item>
         </a-form-model>
 
         <div class="form-footer">
           <span>
-            <span>暂无账号，</span>
-            <nuxt-link to="/register/phone">立即注册</nuxt-link>
+            <span>{{ $t('AUTH.NO_ACCOUNT') }}</span>
+            <nuxt-link to="/register/phone">{{ $t('AUTH.NOW_REGISTER') }}</nuxt-link>
           </span>
-          <nuxt-link to="/forgot-password/phone">忘记密码</nuxt-link>
+          <nuxt-link to="/forgot-password/phone">{{ $t('AUTH.FOTGOT_PASSWORD') }}</nuxt-link>
         </div>
       </a-tab-pane>
 
-      <a-tab-pane key="email" tab="邮箱登录">
+      <a-tab-pane key="email" :tab="$t('AUTH.LOGIN_BY_EMAIL')">
         <a-form-model
           ref="emailLoginForm"
           :model="emailForm"
@@ -54,28 +56,30 @@
           @submit.native.prevent
         >
           <a-form-model-item prop="identity">
-            <a-input v-model="emailForm.identity" placeholder="邮箱" size="large">
+            <a-input v-model="emailForm.identity" :placeholder="$t('AUTH.EMAIL')" size="large">
               <a-icon slot="prefix" type="user" style="color: rgba(0, 0, 0, 0.25)"></a-icon>
             </a-input>
           </a-form-model-item>
 
           <a-form-model-item prop="password">
-            <a-input v-model="emailForm.password" type="password" placeholder="密码" size="large">
+            <a-input v-model="emailForm.password" type="password" :placeholder="$t('AUTH.PASSWORD')" size="large">
               <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, 0.25)"></a-icon>
             </a-input>
           </a-form-model-item>
 
           <a-form-model-item>
-            <a-button type="primary" :loading="loading" html-type="submit" block size="large">登录</a-button>
+            <a-button type="primary" :loading="loading" html-type="submit" block size="large">
+              {{ $t('AUTH.LOGIN') }}
+            </a-button>
           </a-form-model-item>
         </a-form-model>
 
         <div class="form-footer">
           <span>
-            <span>暂无账号，</span>
-            <nuxt-link to="/register/email">立即注册</nuxt-link>
+            <span>{{ $t('AUTH.NO_ACCOUNT') }}</span>
+            <nuxt-link to="/register/email">{{ $t('AUTH.NOW_REGISTER') }}</nuxt-link>
           </span>
-          <nuxt-link to="/forgot-password/email">忘记密码</nuxt-link>
+          <nuxt-link to="/forgot-password/email">{{ $t('AUTH.FOTGOT_PASSWORD') }}</nuxt-link>
         </div>
       </a-tab-pane>
     </a-tabs>
@@ -93,7 +97,7 @@ import User from '~/store/user';
   layout: 'auth',
   head() {
     return {
-      title: this.$generateTitle('登录'),
+      title: this.$generateTitle(this.$t('COMMON.PAGE_TITLE.LOGIN')),
     };
   },
 })
@@ -118,15 +122,15 @@ export default class Login extends Vue {
 
   phoneRules: Record<string, any> = {
     identity: [{ validator: this.$checkPhone, trigger: 'blur' }],
-    password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+    password: [{ required: true, message: this.$t('COMMON.VALIDATE.PASSWORD_REQUIRED'), trigger: 'blur' }],
   };
 
   emailRules: Record<string, any> = {
     identity: [
-      { required: true, message: '请输入邮箱', trigger: 'blur' },
-      { type: 'email', message: '请输入正确的邮箱' },
+      { required: true, message: this.$t('COMMON.VALIDATE.EMAIL_REQUIRED'), trigger: 'blur' },
+      { type: 'email', message: this.$t('COMMON.VALIDATE.EMAIL_FORMAT') },
     ],
-    password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+    password: [{ required: true, message: this.$t('COMMON.VALIDATE.PASSWORD_REQUIRED'), trigger: 'blur' }],
   };
 
   public saveKey(key: string): void {

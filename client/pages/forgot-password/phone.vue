@@ -2,7 +2,7 @@
   <div>
     <a-form-model ref="phoneForgotForm" :model="params" :rules="rules" @submit="handleSubmit" @submit.native.prevent>
       <a-form-model-item prop="phone">
-        <a-input v-model="params.phone" placeholder="手机号" size="large">
+        <a-input v-model="params.phone" :placeholder="$t('AUTH.PHONE')" size="large">
           <a-select
             slot="addonBefore"
             v-model="dialCode"
@@ -18,7 +18,7 @@
       </a-form-model-item>
 
       <a-form-model-item prop="code" class="verify-code">
-        <a-input v-model="params.code" placeholder="短信验证码" size="large">
+        <a-input v-model="params.code" :placeholder="$t('AUTH.PHONE_CODE')" size="large">
           <a-icon slot="prefix" type="safety-certificate" style="color: rgba(0, 0, 0, 0.25)"></a-icon>
           <SendCode
             slot="addonAfter"
@@ -31,25 +31,32 @@
       </a-form-model-item>
 
       <a-form-model-item prop="newPassword">
-        <a-input v-model="params.newPassword" type="password" placeholder="新密码" size="large">
+        <a-input v-model="params.newPassword" type="password" :placeholder="$t('AUTH.NEW_PASSWORD')" size="large">
           <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, 0.25)"></a-icon>
         </a-input>
       </a-form-model-item>
 
       <a-form-model-item prop="confirmPassword">
-        <a-input v-model="params.confirmPassword" type="password" placeholder="确认密码" size="large">
+        <a-input
+          v-model="params.confirmPassword"
+          type="password"
+          :placeholder="$t('AUTH.PASSWORD_CONFIRM')"
+          size="large"
+        >
           <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, 0.25)"></a-icon>
         </a-input>
       </a-form-model-item>
 
       <a-form-model-item>
-        <a-button type="primary" :loading="loading" html-type="submit" block size="large">确认修改</a-button>
+        <a-button type="primary" :loading="loading" html-type="submit" block size="large">
+          {{ $t('AUTH.CONFIRM_CHANGE') }}
+        </a-button>
       </a-form-model-item>
     </a-form-model>
 
     <div class="form-footer">
-      <nuxt-link to="/login">立即登录</nuxt-link>
-      <nuxt-link to="/forgot-password/email" replace>通过邮箱修改密码</nuxt-link>
+      <nuxt-link to="/login">{{ $t('AUTH.NOW_LOGIN') }}</nuxt-link>
+      <nuxt-link to="/forgot-password/email" replace>{{ $t('AUTH.CHANGE_BY_EMAIL') }}</nuxt-link>
     </div>
   </div>
 </template>
@@ -64,7 +71,7 @@ import { NotifyTypeEnum } from '../../types/enum/notify.type.enum';
   layout: 'auth',
   head() {
     return {
-      title: this.$generateTitle('手机号修改密码'),
+      title: this.$generateTitle(this.$t('COMMON.PAGE_TITLE.PHONE_FORGOT_PASSWORD')),
     };
   },
 })
@@ -85,9 +92,9 @@ export default class PhoneForgotPassword extends Vue {
 
   private checkConfirmPass(_: any, value: string, callback: any): void {
     if (!value) {
-      callback(new Error('请再次输入密码'));
+      callback(new Error(this.$t('COMMON.VALIDATE.PASSWORD_CONFIRM') as string));
     } else if (value !== this.params.newPassword) {
-      callback(new Error('两次密码不一致'));
+      callback(new Error(this.$t('COMMON.VALIDATE.PASSWORD_NOT_SAME') as string));
     } else {
       callback();
     }
@@ -95,7 +102,7 @@ export default class PhoneForgotPassword extends Vue {
 
   rules: Record<string, any> = {
     phone: [{ validator: this.$checkPhone, trigger: 'blur' }],
-    code: [{ required: true, message: '请输入短信验证码', trigger: 'blur' }],
+    code: [{ required: true, message: this.$t('COMMON.VALIDATE.PHONE_CODE'), trigger: 'blur' }],
     newPassword: [{ validator: this.$checkPassword, trigger: 'blur' }],
     confirmPassword: [{ validator: this.checkConfirmPass, trigger: 'blur' }],
   };

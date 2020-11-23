@@ -37,7 +37,9 @@ export default class SendCode extends Vue {
   }
 
   get text(): string {
-    return this.time > 0 ? `${this.time} 秒后重新获取` : '获取验证码';
+    return this.time > 0
+      ? this.$t('COMMON.LAYOUTS.AWAIT_RESEND', { time: this.time })
+      : this.$t('COMMON.LAYOUTS.GET_OTP_CODE');
   }
 
   mounted() {

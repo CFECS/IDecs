@@ -8,7 +8,7 @@ import { Component, Vue } from 'nuxt-property-decorator';
 @Component({
   head() {
     return {
-      title: this.$generateTitle('首页'),
+      title: this.$generateTitle(this.$t('COMMON.PAGE_TITLE.INDEX')),
     };
   },
 })

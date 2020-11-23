@@ -36,9 +36,9 @@ export default class DefaultLayouts extends Vue {
       const isprompted: string | null = window.sessionStorage.getItem('IDecs_offline_tips');
       if (isprompted) return;
       this.$warning({
-        title: '提示',
-        content: '当前网络状态不佳，为确保您的良好使用，请检查网络连接是否正常~',
-        okText: '知道了',
+        title: this.$t('COMMON.LAYOUTS.TIPS'),
+        content: this.$t('COMMON.LAYOUTS.OFFLINE'),
+        okText: this.$t('COMMON.LAYOUTS.GOT_IT'),
         onOk: () => {
           window.sessionStorage.setItem('IDecs_offline_tips', '1');
         },

@@ -6,8 +6,8 @@
       :sub-title="$t(`COMMON.ERROR_PAGE.${error.statusCode || 500}`)"
     >
       <template #extra>
-        <a-button type="primary" @click="$router.back()"> 返回上一页 </a-button>
-        <a-button @click="$router.push('/')"> 回到首页 </a-button>
+        <a-button type="primary" @click="$router.back()"> {{ $t('COMMON.LAYOUTS.RETURN_BACK') }} </a-button>
+        <a-button @click="$router.push('/')"> {{ $t('COMMON.LAYOUTS.RETURN_HOME') }} </a-button>
       </template>
     </a-result>
   </div>

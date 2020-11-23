@@ -2,41 +2,48 @@
   <div>
     <a-form-model ref="emailSignupForm" :model="params" :rules="rules" @submit="handleSubmit" @submit.native.prevent>
       <a-form-model-item prop="email">
-        <a-input v-model="params.email" placeholder="邮箱" size="large">
+        <a-input v-model="params.email" :placeholder="$t('AUTH.EMAIL')" size="large">
           <a-icon slot="prefix" type="user" style="color: rgba(0, 0, 0, 0.25)"></a-icon>
         </a-input>
       </a-form-model-item>
 
       <a-form-model-item prop="code" class="verify-code">
-        <a-input v-model="params.code" placeholder="邮箱验证码" size="large">
+        <a-input v-model="params.code" :placeholder="$t('AUTH.EMAIL_CODE')" size="large">
           <a-icon slot="prefix" type="safety-certificate" style="color: rgba(0, 0, 0, 0.25)"></a-icon>
           <SendCode slot="addonAfter" method="email" :value="params.email" :type="type" :before-send="beforeSend" />
         </a-input>
       </a-form-model-item>
 
       <a-form-model-item prop="password">
-        <a-input v-model="params.password" type="password" placeholder="密码" size="large">
+        <a-input v-model="params.password" type="password" :placeholder="$t('AUTH.PASSWORD')" size="large">
           <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, 0.25)"></a-icon>
         </a-input>
       </a-form-model-item>
 
       <a-form-model-item prop="confirmPassword">
-        <a-input v-model="params.confirmPassword" type="password" placeholder="确认密码" size="large">
+        <a-input
+          v-model="params.confirmPassword"
+          type="password"
+          :placeholder="$t('AUTH.PASSWORD_CONFIRM')"
+          size="large"
+        >
           <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, 0.25)"></a-icon>
         </a-input>
       </a-form-model-item>
 
       <a-form-model-item>
-        <a-button type="primary" :loading="loading" html-type="submit" block size="large">注册</a-button>
+        <a-button type="primary" :loading="loading" html-type="submit" block size="large">
+          {{ $t('AUTH.REGISTER') }}
+        </a-button>
       </a-form-model-item>
     </a-form-model>
 
     <div class="form-footer">
       <span>
-        <span>已有账号，</span>
-        <nuxt-link to="/login">立即登录</nuxt-link>
+        <span>{{ $t('AUTH.HAS_ACCOUNT') }}</span>
+        <nuxt-link to="/login">{{ $t('AUTH.NOW_LOGIN') }}</nuxt-link>
       </span>
-      <nuxt-link to="/register/phone" replace>手机号注册</nuxt-link>
+      <nuxt-link to="/register/phone" replace>{{ $t('AUTH.PHONE_REGISTER') }}</nuxt-link>
     </div>
   </div>
 </template>
@@ -51,7 +58,7 @@ import { NotifyTypeEnum } from '../../types/enum/notify.type.enum';
   layout: 'auth',
   head() {
     return {
-      title: this.$generateTitle('邮箱注册'),
+      title: this.$generateTitle(this.$t('COMMON.PAGE_TITLE.EMAIL_REGISTER')),
     };
   },
 })
@@ -70,9 +77,9 @@ export default class EmailRegister extends Vue {
 
   private checkConfirmPass(_: any, value: string, callback: any): void {
     if (!value) {
-      callback(new Error('请再次输入密码'));
+      callback(new Error(this.$t('COMMON.VALIDATE.PASSWORD_CONFIRM') as string));
     } else if (value !== this.params.password) {
-      callback(new Error('两次密码不一致'));
+      callback(new Error(this.$t('COMMON.VALIDATE.PASSWORD_NOT_SAME') as string));
     } else {
       callback();
     }
@@ -80,10 +87,10 @@ export default class EmailRegister extends Vue {
 
   rules: Record<string, any> = {
     email: [
-      { required: true, message: '请输入邮箱', trigger: 'blur' },
-      { type: 'email', message: '请输入正确的邮箱' },
+      { required: true, message: this.$t('COMMON.VALIDATE.EMAIL_REQUIRED'), trigger: 'blur' },
+      { type: 'email', message: this.$t('COMMON.VALIDATE.EMAIL_FORMAT') },
     ],
-    code: [{ required: true, message: '请输入邮箱验证码', trigger: 'blur' }],
+    code: [{ required: true, message: this.$t('COMMON.VALIDATE.EMAIL_CODE'), trigger: 'blur' }],
     password: [{ validator: this.$checkPassword, trigger: 'blur' }],
     confirmPassword: [{ validator: this.checkConfirmPass, trigger: 'blur' }],
   };
