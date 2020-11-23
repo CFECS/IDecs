@@ -36,8 +36,9 @@ describe('Signup and login', () => {
   });
 
   it('should create user by phone successful', () => {
+    const phone = `+8615${Date.now().toString().slice(4, 13)}`;
     const data: ReqSignupBodyDto = {
-      phone: `+861${Date.now().toString().slice(3, 13)}`,
+      phone,
       code: config.api.otp.code,
       password: BaseTest.password,
       confirmPassword: BaseTest.password,
@@ -61,7 +62,6 @@ describe('UserController', () => {
   beforeAll(async () => {
     const data = await BaseTest.doSignupAndLogin(agent);
     email = data.email;
-    agent.set('Cookie', [`token=${data.token}`]);
   });
 
   it('should get self successful', () => {

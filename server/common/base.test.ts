@@ -2,7 +2,6 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { SuperAgentTest } from 'supertest';
 import { Test, TestingModule } from '@nestjs/testing';
-import * as cookieParser from 'cookie-parser';
 import { AppModule } from '../module/app.module';
 import { Utils } from '../util/utils';
 import { ReqLoginBodyDto } from '../dto/user/req.login.body.dto';
@@ -19,7 +18,6 @@ export class BaseTest {
       imports: [AppModule],
     }).compile();
     const app = module.createNestApplication();
-    app.use(cookieParser());
     app.useGlobalPipes(new ValidationPipe({ transform: true }));
     await app.init();
     const agent = request.agent(app.getHttpServer());
@@ -59,7 +57,7 @@ export class BaseTest {
       });
   }
 
-  static async doSignupAndLogin(agent: SuperAgentTest): Promise<{ email: string; token: string }> {
+  static async doSignupAndLogin(agent: SuperAgentTest): Promise<{ email: string }> {
     const email = `${Date.now()}.test@idecs.com`;
     const signupData: ReqSignupBodyDto = {
       email,
@@ -76,6 +74,7 @@ export class BaseTest {
       .then(() => {
         return this.doLoginByPassword(agent, email, this.password);
       });
-    return { email, token };
+    agent.set('Authorization', token);
+    return { email };
   }
 }
