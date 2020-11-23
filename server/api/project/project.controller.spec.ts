@@ -9,8 +9,7 @@ let agent: SuperAgentTest;
 
 beforeAll(async () => {
   ({ app, agent } = await BaseTest.init());
-  const data = await BaseTest.doSignupAndLogin(agent);
-  agent.set('Cookie', [`token=${data.token}`]);
+  await BaseTest.doSignupAndLogin(agent);
 });
 
 afterAll(async () => {

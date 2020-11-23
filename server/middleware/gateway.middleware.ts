@@ -43,7 +43,7 @@ export class GatewayMiddleware implements NestMiddleware {
     }
     // verify token
     if (!this.whitelist.includes(req.baseUrl)) {
-      req.payload = await this.jwtUtil.verifyToken(req.cookies.token, TokenTypeEnum.ACCESS_TOKEN);
+      req.payload = await this.jwtUtil.verifyToken(req.headers.authorization ?? '', TokenTypeEnum.ACCESS_TOKEN);
     }
     next();
   }
