@@ -1,5 +1,5 @@
 <template>
-  <a-layout-sider v-model="collapsed" :width="240" :trigger="null" collapsible>
+  <a-layout-sider v-model="collapsed" class="sider" :width="256" :trigger="null" collapsible>
     <div class="logo-wrap" @click="$navigateTo('/')">
       <img src="/favicon.png" alt="logo" />
       <h1 v-show="!collapsed">{{ $t('COMMON.LAYOUTS.NAME') }}</h1>
@@ -47,32 +47,51 @@ export default class Navbar extends Vue {
 </script>
 
 <style lang="less">
-.logo-wrap {
-  position: relative;
-  display: flex;
-  align-items: center;
-  height: 64px;
-  padding: 0 20px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: all 0.3s;
+.sider {
+  box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
+  background-color: #191a23;
 
-  img {
-    display: inline-block;
-    height: 40px;
-    vertical-align: middle;
+  .logo-wrap {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 64px;
+    padding: 0 20px;
+    overflow: hidden;
+    border-bottom: 1px solid #101117;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    img {
+      display: inline-block;
+      height: 40px;
+      vertical-align: middle;
+    }
+
+    h1 {
+      display: inline-block;
+      margin-left: 12px;
+      margin-bottom: 0;
+      color: #ffffff;
+      opacity: 0.95;
+      font-size: 18px;
+      vertical-align: middle;
+      animation: fade-in;
+      animation-duration: 0.3s;
+    }
   }
 
-  h1 {
-    display: inline-block;
-    margin-left: 12px;
-    margin-bottom: 0;
-    color: #ffffff;
-    opacity: 0.95;
-    font-size: 18px;
-    vertical-align: middle;
-    animation: fade-in;
-    animation-duration: 0.3s;
+  .ant-menu-dark {
+    padding-top: 10px;
+  }
+
+  .ant-menu-dark,
+  .ant-menu-dark .ant-menu-sub {
+    background-color: #191a23;
+  }
+  .ant-menu-dark .ant-menu-inline.ant-menu-sub {
+    background-color: #101117;
   }
 }
 </style>
