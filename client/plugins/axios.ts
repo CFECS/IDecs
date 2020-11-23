@@ -7,7 +7,7 @@ import { injectAxiosToStore } from '../store/axios';
 declare module 'vue/types/vue' {
   interface Vue {
     readonly $axios: any;
-    readonly $t: any;
+    $t: any;
     readonly $i18n: any;
   }
 }
