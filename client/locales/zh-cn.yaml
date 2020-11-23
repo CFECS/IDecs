@@ -44,8 +44,10 @@ COMMON:
     RETURN_BACK: 返回上一页
     RETURN_HOME: 返回首页
     PERSONAL: 个人中心
-    CHANGE_PASSWORD: 修改密码
+    CHECK_DOCUMENT: 查看文档
     LAGOUT: 退出登录
+    CHINESE: 简体中文
+    ENGLISH: English
     USER_MANAGEMENT: 用户管理
     APPLICATION_MANAGEMENT: 应用管理
     APPLICATION_LIST: 应用列表

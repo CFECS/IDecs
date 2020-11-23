@@ -8,6 +8,7 @@ declare module 'vue/types/vue' {
   interface Vue {
     $axios: any;
     $t: any;
+    $i18n: any;
   }
 }
 
@@ -19,10 +20,14 @@ const Axios: Plugin = ({ env, app }, inject) => {
 
   instance.interceptors.request.use(
     async (config: AxiosRequestConfig) => {
+      const token: string | null = window.sessionStorage.getItem('IDecs_token');
       const timestamp: number = dayjs().valueOf() * 1000;
       const password: string = timestamp + ':' + config.baseURL + config.url;
       config.headers.common.timestamp = timestamp;
       config.headers.common['api-key'] = await app.$generateApiKey(password, env.api.secret);
+      if (token) {
+        config.headers.common.Authorization = token;
+      }
       return config;
     },
     (error: AxiosError) => Promise.reject(error),

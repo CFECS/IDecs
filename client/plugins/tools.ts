@@ -9,10 +9,19 @@ declare module 'vue/types/vue' {
     $checkPhone(rule: any, value: string, callback: any): void;
     $checkPassword(rule: any, value: string, callback: any): void;
     $generateTitle(title: string): string;
+    $navigateTo(path: string, external: boolean): void;
   }
 }
 
-const Tools: Plugin = ({ env, app }, inject) => {
+const Tools: Plugin = ({ env, app }: any, inject) => {
+  inject('navigateTo', (path: string, external = false) => {
+    if (external) {
+      window.open(path);
+    } else if (app.router.currentRoute.fullPath !== path) {
+      app.router.push(path);
+    }
+  });
+
   inject(
     'generateApiKey',
     (password: any, salt: any): Promise<any> => {

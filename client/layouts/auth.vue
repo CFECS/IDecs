@@ -1,5 +1,8 @@
 <template>
   <div class="auth-layouts">
+    <div class="switch-lang">
+      <SwitchLang />
+    </div>
     <div class="page">
       <div class="logo" />
       <div class="description">{{ $t('COMMON.LAYOUTS.DESCRIPTION') }}</div>
@@ -24,9 +27,23 @@ export default class AuthLayouts extends Vue {}
 
 <style lang="less">
 .auth-layouts {
+  position: relative;
   height: 100%;
   background: url('/bg.jpg') no-repeat center center;
   background-size: cover;
+
+  .switch-lang {
+    position: absolute;
+    top: 20px;
+    right: 60px;
+    color: #fff;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+
+    &:hover {
+      color: @primary-color;
+    }
+  }
 
   .page {
     position: absolute;
@@ -34,7 +51,7 @@ export default class AuthLayouts extends Vue {}
     right: 60px;
     width: 440px;
     max-width: 100%;
-    transform: translateY(-50%);
+    transform: translate(0, -50%);
     padding: 20px 24px;
     background-color: rgba(255, 255, 255, 0.7);
     box-shadow: @box-shadow-base;
@@ -90,14 +107,20 @@ export default class AuthLayouts extends Vue {}
       }
     }
   }
+}
 
-  @media screen and (max-width: 768px) {
-    .auth-layouts {
-      background: #fff;
+@media screen and (max-width: 768px) {
+  .auth-layouts {
+    background: #fff;
+
+    .switch-lang {
+      right: 40px;
+      color: rgba(0, 0, 0, 0.65);
     }
+
     .page {
       right: 50%;
-      transform: translate(50%, -60%);
+      transform: translate(50%, -50%);
       padding: 0 15px;
       background-color: transparent;
       box-shadow: none;

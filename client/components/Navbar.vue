@@ -3,35 +3,17 @@
     <a-icon class="trigger" :type="collapsed ? 'menu-unfold' : 'menu-fold'" @click="trigger" />
 
     <div class="right">
-      <a-dropdown :trigger="['click']" placement="bottomRight">
-        <div class="section">
-          <Avatar username="Li Ziping" :size="40" />
-        </div>
-        <a-menu slot="overlay">
-          <a-menu-item key="0">
-            <nuxt-link to="/personal"> <a-icon type="user" /> {{ $t('COMMON.LAYOUTS.PERSONAL') }} </nuxt-link>
-          </a-menu-item>
-          <a-menu-item key="1">
-            <nuxt-link to="/personal"> <a-icon type="setting" /> {{ $t('COMMON.LAYOUTS.CHANGE_PASSWORD') }} </nuxt-link>
-          </a-menu-item>
-          <a-menu-divider />
-          <a-menu-item key="2">
-            <nuxt-link to="/login"> <a-icon type="poweroff" /> {{ $t('COMMON.LAYOUTS.LAGOUT') }} </nuxt-link>
-          </a-menu-item>
-        </a-menu>
-      </a-dropdown>
+      <UserAvatar />
+      <SwitchLang />
     </div>
   </a-layout-header>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator';
-import Avatar from 'vue-avatar';
 import Common from '~/store/common';
 
-@Component({
-  components: { Avatar },
-})
+@Component
 export default class Navbar extends Vue {
   get collapsed() {
     return Common.collapsed;

@@ -22,10 +22,14 @@ import User from '@/store/user';
         const isOk: boolean = await User.validateTicket({ ticket: User.ticket });
         if (!isOk) {
           context.redirect('/login');
+        } else {
+          await User.getUserInfo();
         }
       } else {
         context.redirect('/login');
       }
+    } else if (!User.userInfo) {
+      await User.getUserInfo();
     }
   },
 })

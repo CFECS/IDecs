@@ -1,6 +1,6 @@
 <template>
   <a-layout-sider v-model="collapsed" :width="240" :trigger="null" collapsible>
-    <div class="logo-wrap">
+    <div class="logo-wrap" @click="$navigateTo('/')">
       <img src="/favicon.png" alt="logo" />
       <h1 v-show="!collapsed">{{ $t('COMMON.LAYOUTS.NAME') }}</h1>
     </div>

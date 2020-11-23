@@ -9,11 +9,13 @@ import { store } from './index';
 
 interface moduleDto {
   ticket: string;
+  userInfo: any;
 }
 
 @Module({ dynamic: true, store, name: 'User', namespaced: true })
 class User extends VuexModule implements moduleDto {
   ticket = '';
+  userInfo = null;
 
   @Action
   async signup(payload: ReqSignupBodyDto) {
@@ -49,6 +51,20 @@ class User extends VuexModule implements moduleDto {
   @Action
   async resetPasswordByPhone(payload: ReqPasswordResetBodyDto) {
     await $axios.post('/user/password/reset/phone', payload);
+  }
+
+  @MutationAction
+  async getUserInfo() {
+    try {
+      const userInfo: any = await $axios.get('/user');
+      return {
+        userInfo,
+      };
+    } catch (err) {
+      return {
+        userInfo: null,
+      };
+    }
   }
 }
 
