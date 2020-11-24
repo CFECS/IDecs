@@ -15,18 +15,21 @@
                   message: '请输入图片的网络地址',
                   trigger: 'blur',
                 },
-                {
-                  type: 'url',
-                  message: '请输入正确的网络地址',
-                  trigger: 'blur',
-                },
               ]"
+              :validate-status="validateStatus"
+              :help="help"
             >
-              <a-input v-model="uploadForm.url" placeholder="请输入图片的网络地址" size="large"></a-input>
+              <a-input
+                ref="uploadInput"
+                v-model="uploadForm.url"
+                placeholder="请输入图片的网络地址"
+                size="large"
+                @change="clearValidate"
+              ></a-input>
             </a-form-model-item>
             <div class="actions">
               <a-button size="small" @click="cancel">取消</a-button>
-              <a-button type="primary" size="small" @click="confirm">确定上传</a-button>
+              <a-button type="primary" size="small" :loading="uploadLoading" @click="confirm">确定上传</a-button>
             </div>
           </a-form-model>
         </template>
@@ -74,19 +77,40 @@ export default class BasicInfo extends Vue {
   loading = false;
 
   showUpload = false;
-
   uploadForm: Record<string, string> = {
     url: this.userInfo?.avatar || '',
   };
+
+  validateStatus = '';
+  help = '';
+  uploadLoading = false;
 
   public confirm(): void {
     const { validate }: any = this.$refs.uploadForm;
     validate((valid: boolean) => {
       if (valid) {
-        this.formData.avatar = this.uploadForm.url;
-        this.showUpload = false;
+        this.uploadLoading = true;
+        const img = new Image();
+        img.src = this.uploadForm.url;
+        img.onload = () => {
+          this.uploadLoading = false;
+          this.formData.avatar = this.uploadForm.url;
+          this.showUpload = false;
+        };
+        img.onerror = () => {
+          this.uploadLoading = false;
+          this.validateStatus = 'error';
+          this.help = '请输入正确的图片地址';
+          const uploadInput: any = this.$refs.uploadInput;
+          uploadInput.focus();
+        };
       }
     });
+  }
+
+  clearValidate() {
+    this.validateStatus = '';
+    this.help = '';
   }
 
   public cancel(): void {

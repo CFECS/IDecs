@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <div>
+    <p v-for="item in 100" :key="item">{{ item }}</p>
+  </div>
 </template>
 
 <script lang="ts">

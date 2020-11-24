@@ -3,7 +3,7 @@
     <Sider />
     <a-layout>
       <Navbar />
-      <a-layout-content class="content">
+      <a-layout-content>
         <Nuxt />
       </a-layout-content>
     </a-layout>
@@ -56,9 +56,15 @@ export default class DefaultLayouts extends Vue {
 .default-layouts {
   height: 100%;
 
-  .content {
-    margin: 24px;
-    min-height: 280px;
+  .ant-layout {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ant-layout-content {
+    flex: 1;
+    padding: 24px 20px;
+    overflow: auto;
   }
 }
 </style>
