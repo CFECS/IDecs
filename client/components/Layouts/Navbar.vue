@@ -48,6 +48,7 @@ export default class Navbar extends Vue {
 
   .section {
     display: inline-block;
+    height: 64px;
     line-height: 64px;
     padding: 0 12px;
     cursor: pointer;
