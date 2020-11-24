@@ -22,7 +22,7 @@
                 },
               ]"
             >
-              <a-input v-model="uploadForm.url" placeholder="请输入图片的网络地址"></a-input>
+              <a-input v-model="uploadForm.url" placeholder="请输入图片的网络地址" size="large"></a-input>
             </a-form-model-item>
             <div class="actions">
               <a-button size="small" @click="cancel">取消</a-button>
@@ -35,7 +35,7 @@
     </a-form-model-item>
 
     <a-form-model-item label="用户名">
-      <a-input v-model="formData.username" placeholder="请输入用户名"></a-input>
+      <a-input v-model="formData.username" placeholder="请输入用户名" size="large"></a-input>
     </a-form-model-item>
 
     <a-form-model-item label="个人介绍">
