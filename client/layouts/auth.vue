@@ -92,21 +92,6 @@ export default class AuthLayouts extends Vue {}
       margin-right: 0;
     }
   }
-
-  .verify-code {
-    .ant-input-group .ant-input {
-      border-radius: @border-radius-base;
-    }
-
-    .ant-input-group-addon {
-      border: none;
-      padding: 0 0 0 10px;
-
-      > button {
-        border: none !important;
-      }
-    }
-  }
 }
 
 @media screen and (max-width: 768px) {

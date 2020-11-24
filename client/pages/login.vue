@@ -10,25 +10,13 @@
           @submit.native.prevent
         >
           <a-form-model-item prop="identity">
-            <a-input v-model="phoneForm.identity" :placeholder="$t('AUTH.PHONE')" size="large">
-              <a-select
-                slot="addonBefore"
-                v-model="dialCode"
-                :style="{ width: '70px' }"
-                :dropdown-match-select-width="false"
-                option-label-prop="value"
-              >
-                <a-select-option v-for="code in $countryDialCodes()" :key="code.value" :value="code.value">
-                  {{ code.label }}
-                </a-select-option>
-              </a-select>
-            </a-input>
+            <Phone v-model.trim="phoneForm.identity" />
           </a-form-model-item>
 
           <a-form-model-item prop="password">
-            <a-input v-model="phoneForm.password" type="password" :placeholder="$t('AUTH.PASSWORD')" size="large">
+            <a-input-password v-model="phoneForm.password" :placeholder="$t('AUTH.PASSWORD')" size="large">
               <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, 0.25)"></a-icon>
-            </a-input>
+            </a-input-password>
           </a-form-model-item>
 
           <a-form-model-item>
@@ -56,15 +44,15 @@
           @submit.native.prevent
         >
           <a-form-model-item prop="identity">
-            <a-input v-model="emailForm.identity" :placeholder="$t('AUTH.EMAIL')" size="large">
+            <a-input v-model.trim="emailForm.identity" :placeholder="$t('AUTH.EMAIL')" size="large">
               <a-icon slot="prefix" type="user" style="color: rgba(0, 0, 0, 0.25)"></a-icon>
             </a-input>
           </a-form-model-item>
 
           <a-form-model-item prop="password">
-            <a-input v-model="emailForm.password" type="password" :placeholder="$t('AUTH.PASSWORD')" size="large">
+            <a-input-password v-model="emailForm.password" :placeholder="$t('AUTH.PASSWORD')" size="large">
               <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, 0.25)"></a-icon>
-            </a-input>
+            </a-input-password>
           </a-form-model-item>
 
           <a-form-model-item>
@@ -104,8 +92,6 @@ import User from '~/store/user';
 export default class Login extends Vue {
   private tab: string = Cookies.get('IDecs_login_tabs_key') || 'phone';
 
-  private dialCode = '+86';
-
   private phoneForm: ReqLoginBodyDto = {
     identity: '',
     password: '',
@@ -138,9 +124,7 @@ export default class Login extends Vue {
   }
 
   public pickParams(): ReqLoginBodyDto {
-    return this.tab === 'phone'
-      ? { ...this.phoneForm, identity: this.dialCode + this.phoneForm.identity }
-      : this.emailForm;
+    return this.tab === 'phone' ? this.phoneForm : this.emailForm;
   }
 
   public handleSubmit(): void {
@@ -152,6 +136,7 @@ export default class Login extends Vue {
         try {
           await User.login(params);
           this.loading = false;
+          this.$message.success('登录成功~');
           this.$router.push('/');
         } catch (err) {
           this.loading = false;

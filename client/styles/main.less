@@ -19,10 +19,6 @@ body {
   font-family: Helvetica Neue, Helvetica, PingFang SC, Arial, sans-serif;
 }
 
-.ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title {
-  padding: 6px 15px;
-}
-
 @keyframes fade-in {
   0% {
     opacity: 0;
@@ -35,4 +31,28 @@ body {
   100% {
     opacity: 1;
   }
+}
+
+.ant-dropdown-menu-item, .ant-dropdown-menu-submenu-title {
+  padding: 6px 15px;
+}
+
+.verify-code {
+  .ant-input-group .ant-input {
+    border-radius: @border-radius-base;
+  }
+
+  .ant-input-group-addon {
+    border: none;
+    padding: 0 0 0 10px;
+    background-color: transparent;
+
+    > button {
+      border: none !important;
+    }
+  }
+}
+
+.bg-white {
+  background-color: #fff !important;
 }

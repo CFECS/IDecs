@@ -18,7 +18,7 @@ export default class Title extends Vue {}
   position: relative;
   display: flex;
   align-items: center;
-  height: 48px;
+  height: 36px;
   font-size: 18px;
   font-weight: 500;
   margin-bottom: 10px;
@@ -30,10 +30,10 @@ export default class Title extends Vue {}
     top: 50%;
     left: 0;
     transform: translateY(-50%);
-    width: 4px;
-    height: 28px;
+    width: 3px;
+    height: 18px;
     background-color: @primary-color;
-    border-radius: 4px;
+    border-radius: 3px;
   }
 }
 </style>

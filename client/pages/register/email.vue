@@ -2,33 +2,28 @@
   <div>
     <a-form-model ref="emailSignupForm" :model="params" :rules="rules" @submit="handleSubmit" @submit.native.prevent>
       <a-form-model-item prop="email">
-        <a-input v-model="params.email" :placeholder="$t('AUTH.EMAIL')" size="large">
+        <a-input v-model.trim="params.email" :placeholder="$t('AUTH.EMAIL')" size="large">
           <a-icon slot="prefix" type="user" style="color: rgba(0, 0, 0, 0.25)"></a-icon>
         </a-input>
       </a-form-model-item>
 
       <a-form-model-item prop="code" class="verify-code">
-        <a-input v-model="params.code" :placeholder="$t('AUTH.EMAIL_CODE')" size="large">
+        <a-input v-model.trim="params.code" :placeholder="$t('AUTH.EMAIL_CODE')" size="large">
           <a-icon slot="prefix" type="safety-certificate" style="color: rgba(0, 0, 0, 0.25)"></a-icon>
           <SendCode slot="addonAfter" method="email" :value="params.email" :type="type" :before-send="beforeSend" />
         </a-input>
       </a-form-model-item>
 
       <a-form-model-item prop="password">
-        <a-input v-model="params.password" type="password" :placeholder="$t('AUTH.PASSWORD')" size="large">
+        <a-input-password v-model="params.password" :placeholder="$t('AUTH.PASSWORD')" size="large">
           <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, 0.25)"></a-icon>
-        </a-input>
+        </a-input-password>
       </a-form-model-item>
 
       <a-form-model-item prop="confirmPassword">
-        <a-input
-          v-model="params.confirmPassword"
-          type="password"
-          :placeholder="$t('AUTH.PASSWORD_CONFIRM')"
-          size="large"
-        >
+        <a-input-password v-model="params.confirmPassword" :placeholder="$t('AUTH.PASSWORD_CONFIRM')" size="large">
           <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, 0.25)"></a-icon>
-        </a-input>
+        </a-input-password>
       </a-form-model-item>
 
       <a-form-model-item>
@@ -97,13 +92,10 @@ export default class EmailRegister extends Vue {
 
   beforeSend(): Promise<any> {
     return new Promise((resolve) => {
-      if (!this.params.email) {
-        const { validateField }: any = this.$refs.emailSignupForm;
-        validateField('email');
-        resolve(false);
-      } else {
-        resolve(true);
-      }
+      const { validateField }: any = this.$refs.emailSignupForm;
+      validateField('email', (valid: boolean) => {
+        resolve(!valid);
+      });
     });
   }
 
@@ -115,6 +107,7 @@ export default class EmailRegister extends Vue {
         try {
           await User.signup(this.params);
           this.loading = false;
+          this.$message.success('注册成功~');
           this.$router.push('/login');
         } catch (err) {
           this.loading = false;

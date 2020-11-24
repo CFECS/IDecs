@@ -1,5 +1,13 @@
 <template>
-  <a-button type="primary" :loading="loading" :disabled="disabled" @click="handleClick">{{ text }}</a-button>
+  <a-button
+    v-bind="$attrs"
+    type="primary"
+    :loading="loading"
+    :disabled="$attrs.disabled || disabled"
+    @click="handleClick"
+  >
+    {{ text }}
+  </a-button>
 </template>
 
 <script lang="ts">

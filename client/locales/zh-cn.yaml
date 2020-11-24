@@ -32,6 +32,7 @@ COMMON:
     PHONE_REGISTER: 手机号注册
     EMAIL_FORGOT_PASSWORD: 邮箱修改密码
     PHONE_FORGOT_PASSWORD: 手机号修改密码
+    PERSONAL: 个人中心
 
   LAYOUTS:
     NAME: IDecs 身份管理
@@ -93,3 +94,6 @@ AUTH:
   CONFIRM_CHANGE: 确认修改
   CHANGE_BY_PHONE: 通过手机号修改密码
   CHANGE_BY_EMAIL: 通过邮箱修改密码
+
+PERSONAL:
+  TITLE: 基本信息

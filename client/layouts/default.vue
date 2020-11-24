@@ -57,8 +57,7 @@ export default class DefaultLayouts extends Vue {
   height: 100%;
 
   .content {
-    margin: 24px 20px;
-    padding: 0 24px;
+    margin: 24px;
     min-height: 280px;
   }
 }

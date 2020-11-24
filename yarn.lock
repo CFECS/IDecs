@@ -528,6 +528,15 @@
     "@babel/helper-skip-transparent-expression-wrappers" "^7.12.1"
     "@babel/plugin-syntax-optional-chaining" "^7.8.0"
 
+"@babel/plugin-proposal-optional-chaining@^7.12.7":
+  version "7.12.7"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-optional-chaining/-/plugin-proposal-optional-chaining-7.12.7.tgz#e02f0ea1b5dc59d401ec16fb824679f683d3303c"
+  integrity sha512-4ovylXZ0PWmwoOvhU2vhnzVNnm88/Sm9nx7V8BPgMvAzn5zDou3/Awy0EjglyubVHasJj+XCEkr/r1X3P5elCA==
+  dependencies:
+    "@babel/helper-plugin-utils" "^7.10.4"
+    "@babel/helper-skip-transparent-expression-wrappers" "^7.12.1"
+    "@babel/plugin-syntax-optional-chaining" "^7.8.0"
+
 "@babel/plugin-proposal-private-methods@^7.12.1":
   version "7.12.1"
   resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-private-methods/-/plugin-proposal-private-methods-7.12.1.tgz#86814f6e7a21374c980c10d38b4493e703f4a389"
@@ -2403,6 +2412,11 @@
   dependencies:
     "@types/webpack" "*"
 
+"@types/google-libphonenumber@^7.4.19":
+  version "7.4.19"
+  resolved "https://registry.yarnpkg.com/@types/google-libphonenumber/-/google-libphonenumber-7.4.19.tgz#8444042875e3a42e19d763f85e0656449530fdb6"
+  integrity sha512-Rm2VhKzu4UofafuTrNTG6fy+385x1PIomnTGGSzOXGbKLpXAhNlUG+7F6UdcIosM5JMvXcJBnwUW/u4qQmt0yg==
+
 "@types/graceful-fs@^4.1.2":
   version "4.1.4"
   resolved "https://registry.yarnpkg.com/@types/graceful-fs/-/graceful-fs-4.1.4.tgz#4ff9f641a7c6d1a3508ff88bc3141b152772e753"
@@ -3632,6 +3646,11 @@ available-typed-arrays@^1.0.0, available-typed-arrays@^1.0.2:
   integrity sha512-XWX3OX8Onv97LMk/ftVyBibpGwY5a8SmuxZPzeOxqmuEqUCOM9ZE+uIaD1VNJ5QnvU2UQusvmKbuM1FR8QWGfQ==
   dependencies:
     array-filter "^1.0.0"
+
+awesome-phonenumber@^2.41.0:
+  version "2.41.0"
+  resolved "https://registry.yarnpkg.com/awesome-phonenumber/-/awesome-phonenumber-2.41.0.tgz#295a2d6ba305dc413eb5653af8ef846c630fb3b8"
+  integrity sha512-itJ6Tr/iGwqCYBludxk+Bl+oU0C9QfhUnAzVnKjZo8n1HOcw0SjWpvIX7IXt9VDTANEZXRus7c4dUsrUEpTpuA==
 
 aws-sign2@~0.7.0:
   version "0.7.0"
@@ -7318,7 +7337,7 @@ google-fonts-helper@^1.0.5:
     fs-extra "^9.0.1"
     got "^11.8.0"
 
-google-libphonenumber@^3.2.8:
+google-libphonenumber@^3.2.15, google-libphonenumber@^3.2.8:
   version "3.2.15"
   resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.15.tgz#3a01dc554dbf83c754f249c16df3605e5d154bb9"
   integrity sha512-tbCIuzMoH34RdrbFRw5kijAZn/p6JMQvsgtr1glg2ugbwqrMPlOL8pHNK8cyGo9B6SXpcMm4hdyDqwomR+HPRg==
@@ -15065,11 +15084,6 @@ voucher-code-generator@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/voucher-code-generator/-/voucher-code-generator-1.1.1.tgz#c1e79d7102506ce50c65b824a9f4de137dd2718b"
   integrity sha1-weedcQJQbOUMZbgkqfTeE33ScYs=
-
-vue-avatar@^2.3.3:
-  version "2.3.3"
-  resolved "https://registry.yarnpkg.com/vue-avatar/-/vue-avatar-2.3.3.tgz#e125bf4f4a6f4f9480da0c522020266a8609d2a8"
-  integrity sha512-Z57ILRTkFIAuCH9JiFBxX74C5zua5ub/jRDM/KZ+QKXNfscvmUOgWBs3kA2+wrpZMowIvfLHIT0gvQu1z+zpLg==
 
 vue-class-component@^7.2.6:
   version "7.2.6"

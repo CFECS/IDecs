@@ -1,5 +1,6 @@
 import { Plugin } from '@nuxt/types';
 import * as scrypt from 'scrypt-async';
+import PhoneNumber from 'awesome-phonenumber';
 import { DialCodeDto } from '../types/dto/common';
 
 declare module 'vue/types/vue' {
@@ -10,10 +11,44 @@ declare module 'vue/types/vue' {
     $checkPassword(rule: any, value: string, callback: any): void;
     $generateTitle(title: string): string;
     $navigateTo(path: string, external: boolean): void;
+    $getPhoneNumber(phone: any): Record<string, string>;
+    $isPhone(phone: any): boolean;
+    $logout(): void;
   }
 }
 
 const Tools: Plugin = ({ env, app }: any, inject) => {
+  inject('logout', (): void => {
+    window.sessionStorage.removeItem('IDecs_token');
+    window.location.reload();
+  });
+
+  inject('getPhoneNumber', (phone: any) => {
+    try {
+      const pn = new PhoneNumber(phone);
+      if (!app.$isPhone(phone)) {
+        return {
+          dialCode: '+86',
+          phone,
+        };
+      }
+      return {
+        dialCode: '+' + pn.getCountryCode(),
+        phone: pn.getNumber('significant'),
+      };
+    } catch (err) {
+      return {
+        dialCode: '+86',
+        phone: '',
+      };
+    }
+  });
+
+  inject('isPhone', (phone: any) => {
+    const pn = new PhoneNumber(phone);
+    return pn.isValid();
+  });
+
   inject('navigateTo', (path: string, external = false) => {
     if (external) {
       window.open(path);
@@ -44,23 +79,17 @@ const Tools: Plugin = ({ env, app }: any, inject) => {
     },
   );
 
-  inject('countryDialCodes', (): DialCodeDto[] => [
-    { label: '+86', value: '+86' },
-    { label: '+852', value: '+852' },
-    { label: '+853', value: '+853' },
-    { label: '+886', value: '+886' },
-    { label: '+1', value: '+1' },
-    { label: '+65', value: '+65' },
-    { label: '+62', value: '+62' },
-    { label: '+63', value: '+63' },
-    { label: '+81', value: '+81' },
-    { label: '+82', value: '+82' },
-  ]);
+  inject('countryDialCodes', (): DialCodeDto[] =>
+    Array.from(new Set(PhoneNumber.getSupportedCallingCodes())).map((n) => ({
+      label: `+${n}`,
+      value: `+${n}`,
+    })),
+  );
 
-  inject('checkPhone', (_: any, value: string, callback: any): void => {
+  inject('checkPhone', (_: any, value: any, callback: any): void => {
     if (!value) {
       callback(new Error(app.i18n.t('COMMON.VALIDATE.REQUIRED') as string));
-    } else if (!/^\d+$/.test(value)) {
+    } else if (!app.$isPhone(value)) {
       callback(new Error(app.i18n.t('COMMON.VALIDATE.PHONE_FORMAT') as string));
     } else {
       callback();
@@ -70,7 +99,7 @@ const Tools: Plugin = ({ env, app }: any, inject) => {
   inject('checkPassword', (_: any, value: string, callback: any): void => {
     if (!value) {
       callback(new Error(app.i18n.t('COMMON.VALIDATE.PASSWORD_REQUIRED') as string));
-    } else if (!env.passwordReg.test(value)) {
+    } else if (!new RegExp(env.passwordReg).test(value)) {
       callback(new Error(app.i18n.t('COMMON.VALIDATE.PASSWORD_FORMAT') as string));
     } else {
       callback();

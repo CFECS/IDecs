@@ -42,8 +42,7 @@ const Axios: Plugin = ({ env, app }, inject) => {
         const code: any = response.data.head.code;
         if (code !== 'I_00000') {
           if (['I_00009', 'I_00010', 'I_00011'].includes(code)) {
-            window.sessionStorage.removeItem('IDecs_token');
-            window.location.reload();
+            app.$logout();
           }
 
           let errorMessage = '';
