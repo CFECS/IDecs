@@ -85,7 +85,7 @@ export default class ForgotPasswordByPhone extends Vue {
         try {
           await User.resetPasswordByPhone(this.params);
           this.loading = false;
-          this.$message.success('修改成功~');
+          this.$message.success(this.$t('AUTH.CHANGE_SUCCESS'));
           this.$router.push('/login');
         } catch (err) {
           this.loading = false;

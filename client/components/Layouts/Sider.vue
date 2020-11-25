@@ -4,32 +4,12 @@
       <img src="/favicon.png" alt="logo" />
       <h1 v-show="!collapsed">{{ $t('COMMON.LAYOUTS.NAME') }}</h1>
     </div>
-    <a-menu theme="dark" mode="inline" :default-selected-keys="['1']">
-      <a-menu-item key="2">
-        <a-icon type="user" />
-        <span>{{ $t('COMMON.LAYOUTS.USER_MANAGEMENT') }}</span>
+
+    <a-menu theme="dark" mode="inline" :selected-keys="selectedKeys" @click="handleClick">
+      <a-menu-item key="/application">
+        <a-icon type="project" />
+        <span>{{ $t('COMMON.PAGE_TITLE.APPLICATION_MANAGEMENT') }}</span>
       </a-menu-item>
-      <a-sub-menu key="sub1">
-        <span slot="title"
-          ><a-icon type="appstore" /><span>{{ $t('COMMON.LAYOUTS.APPLICATION_MANAGEMENT') }}</span></span
-        >
-        <a-menu-item key="3"> {{ $t('COMMON.LAYOUTS.APPLICATION_LIST') }} </a-menu-item>
-        <a-menu-item key="4"> {{ $t('COMMON.LAYOUTS.APPLICATION_MONITOR') }} </a-menu-item>
-      </a-sub-menu>
-      <a-sub-menu key="sub2">
-        <span slot="title"
-          ><a-icon type="appstore" /><span>{{ $t('COMMON.LAYOUTS.DEVELOP_MANAGEMENT') }}</span></span
-        >
-        <a-menu-item key="3"> {{ $t('COMMON.LAYOUTS.SMS_MANAGEMENT') }} </a-menu-item>
-        <a-menu-item key="4"> {{ $t('COMMON.LAYOUTS.EMAIL_MANAGEMENT') }} </a-menu-item>
-      </a-sub-menu>
-      <a-sub-menu key="sub3">
-        <span slot="title"
-          ><a-icon type="appstore" /><span>{{ $t('COMMON.LAYOUTS.LOG_MANAGEMENT') }}</span></span
-        >
-        <a-menu-item key="3"> {{ $t('COMMON.LAYOUTS.VERIFY_CODE') }} </a-menu-item>
-        <a-menu-item key="4"> {{ $t('COMMON.LAYOUTS.OPERATION_RECORD') }} </a-menu-item>
-      </a-sub-menu>
     </a-menu>
   </a-layout-sider>
 </template>
@@ -42,6 +22,14 @@ import Common from '~/store/common';
 export default class Navbar extends Vue {
   get collapsed() {
     return Common.collapsed;
+  }
+
+  get selectedKeys() {
+    return [this.$route.path];
+  }
+
+  handleClick({ key }: any) {
+    this.$router.push(key);
   }
 }
 </script>

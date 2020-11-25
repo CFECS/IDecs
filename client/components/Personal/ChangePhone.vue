@@ -10,11 +10,11 @@
     @submit="submit"
     @submit.native.prevent
   >
-    <a-form-model-item prop="phone" label="手机号">
+    <a-form-model-item prop="phone" :label="$t('AUTH.PHONE')">
       <Phone v-model.trim="formData.phone" />
     </a-form-model-item>
 
-    <a-form-model-item prop="code" class="verify-code" label="短信验证码">
+    <a-form-model-item prop="code" class="verify-code" :label="$t('AUTH.PHONE_CODE')">
       <a-input v-model.trim="formData.code" :placeholder="$t('AUTH.PHONE_CODE')" size="large">
         <a-icon slot="prefix" type="safety-certificate" style="color: rgba(0, 0, 0, 0.25)"></a-icon>
         <SendCode
@@ -31,7 +31,7 @@
       <a-col :span="5"></a-col>
       <a-col :span="19">
         <a-button type="primary" :loading="loading" :disabled="cachePhone === formData.phone" html-type="submit">
-          确认修改
+          {{ $t('AUTH.CONFIRM_CHANGE') }}
         </a-button>
       </a-col>
     </a-row>
@@ -87,7 +87,7 @@ export default class ChangePhone extends Vue {
           await User.changePhone(this.formData);
           this.loading = false;
           this.formData.code = '';
-          this.$message.success('修改成功~');
+          this.$message.success(this.$t('AUTH.CHANGE_SUCCESS'));
         } catch (err) {
           this.loading = false;
         }

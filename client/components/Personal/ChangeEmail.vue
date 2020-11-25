@@ -10,13 +10,13 @@
     @submit="submit"
     @submit.native.prevent
   >
-    <a-form-model-item prop="email" label="邮箱">
+    <a-form-model-item prop="email" :label="$t('AUTH.EMAIL')">
       <a-input v-model.trim="formData.email" :placeholder="$t('AUTH.EMAIL')" size="large">
         <a-icon slot="prefix" type="user" style="color: rgba(0, 0, 0, 0.25)"></a-icon>
       </a-input>
     </a-form-model-item>
 
-    <a-form-model-item prop="code" class="verify-code" label="邮箱验证码">
+    <a-form-model-item prop="code" class="verify-code" :label="$t('AUTH.EMAIL_CODE')">
       <a-input v-model.trim="formData.code" :placeholder="$t('AUTH.EMAIL_CODE')" size="large">
         <a-icon slot="prefix" type="safety-certificate" style="color: rgba(0, 0, 0, 0.25)"></a-icon>
         <SendCode
@@ -33,7 +33,7 @@
       <a-col :span="5"></a-col>
       <a-col :span="19">
         <a-button type="primary" :loading="loading" :disabled="cacheEmail === formData.email" html-type="submit">
-          确认修改
+          {{ $t('AUTH.CONFIRM_CHANGE') }}
         </a-button>
       </a-col>
     </a-row>
@@ -92,7 +92,7 @@ export default class ChangeEmail extends Vue {
           await User.changeEmail(this.formData);
           this.loading = false;
           this.formData.code = '';
-          this.$message.success('修改成功~');
+          this.$message.success(this.$t('AUTH.CHANGE_SUCCESS'));
         } catch (err) {
           this.loading = false;
         }

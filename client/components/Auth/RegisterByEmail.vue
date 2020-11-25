@@ -90,7 +90,7 @@ export default class RegisterByEmail extends Vue {
         try {
           await User.signup(this.params);
           this.loading = false;
-          this.$message.success('注册成功~');
+          this.$message.success(this.$t('AUTH.REGISTER_SUCCESS'));
           this.$router.push('/login');
         } catch (err) {
           this.loading = false;

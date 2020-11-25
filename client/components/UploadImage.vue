@@ -9,7 +9,7 @@
             :rules="[
               {
                 required: true,
-                message: '请输入图片的网络地址',
+                message: $t('COMMON.VALIDATE.IMAGE_REQUIRE'),
                 trigger: 'blur',
               },
             ]"
@@ -19,19 +19,21 @@
             <a-input
               ref="uploadInput"
               v-model="uploadForm.url"
-              placeholder="请输入图片的网络地址"
+              :placeholder="$t('COMMON.VALIDATE.IMAGE_REQUIRE')"
               size="large"
               @blur="clearValidate"
             ></a-input>
           </a-form-model-item>
           <div class="actions">
-            <a-button size="small" @click="cancel">取消</a-button>
-            <a-button type="primary" size="small" :loading="uploadLoading" @click="confirm">确定上传</a-button>
+            <a-button size="small" @click="cancel">{{ $t('COMMON.LAYOUTS.CANCEL') }}</a-button>
+            <a-button type="primary" size="small" :loading="uploadLoading" @click="confirm">{{
+              $t('COMMON.LAYOUTS.COMFIRM_UPLOAD')
+            }}</a-button>
           </div>
         </a-form-model>
       </template>
       <a-tooltip>
-        <template slot="title"> 上传图片 </template>
+        <template slot="title"> {{ $t('COMMON.LAYOUTS.UPLOAD_IMAGE') }} </template>
         <a-icon class="upload-button" type="camera" :style="{ fontSize: '20px', color: '#4aa271' }" />
       </a-tooltip>
     </a-popover>
@@ -70,7 +72,7 @@ export default class UploadImage extends Vue {
         img.onerror = () => {
           this.uploadLoading = false;
           this.validateStatus = 'error';
-          this.help = '请输入正确的图片地址';
+          this.help = this.$t('COMMON.VALIDATE.IMAGE_FORMAT');
           const uploadInput: any = this.$refs.uploadInput;
           uploadInput.focus();
           uploadInput.select();

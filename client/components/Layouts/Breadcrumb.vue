@@ -1,12 +1,11 @@
 <template>
   <a-breadcrumb class="section breadcrumb">
     <a-breadcrumb-item v-for="(item, index) in routes" :key="item.name">
-      <nuxt-link v-if="index !== routes.length - 1" :to="item.path">
+      <nuxt-link v-if="index !== routes.length - 1 || index === 0" :to="item.path">
         <a-icon v-if="item.meta.icon" :type="item.meta.icon" />
         {{ $t(item.meta.title) }}
       </nuxt-link>
       <template v-else>
-        <a-icon v-if="item.meta.icon" :type="item.meta.icon" />
         {{ $t(item.meta.title) }}
       </template>
     </a-breadcrumb-item>

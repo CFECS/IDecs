@@ -1,7 +1,7 @@
 <template>
   <a-row :gutter="24">
     <a-col class="tab-list" span="6">
-      <a-card title="个人设置" :bordered="false">
+      <a-card :title="$t('PERSONAL.TITLE')" :bordered="false">
         <a-list item-layout="horizontal">
           <a-list-item
             v-for="(item, index) in tabs"
@@ -37,10 +37,10 @@ import { Component, Vue } from 'nuxt-property-decorator';
 export default class Personal extends Vue {
   get tabs(): Record<string, string>[] {
     return [
-      { title: '基本信息', description: '头像、用户名、个人介绍' },
-      { title: '修改手机号', description: '绑定（修改）手机号' },
-      { title: '修改邮箱', description: '绑定（修改）邮箱' },
-      { title: '修改密码', description: '修改个人账号密码' },
+      { title: this.$t('PERSONAL.PART_TITLE_1'), description: this.$t('PERSONAL.PART_DESCRIPTION_1') },
+      { title: this.$t('PERSONAL.PART_TITLE_2'), description: this.$t('PERSONAL.PART_DESCRIPTION_2') },
+      { title: this.$t('PERSONAL.PART_TITLE_3'), description: this.$t('PERSONAL.PART_DESCRIPTION_3') },
+      { title: this.$t('PERSONAL.PART_TITLE_4'), description: this.$t('PERSONAL.PART_DESCRIPTION_4') },
     ];
   }
 

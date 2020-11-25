@@ -1,23 +1,25 @@
 <template>
   <a-form-model layout="horizontal" :model="formData" :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }">
-    <a-form-model-item label="头像">
+    <a-form-model-item :label="$t('PERSONAL.AVATAR')">
       <UploadImage v-model="formData.avatar" />
     </a-form-model-item>
 
-    <a-form-model-item label="用户名">
-      <a-input v-model="formData.username" placeholder="请输入用户名" size="large"></a-input>
+    <a-form-model-item :label="$t('PERSONAL.USERNAME')">
+      <a-input v-model="formData.username" :placeholder="$t('PERSONAL.USERNAME_PLACEHOLDER')" size="large"></a-input>
     </a-form-model-item>
 
-    <a-form-model-item label="个人介绍">
+    <a-form-model-item :label="$t('PERSONAL.INTRODUCTION')">
       <a-textarea
         v-model="formData.profile.description"
-        placeholder="请输入个人介绍"
+        :placeholder="$t('PERSONAL.INTRODUCTION_PLACEHOLDER')"
         :auto-size="{ minRows: 3, maxRows: 5 }"
       />
     </a-form-model-item>
     <a-row>
       <a-col :span="4"></a-col>
-      <a-col :span="20"><a-button type="primary" :loading="loading" @click="submit">更新信息</a-button></a-col>
+      <a-col :span="20">
+        <a-button type="primary" :loading="loading" @click="submit">{{ $t('PERSONAL.UPLOAD_INFORMATION') }}</a-button>
+      </a-col>
     </a-row>
   </a-form-model>
 </template>

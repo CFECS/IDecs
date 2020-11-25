@@ -10,7 +10,7 @@
     @submit="handleSubmit"
     @submit.native.prevent
   >
-    <a-form-model-item prop="oldPassword" label="原密码">
+    <a-form-model-item prop="oldPassword" :label="$t('AUTH.OLD_PASSWORD')">
       <a-input-password v-model="params.oldPassword" :placeholder="$t('AUTH.PASSWORD')" size="large">
         <a-icon slot="prefix" type="lock" style="color: rgba(0, 0, 0, 0.25)"></a-icon>
       </a-input-password>
@@ -78,7 +78,7 @@ export default class ChangePassword extends Vue {
         try {
           await User.changePassword(this.params);
           this.loading = false;
-          this.$message.success('修改成功~');
+          this.$message.success(this.$t('AUTH.CHANGE_SUCCESS'));
           this.$logout();
         } catch (err) {
           this.loading = false;

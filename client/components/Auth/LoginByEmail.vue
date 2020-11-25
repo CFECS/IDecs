@@ -52,7 +52,7 @@ export default class LoginByEmail extends Vue {
         try {
           await User.login(this.params);
           this.loading = false;
-          this.$message.success('登录成功~');
+          this.$message.success(this.$t('AUTH.LOGIN_SUCCESS'));
           this.$router.push('/');
         } catch (err) {
           this.loading = false;
