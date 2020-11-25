@@ -9,8 +9,12 @@ import { ResponseInterceptor } from '../middleware/response.interceptor';
 import { AllExceptionsFilter } from '../exception/base.exception.filter';
 import { NotificationModule } from '../api/notification/notification.module';
 import { ProjectModule } from '../api/project/project.module';
-import { NuxtModule } from './nuxt.module';
+import { RoleModule } from '../api/role/role.module';
+import { ServiceModule } from '../api/service/service.module';
+import { PolicyModule } from '../api/policy/policy.module';
+import { NavModule } from '../api/nav/nav.module';
 import { GlobalModule } from './global.module';
+import { NuxtModule } from './nuxt.module';
 
 @Module({
   imports: [
@@ -20,6 +24,10 @@ import { GlobalModule } from './global.module';
     UserModule,
     NotificationModule,
     ProjectModule,
+    RoleModule,
+    ServiceModule,
+    PolicyModule,
+    NavModule,
     NuxtModule,
   ],
   controllers: [],
