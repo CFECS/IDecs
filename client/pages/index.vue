@@ -1,18 +1,16 @@
 <template>
-  <div>
-    <p v-for="item in 100" :key="item">{{ item }}</p>
-  </div>
+  <div></div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
 
-@Component({
-  head() {
-    return {
-      title: this.$generateTitle(this.$t('COMMON.PAGE_TITLE.INDEX')),
-    };
-  },
-})
+@Component
 export default class Index extends Vue {}
 </script>
+
+<router lang="yaml">
+meta:
+  icon: home
+  title: COMMON.PAGE_TITLE.INDEX
+</router>

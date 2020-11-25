@@ -16,7 +16,7 @@ const nuxtConfig: NuxtConfig = {
     less: ['~/styles/variables.less'],
   },
   plugins: ['~/plugins/antd-ui', '~/plugins/axios', '~/plugins/tools'],
-  buildModules: ['@nuxt/typescript-build'],
+  buildModules: ['@nuxt/typescript-build', '@nuxtjs/router-extras'],
   modules: [
     '@nuxtjs/style-resources',
     [
@@ -40,6 +40,11 @@ const nuxtConfig: NuxtConfig = {
       },
     ],
   ],
+  router: {
+    scrollBehavior() {
+      return { x: 0, y: 0 };
+    },
+  },
   build: {
     extractCSS: true,
     optimizeCSS: true,

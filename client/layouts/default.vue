@@ -32,24 +32,13 @@ import User from '@/store/user';
       await User.getUserInfo();
     }
   },
+  head() {
+    return {
+      title: this.$generateTitle(this.$t(this.$route.meta.title)),
+    };
+  },
 })
-export default class DefaultLayouts extends Vue {
-  @Watch('$route')
-  change() {
-    if (this.$nuxt.isOffline) {
-      const isprompted: string | null = window.sessionStorage.getItem('IDecs_offline_tips');
-      if (isprompted) return;
-      this.$warning({
-        title: this.$t('COMMON.LAYOUTS.TIPS'),
-        content: this.$t('COMMON.LAYOUTS.OFFLINE'),
-        okText: this.$t('COMMON.LAYOUTS.GOT_IT'),
-        onOk: () => {
-          window.sessionStorage.setItem('IDecs_offline_tips', '1');
-        },
-      });
-    }
-  }
-}
+export default class DefaultLayouts extends Vue {}
 </script>
 
 <style lang="less">

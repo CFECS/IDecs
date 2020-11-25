@@ -26,6 +26,7 @@ COMMON:
 
   PAGE_TITLE:
     DEFAULT: IDecs是一个低成本、完全开放、易于配置的身份管理服务
+    ERROR: 错误页
     INDEX: 首页
     LOGIN: 登录
     EMAIL_REGISTER: 邮箱注册

@@ -1,6 +1,9 @@
 <template>
   <a-layout-header class="navbar">
-    <a-icon class="trigger" :type="collapsed ? 'menu-unfold' : 'menu-fold'" @click="trigger" />
+    <div class="left">
+      <a-icon class="trigger" :type="collapsed ? 'menu-unfold' : 'menu-fold'" @click="trigger" />
+      <Breadcrumb />
+    </div>
 
     <div class="right">
       <UserAvatar />
@@ -56,6 +59,10 @@ export default class Navbar extends Vue {
 
     &.hover:hover {
       background-color: #f8f8f9;
+    }
+
+    &.no-cursor {
+      cursor: auto;
     }
   }
 }

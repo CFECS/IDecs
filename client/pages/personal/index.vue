@@ -33,13 +33,7 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
 
-@Component({
-  head() {
-    return {
-      title: this.$generateTitle(this.$t('COMMON.PAGE_TITLE.PERSONAL')),
-    };
-  },
-})
+@Component
 export default class Personal extends Vue {
   get tabs(): Record<string, string>[] {
     return [
@@ -82,3 +76,8 @@ export default class Personal extends Vue {
   padding-top: 10px;
 }
 </style>
+
+<router lang="yaml">
+meta:
+  title: COMMON.PAGE_TITLE.PERSONAL
+</router>

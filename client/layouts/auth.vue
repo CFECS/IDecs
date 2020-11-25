@@ -21,6 +21,11 @@ import { Component, Vue } from 'nuxt-property-decorator';
       context.redirect('/');
     }
   },
+  head() {
+    return {
+      title: this.$generateTitle(this.$t(this.$route.meta.title)),
+    };
+  },
 })
 export default class AuthLayouts extends Vue {}
 </script>

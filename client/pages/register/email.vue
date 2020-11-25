@@ -19,11 +19,11 @@ import { NotifyTypeEnum } from '../../types/enum/notify.type.enum';
 
 @Component({
   layout: 'auth',
-  head() {
-    return {
-      title: this.$generateTitle(this.$t('COMMON.PAGE_TITLE.EMAIL_REGISTER')),
-    };
-  },
 })
 export default class EmailRegister extends Vue {}
 </script>
+
+<router lang="yaml">
+meta:
+  title: COMMON.PAGE_TITLE.EMAIL_REGISTER
+</router>

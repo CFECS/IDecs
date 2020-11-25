@@ -6,6 +6,7 @@
       :sub-title="$t(`COMMON.ERROR_PAGE.${error.statusCode || 500}`)"
     >
       <template #extra>
+        {{ error }}
         <a-button type="primary" @click="$router.back()"> {{ $t('COMMON.LAYOUTS.RETURN_BACK') }} </a-button>
         <a-button @click="$router.push('/')"> {{ $t('COMMON.LAYOUTS.RETURN_HOME') }} </a-button>
       </template>
@@ -21,7 +22,7 @@ import { NuxtError } from '../types/dto/common';
   layout: 'empty',
   head() {
     return {
-      title: this.$generateTitle('错误页'),
+      title: this.$generateTitle(this.$t('COMMON.PAGE_TITLE.ERROR')),
     };
   },
 })

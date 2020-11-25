@@ -13,11 +13,11 @@ import { Component, Vue } from 'nuxt-property-decorator';
 
 @Component({
   layout: 'auth',
-  head() {
-    return {
-      title: this.$generateTitle(this.$t('COMMON.PAGE_TITLE.PHONE_FORGOT_PASSWORD')),
-    };
-  },
 })
 export default class PhoneForgotPassword extends Vue {}
 </script>
+
+<router lang="yaml">
+meta:
+  title: COMMON.PAGE_TITLE.PHONE_FORGOT_PASSWORD
+</router>

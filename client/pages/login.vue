@@ -32,11 +32,6 @@ import * as Cookies from 'js-cookie';
 
 @Component({
   layout: 'auth',
-  head() {
-    return {
-      title: this.$generateTitle(this.$t('COMMON.PAGE_TITLE.LOGIN')),
-    };
-  },
 })
 export default class Login extends Vue {
   private tab: string = Cookies.get('IDecs_login_tabs_key') || 'phone';
@@ -46,3 +41,8 @@ export default class Login extends Vue {
   }
 }
 </script>
+
+<router lang="yaml">
+meta:
+  title: COMMON.PAGE_TITLE.LOGIN
+</router>
