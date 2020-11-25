@@ -60,10 +60,6 @@ export default class Navbar extends Vue {
     &.hover:hover {
       background-color: #f8f8f9;
     }
-
-    &.no-cursor {
-      cursor: auto;
-    }
   }
 }
 </style>
