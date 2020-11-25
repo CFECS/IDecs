@@ -33,6 +33,16 @@ body {
   }
 }
 
+.page-enter-active,
+.page-leave-active {
+  transition: opacity, transform 0.15s ease-in-out;
+}
+.page-enter,
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
 .ant-dropdown-menu-item,
 .ant-dropdown-menu-submenu-title {
   padding: 6px 15px;
