@@ -65,6 +65,21 @@ export default class DefaultLayouts extends Vue {
     flex: 1;
     padding: 24px 20px;
     overflow: auto;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+      background: #f0f2f5;
+    }
+
+    &::-webkit-scrollbar-corner,
+    &::-webkit-scrollbar-track {
+      background-color: #f0f2f5;
+      box-shadow: inset -3px 2px 4px rgba(0, 0, 0, 0.15);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: @disabled-color;
+    }
   }
 }
 </style>

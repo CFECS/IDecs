@@ -1,7 +1,7 @@
 <template>
   <a-dropdown :trigger="['hover']" placement="bottomRight">
     <div class="section hover">
-      <a-avatar :src="userInfo.avatar || '/avatar.jpg'" small></a-avatar>
+      <Avatar :src="userInfo.avatar" small />
       <div class="name">
         {{ userInfo.username || userInfo.phone || userInfo.email }}
       </div>
