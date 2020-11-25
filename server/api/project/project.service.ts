@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { classToPlain } from 'class-transformer';
 import { ProjectDao } from '../../dao/project.dao';
 import { ReqAddOrUpdateBodyDto } from '../../dto/project/req.add.or.update.body.dto';
 import { ResPaginationDto } from '../../dto/res.pagination.dto';
@@ -25,8 +24,7 @@ export class ProjectService {
     return this.projectDao.queryPagination(page, limit, true);
   }
 
-  async getById(id: number): Promise<ProjectModel | undefined> {
-    const project = await this.projectDao.findOne(id, { relations: ['createdBy', 'updatedBy'] });
-    return classToPlain(project) as ProjectModel;
+  getById(id: number): Promise<ProjectModel | undefined> {
+    return this.projectDao.findOne(id, { relations: ['createdBy', 'updatedBy'] });
   }
 }
