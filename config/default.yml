@@ -13,6 +13,7 @@ rds:
   password: 123456
   database: idecs
   synchronize: true
+  maxQueryExecutionTime: 1000
 
 mongoDB:
   uri: mongodb://localhost/idecs
