@@ -65,6 +65,7 @@
     "class-transformer": "^0.3.1",
     "class-validator": "^0.12.2",
     "dayjs": "^1.9.5",
+    "hashids": "^2.2.2",
     "js-cookie": "^2.2.1",
     "js-yaml": "^3.14.0",
     "jsonwebtoken": "^8.5.1",

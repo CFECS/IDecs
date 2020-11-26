@@ -35,6 +35,7 @@ COMMON:
     PHONE_FORGOT_PASSWORD: 手机号修改密码
     PERSONAL: 个人中心
     APPLICATION_MANAGEMENT: 应用管理
+    APPLICATION_DETAILS: 应用详情
 
   LAYOUTS:
     NAME: IDecs 身份管理

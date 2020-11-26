@@ -7466,6 +7466,11 @@ hasha@^5.2.2:
     is-stream "^2.0.0"
     type-fest "^0.8.0"
 
+hashids@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/hashids/-/hashids-2.2.2.tgz#5381257b34f0d0aca2063967b14a30a9312f650d"
+  integrity sha512-nqH06JLFeBBCg31jYSArbOs/XddTdnHSul/hb6XbrWg/UlUWFQc9KR21sVLoGKQGKPW1D3zgTgTew0oY7nhrhQ==
+
 hast-to-hyperscript@^9.0.0:
   version "9.0.1"
   resolved "https://registry.yarnpkg.com/hast-to-hyperscript/-/hast-to-hyperscript-9.0.1.tgz#9b67fd188e4c81e8ad66f803855334173920218d"

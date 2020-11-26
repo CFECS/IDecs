@@ -1,17 +1,21 @@
 <template>
-  <a-layout class="default-layouts">
-    <Sider />
-    <a-layout>
-      <Navbar />
-      <a-layout-content>
-        <Nuxt />
-      </a-layout-content>
+  <a-config-provider :locale="locale">
+    <a-layout class="default-layouts">
+      <Sider />
+      <a-layout>
+        <Navbar />
+        <a-layout-content>
+          <Nuxt />
+        </a-layout-content>
+      </a-layout>
     </a-layout>
-  </a-layout>
+  </a-config-provider>
 </template>
 
 <script lang="ts">
 import { Component, Watch, Vue } from 'nuxt-property-decorator';
+import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN';
+import enUS from 'ant-design-vue/lib/locale-provider/en_US';
 import User from '@/store/user';
 
 @Component({
@@ -38,7 +42,11 @@ import User from '@/store/user';
     };
   },
 })
-export default class DefaultLayouts extends Vue {}
+export default class DefaultLayouts extends Vue {
+  get locale() {
+    return this.$i18n.getLocaleCookie() === 'en' ? enUS : zhCN;
+  }
+}
 </script>
 
 <style lang="less">

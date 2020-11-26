@@ -19,6 +19,29 @@ body {
   font-family: Helvetica Neue, Helvetica, PingFang SC, Arial, sans-serif;
 }
 
+* {
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background: #fff;
+  }
+
+  &::-webkit-scrollbar-corner,
+  &::-webkit-scrollbar-track {
+    background-color: #fff;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: @primary-color;
+  }
+}
+
+.ant-table-body {
+  &::-webkit-scrollbar-thumb {
+    background-color: @disabled-color;
+  }
+}
+
 @keyframes fade-in {
   0% {
     opacity: 0;
@@ -64,22 +87,10 @@ body {
   }
 }
 
-.bg-white {
-  background-color: #fff !important;
+.ant-table-pagination.ant-pagination {
+  margin-right: 16px;
 }
 
-* {
-  &::-webkit-scrollbar {
-    width: 6px;
-    background: #fff;
-  }
-
-  &::-webkit-scrollbar-corner,
-  &::-webkit-scrollbar-track {
-    background-color: #fff;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: @primary-color;
-  }
+.bg-white {
+  background-color: #fff !important;
 }

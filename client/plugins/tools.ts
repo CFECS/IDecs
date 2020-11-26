@@ -1,7 +1,21 @@
 import { Plugin } from '@nuxt/types';
 import * as scrypt from 'scrypt-async';
 import PhoneNumber from 'awesome-phonenumber';
+import Hashids from 'hashids';
+import * as dayjs from 'dayjs';
+import * as customParseFormat from 'dayjs/plugin/customParseFormat';
+import * as advancedFormat from 'dayjs/plugin/advancedFormat';
+import * as localizedFormat from 'dayjs/plugin/localizedFormat';
+import 'dayjs/locale/zh-cn';
+import 'dayjs/locale/en';
+import { Modal } from 'ant-design-vue';
 import { DialCodeDto } from '../types/dto/common';
+
+dayjs.extend(customParseFormat);
+dayjs.extend(localizedFormat);
+dayjs.extend(advancedFormat);
+
+const hashids = new Hashids();
 
 declare module 'vue/types/vue' {
   interface Vue {
@@ -14,10 +28,82 @@ declare module 'vue/types/vue' {
     $getPhoneNumber(phone: any): Record<string, string>;
     $isPhone(phone: any): boolean;
     $logout(): void;
+    $encode(val: any): any;
+    $decode(val: any): any;
+    $showErrorTip(content: string): void;
+    $parseDateWithLocale(string: string, format: string, locale: string): string | boolean;
+    $getLocale(): string;
+    $datetime(datetime: any): any;
+    $date(datetime: any): any;
   }
 }
 
 const Tools: Plugin = ({ env, app }: any, inject) => {
+  inject('parseDateWithLocale', (string: string, format: string, locale: string) => {
+    const dt = dayjs(string, format);
+    if (!string || !dt.isValid()) {
+      return false;
+    }
+    const localeDt = dt.locale(locale);
+    return localeDt;
+  });
+
+  inject('getLocale', () => app.i18n.getLocaleCookie());
+
+  inject('datetime', (datetime: any) => {
+    const locale = app.$getLocale();
+    const localeDt = app.$parseDateWithLocale(datetime, 'YYYY-MM-DD HH:mm:ss', locale);
+    if (!localeDt) {
+      return datetime;
+    }
+    let outputFormat;
+    if (!outputFormat) {
+      switch (locale) {
+        case 'zh-cn':
+          outputFormat = 'LL HH:mm:ss';
+          break;
+        default:
+          outputFormat = 'DD MMM YYYY HH:mm:ss';
+          break;
+      }
+    }
+    return localeDt.locale(locale).format(outputFormat);
+  });
+
+  inject('date', (date: any) => {
+    const locale = app.$getLocale();
+    const localeDt = app.$parseDateWithLocale(date, 'YYYY-MM-DD HH:mm:ss', locale);
+    if (!localeDt) {
+      return null;
+    }
+    let outputFormat;
+    if (!outputFormat) {
+      switch (locale) {
+        case 'zh-cn':
+          outputFormat = 'LL';
+          break;
+        default:
+          outputFormat = 'DD MMM YYYY';
+          break;
+      }
+    }
+    return localeDt.locale(locale).format(outputFormat);
+  });
+
+  inject('showErrorTip', (content: string) => {
+    Modal.error({
+      title: '提示',
+      content,
+      onOk: () => {
+        app.router.back();
+      },
+    });
+  });
+
+  inject('encode', (val: any): any => hashids.encode(val));
+
+  inject('decode', (val: any): any => hashids.decode(val)[0]);
+
   inject('logout', (): void => {
     window.sessionStorage.removeItem('IDecs_token');
     window.location.reload();
