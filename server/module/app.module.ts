@@ -18,7 +18,7 @@ import { NuxtModule } from './nuxt.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({ ...config.rds, entities: [`${__dirname}/../model/rds/*.ts`] }),
+    TypeOrmModule.forRoot({ ...config.rds, entities: [`${__dirname}/../model/rds/**/*.ts`] }),
     MongooseModule.forRoot(config.mongoDB.uri, { useCreateIndex: true }),
     GlobalModule,
     UserModule,

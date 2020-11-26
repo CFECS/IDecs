@@ -1,12 +1,13 @@
-import { IsEmail, isEmpty, IsNumberString, IsPhoneNumber, ValidateIf } from 'class-validator';
+import { IsEmail, IsNumberString, IsPhoneNumber, ValidateIf } from 'class-validator';
+import { isNotNullAndUndefined } from '../../validator/is.not.null.and.undefined';
 
 export class ReqEmailOrPhoneChangeBodyDto {
   @IsEmail()
-  @ValidateIf((object) => isEmpty(object.phone))
+  @ValidateIf((object) => isNotNullAndUndefined(object.email))
   email!: string;
 
   @IsPhoneNumber(null)
-  @ValidateIf((object) => isEmpty(object.email))
+  @ValidateIf((object) => isNotNullAndUndefined(object.phone))
   phone!: string;
 
   @IsNumberString()

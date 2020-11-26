@@ -1,5 +1,6 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsString, ValidateIf } from 'class-validator';
 import { Type } from 'class-transformer';
+import { isNotNullAndUndefined } from '../../validator/is.not.null.and.undefined';
 
 export class ReqAddOrUpdateBodyDto {
   @IsString()
@@ -9,6 +10,7 @@ export class ReqAddOrUpdateBodyDto {
   code!: string;
 
   @IsString()
+  @ValidateIf((object) => isNotNullAndUndefined(object.description))
   description!: string;
 
   @IsNumber()
