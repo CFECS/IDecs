@@ -1,25 +1,16 @@
-import {
-  IsEmail,
-  isEmpty,
-  isNotEmpty,
-  IsNumberString,
-  IsObject,
-  IsPhoneNumber,
-  IsString,
-  Matches,
-  ValidateIf,
-} from 'class-validator';
+import { IsEmail, IsNumberString, IsObject, IsPhoneNumber, IsString, Matches, ValidateIf } from 'class-validator';
 import { config } from '../../../config';
 import { ResponseCodeEnum } from '../../enum/response.code.enum';
 import { BaseResponse } from '../../common/base.response';
+import { isNotNullAndUndefined } from '../../validator/is.not.null.and.undefined';
 
 export class ReqSignupBodyDto {
   @IsEmail()
-  @ValidateIf((object) => isEmpty(object.phone))
+  @ValidateIf((object) => isNotNullAndUndefined(object.email))
   email?: string;
 
   @IsPhoneNumber(null)
-  @ValidateIf((object) => isEmpty(object.email))
+  @ValidateIf((object) => isNotNullAndUndefined(object.phone))
   phone?: string;
 
   @IsNumberString()
@@ -34,6 +25,6 @@ export class ReqSignupBodyDto {
   confirmPassword!: string;
 
   @IsObject()
-  @ValidateIf((object) => isNotEmpty(object.profile))
+  @ValidateIf((object) => isNotNullAndUndefined(object.profile))
   profile: Record<string, any> = {};
 }

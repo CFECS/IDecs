@@ -1,15 +1,16 @@
-import { isNotEmpty, IsObject, IsString, IsUrl, ValidateIf } from 'class-validator';
+import { IsObject, IsString, IsUrl, ValidateIf } from 'class-validator';
+import { isNotNullAndUndefined } from '../../validator/is.not.null.and.undefined';
 
 export class ReqProfileUpdateBodyDto {
   @IsString()
-  @ValidateIf((object) => isNotEmpty(object.username))
+  @ValidateIf((object) => isNotNullAndUndefined(object.username))
   username!: string;
 
   @IsUrl()
-  @ValidateIf((object) => isNotEmpty(object.avatar))
+  @ValidateIf((object) => isNotNullAndUndefined(object.avatar))
   avatar!: string;
 
   @IsObject()
-  @ValidateIf((object) => isNotEmpty(object.profile))
+  @ValidateIf((object) => isNotNullAndUndefined(object.profile))
   profile: Record<string, any> = {};
 }
