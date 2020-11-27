@@ -6,6 +6,11 @@
     </div>
 
     <a-menu theme="dark" mode="inline" :selected-keys="selectedKeys" @click="handleClick">
+      <a-menu-item key="/user">
+        <a-icon type="user" />
+        <span>{{ $t('COMMON.PAGE_TITLE.USER_MANAGEMENT') }}</span>
+      </a-menu-item>
+
       <a-menu-item key="/application">
         <a-icon type="project" />
         <span>{{ $t('COMMON.PAGE_TITLE.APPLICATION_MANAGEMENT') }}</span>

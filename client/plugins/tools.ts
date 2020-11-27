@@ -92,7 +92,7 @@ const Tools: Plugin = ({ env, app }: any, inject) => {
 
   inject('showErrorTip', (content: string) => {
     Modal.error({
-      title: '提示',
+      title: app.i18n.t('COMMON.LAYOUTS.TIPS'),
       content,
       onOk: () => {
         app.router.back();

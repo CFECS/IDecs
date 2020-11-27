@@ -36,6 +36,8 @@ COMMON:
     PERSONAL: 个人中心
     APPLICATION_MANAGEMENT: 应用管理
     APPLICATION_DETAILS: 应用详情
+    USER_MANAGEMENT: 用户管理
+    USER_DETAILS: 用户详情
 
   LAYOUTS:
     NAME: IDecs 身份管理
@@ -52,9 +54,21 @@ COMMON:
     LAGOUT: 退出登录
     CHINESE: 简体中文
     ENGLISH: English
+    CONFIRM: 确定
     CANCEL: 取消
     COMFIRM_UPLOAD: 确认上传
     UPLOAD_IMAGE: 上传图片
+    EDIT: 编辑
+    YES: 是
+    NO: 否
+    DELETE: 删除
+    CREATED_AT: 创建时间
+    UPDATED_AT: 更新时间
+    ACTIONS: 操作
+    EDIT_SUCCESS: 编辑成功~
+    ADD_SUCCESS: 添加成功~
+    DELETE_SUCCESS: 删除成功~
+    DELETE_ERROR: 删除失败~
 
   VALIDATE:
     REQUIRED: 请输入手机号
@@ -94,8 +108,8 @@ AUTH:
   CHANGE_BY_PHONE: 通过手机号修改密码
   CHANGE_BY_EMAIL: 通过邮箱修改密码
   CHANGE_SUCCESS: 修改成功~
-  LOGIN_SUCCESS: 修改成功~
-  REGISTER_SUCCESS: 修改成功~
+  LOGIN_SUCCESS: 登录成功~
+  REGISTER_SUCCESS: 注册成功~
 
 PERSONAL:
   TITLE: 个人设置
@@ -113,3 +127,29 @@ PERSONAL:
   INTRODUCTION: 个人介绍
   INTRODUCTION_PLACEHOLDER: 请输入个人介绍
   UPLOAD_INFORMATION: 更新信息
+
+APPLICATION:
+  TITLE: 应用管理
+  INTRO: 统一管理应用相关信息，以及用户和权限的分配等相关操作
+  ADD: 添加应用
+  EDIT: 编辑应用
+  DELETE_TIPS: 你确定要删除该应用吗？
+  NAME: 应用名称
+  NAME_PLACEHOLDER: 请输入应用名称
+  DESCRIPTION: 应用简介
+  DESCRIPTION_PLACEHOLDER: 请输入应用简介
+  OWNER: 拥有者
+  SELF: 自己
+  CREATED_BY: 创建者
+  UPDATED_BY: 修改者
+  INFO_ERROR: 应用信息不符合系统要求，请返回后重试
+  NOT_FOUND: 您查看的应用已经不存在了，请返回后重试
+
+USER:
+  DELETE_TIPS: 你确定要删除该用户吗？
+  USERNAME: 用户名
+  PHONE: 手机号
+  EMAIL: 邮箱
+  INTRODUCTION: 简介
+  INFO_ERROR: 用户信息不符合系统要求，请返回后重试
+  NOT_FOUND: 您查看的用户已经不存在了，请返回后重试

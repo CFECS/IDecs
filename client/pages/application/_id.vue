@@ -1,17 +1,17 @@
 <template>
   <a-spin size="large" :spinning="$fetchState.pending">
     <a-page-header :ghost="false" :title="details.name" @back="() => $router.back()">
-      <a-descriptions>
-        <a-descriptions-item label="应用名称">
+      <a-descriptions class="pl-20 mt-20">
+        <a-descriptions-item :label="$t('APPLICATION.NAME')">
           {{ details.name || '-' }}
         </a-descriptions-item>
-        <a-descriptions-item label="应用简介">
+        <a-descriptions-item :label="$t('APPLICATION.DESCRIPTION')">
           {{ details.description || '-' }}
         </a-descriptions-item>
-        <a-descriptions-item label="创建时间">
+        <a-descriptions-item :label="$t('COMMON.LAYOUTS.CREATED_AT')">
           {{ $datetime(details.createdAt) || '-' }}
         </a-descriptions-item>
-        <a-descriptions-item label="更新时间">
+        <a-descriptions-item :label="$t('COMMON.LAYOUTS.UPDATED_AT')">
           {{ $datetime(details.updatedAt) || '-' }}
         </a-descriptions-item>
       </a-descriptions>
@@ -19,45 +19,43 @@
       <template v-if="details.createdById">
         <a-divider></a-divider>
 
-        <div class="pl-20">
-          <Title>创建者</Title>
-          <a-descriptions>
-            <a-descriptions-item label="用户名"> {{ details.createdBy.username || '-' }} </a-descriptions-item>
-            <a-descriptions-item label="手机号">
-              {{ details.createdBy.phone || '-' }}
-            </a-descriptions-item>
-            <a-descriptions-item label="邮箱"> {{ details.createdBy.email || '-' }} </a-descriptions-item>
-            <a-descriptions-item label="简介">
-              {{
-                details.createdBy.profile && details.createdBy.profile.description
-                  ? details.createdBy.profile.description
-                  : '-'
-              }}
-            </a-descriptions-item>
-          </a-descriptions>
-        </div>
+        <a-descriptions class="pl-20" :title="$t('APPLICATION.CREATED_BY')">
+          <a-descriptions-item :label="$t('USER.USERNAME')">
+            {{ details.createdBy.username || '-' }}
+          </a-descriptions-item>
+          <a-descriptions-item :label="$t('USER.PHONE')">
+            {{ details.createdBy.phone || '-' }}
+          </a-descriptions-item>
+          <a-descriptions-item :label="$t('USER.EMAIL')"> {{ details.createdBy.email || '-' }} </a-descriptions-item>
+          <a-descriptions-item :label="$t('USER.INTRODUCTION')">
+            {{
+              details.createdBy.profile && details.createdBy.profile.description
+                ? details.createdBy.profile.description
+                : '-'
+            }}
+          </a-descriptions-item>
+        </a-descriptions>
       </template>
 
       <template v-if="details.updatedById">
         <a-divider></a-divider>
 
-        <div class="pl-20">
-          <Title>修改者</Title>
-          <a-descriptions>
-            <a-descriptions-item label="用户名"> {{ details.updatedBy.username || '-' }} </a-descriptions-item>
-            <a-descriptions-item label="手机号">
-              {{ details.updatedBy.phone || '-' }}
-            </a-descriptions-item>
-            <a-descriptions-item label="邮箱"> {{ details.updatedBy.email || '-' }} </a-descriptions-item>
-            <a-descriptions-item label="简介">
-              {{
-                details.updatedBy.profile && details.updatedBy.profile.description
-                  ? details.updatedBy.profile.description
-                  : '-'
-              }}
-            </a-descriptions-item>
-          </a-descriptions>
-        </div>
+        <a-descriptions class="pl-20" :title="$t('APPLICATION.UPDATED_BY')">
+          <a-descriptions-item :label="$t('USER.USERNAME')">
+            {{ details.updatedBy.username || '-' }}
+          </a-descriptions-item>
+          <a-descriptions-item :label="$t('USER.PHONE')">
+            {{ details.updatedBy.phone || '-' }}
+          </a-descriptions-item>
+          <a-descriptions-item :label="$t('USER.EMAIL')"> {{ details.updatedBy.email || '-' }} </a-descriptions-item>
+          <a-descriptions-item :label="$t('USER.INTRODUCTION')">
+            {{
+              details.updatedBy.profile && details.updatedBy.profile.description
+                ? details.updatedBy.profile.description
+                : '-'
+            }}
+          </a-descriptions-item>
+        </a-descriptions>
       </template>
     </a-page-header>
   </a-spin>
@@ -80,23 +78,17 @@ export default class ApplicationDetails extends Vue {
 
   async fetch() {
     if (!this.applicationId) {
-      this.$showErrorTip('应用信息不符合系统要求，请返回后重试');
+      this.$showErrorTip(this.$t('APPLICATION.INFO_ERROR'));
       return;
     }
     try {
       await Application.getById(this.applicationId);
     } catch (error) {
-      this.$showErrorTip('您查看的应用已经不存在了，请返回后重试');
+      this.$showErrorTip(this.$t('APPLICATION.NOT_FOUND'));
     }
   }
 }
 </script>
-
-<style lang="less">
-.pl-20 {
-  padding-left: 20px;
-}
-</style>
 
 <router lang="yaml">
 meta:

@@ -7,22 +7,55 @@ import { ReqPasswordResetBodyDto } from '../types/dto//user/req.password.reset.b
 import { ReqProfileUpdateBodyDto } from '../types/dto/user/req.profile.update.body.dto';
 import { ReqEmailOrPhoneChangeBodyDto } from '../types/dto/user/req.email.or.phone.change.body.dto';
 import { ReqPasswordChangeBodyDto } from '../types/dto/user/req.password.change.body.dto';
+import { ReqPaginationBaseDto } from '../types/dto/base/req.pagination.base.dto';
+import { ResPaginationBaseDto } from '../types/dto/base/res.pagination.base.dto';
 import { $axios } from './axios';
 import { store } from './index';
 
 interface moduleDto {
   ticket: string;
   info: any;
+  items: any[];
+  pagination: ResPaginationBaseDto;
+  details: any;
 }
 
 @Module({ dynamic: true, store, name: 'User', namespaced: true })
 class User extends VuexModule implements moduleDto {
   ticket = '';
   info = null;
+  items = [];
+  pagination = { current: 1, total: 0 };
+  details = {};
+
+  @MutationAction
+  async getAll(params: ReqPaginationBaseDto) {
+    const { items, total }: any = await $axios.get('/user/pagination', { params });
+    return {
+      items,
+      pagination: {
+        current: params.page,
+        total,
+      },
+    };
+  }
+
+  @MutationAction
+  async getById(id: number) {
+    const data: any = await $axios.get(`/user/${id}`);
+    return {
+      details: data,
+    };
+  }
 
   @Action
   async signup(payload: ReqSignupBodyDto) {
     await $axios.post('/user/signup', payload);
+  }
+
+  @Action
+  async removeById(id: number) {
+    await $axios.delete(`/user/${id}`);
   }
 
   @MutationAction

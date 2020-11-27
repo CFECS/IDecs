@@ -1,7 +1,7 @@
 <template>
   <div>
-    <page-tips title="应用管理" description="统一管理应用相关信息，以及用户和权限的分配等相关操作~">
-      <a-button type="primary" @click="handleCreateApplication">添加应用</a-button>
+    <page-tips :title="$t('APPLICATION.TITLE')" :description="$t('APPLICATION.INTRO')">
+      <a-button type="primary" @click="handleCreateApplication">{{ $t('APPLICATION.ADD') }}</a-button>
     </page-tips>
 
     <div class="bg-white">
@@ -11,24 +11,32 @@
         :loading="loading"
         :data-source="items"
         :pagination="pagination"
-        :scroll="{ x: 1000 }"
+        :scroll="{ x: 1200 }"
         @change="handleChange"
       >
-        <template slot="name" slot-scope="text, record">
+        <template slot="id" slot-scope="text, record">
           <nuxt-link :to="`/application/${$encode(record.id)}`">
             {{ text }}
           </nuxt-link>
         </template>
 
+        <template slot="name" slot-scope="text">
+          {{ text || '-' }}
+        </template>
+
+        <template slot="description" slot-scope="text">
+          {{ text || '-' }}
+        </template>
+
         <template slot="owner" slot-scope="text, record">
-          <a v-if="text === userId" disabled> 自己 </a>
+          <a v-if="text === userId" disabled> {{ $t('APPLICATION.SELF') }} </a>
           <nuxt-link v-else :to="`/user/${$encode(record.createdById)}`">
             {{ record.createdBy.username || record.createdBy.phone || record.createdBy.email }}
           </nuxt-link>
         </template>
 
         <template slot="action" slot-scope="text, record">
-          <a-tooltip title="编辑">
+          <a-tooltip :title="$t('COMMON.LAYOUTS.EDIT')">
             <a-icon
               type="edit"
               :style="{ cursor: 'pointer', color: '#4aa271' }"
@@ -38,13 +46,13 @@
           <a-divider type="vertical" />
 
           <a-popconfirm
-            title="你确定要删除该应用吗？"
-            ok-text="是"
-            cancel-text="否"
+            :title="$t('APPLICATION.DELETE_TIPS')"
+            :ok-text="$t('COMMON.LAYOUTS.YES')"
+            :cancel-text="$t('COMMON.LAYOUTS.NO')"
             placement="topRight"
             @confirm="handleDelete(record.id)"
           >
-            <a-tooltip title="删除">
+            <a-tooltip :title="$t('COMMON.LAYOUTS.DELETE')">
               <a-icon type="delete" :style="{ cursor: 'pointer', color: '#f5222d' }" />
             </a-tooltip>
           </a-popconfirm>
@@ -55,8 +63,8 @@
     <a-modal
       v-model="visible"
       :title="title"
-      ok-text="确认"
-      cancel-text="取消"
+      :ok-text="$t('COMMON.LAYOUTS.CONFIRM')"
+      :cancel-text="$t('COMMON.LAYOUTS.CANCEL')"
       :confirm-loading="confirmLoading"
       @ok="submit"
     >
@@ -69,14 +77,14 @@
         :label-col="{ span: 4 }"
         :wrapper-col="{ span: 20 }"
       >
-        <a-form-model-item prop="name" label="应用名称">
-          <a-input v-model.trim="params.name" placeholder="请输入应用名称" size="large" />
+        <a-form-model-item prop="name" :label="$t('APPLICATION.NAME')">
+          <a-input v-model.trim="params.name" :placeholder="$t('APPLICATION.NAME_PLACEHOLDER')" size="large" />
         </a-form-model-item>
 
-        <a-form-model-item prop="description" label="应用简介">
+        <a-form-model-item prop="description" :label="$t('APPLICATION.DESCRIPTION')">
           <a-textarea
             v-model.trim="params.description"
-            placeholder="请输入应用简介"
+            :placeholder="$t('APPLICATION.DESCRIPTION_PLACEHOLDER')"
             :auto-size="{ minRows: 3, maxRows: 5 }"
             size="large"
           />
@@ -88,7 +96,6 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
-import * as dayjs from 'dayjs';
 import Application from '@/store/application';
 import User from '@/store/user';
 import { ReqPaginationBaseDto } from '../../types/dto/base/req.pagination.base.dto';
@@ -104,12 +111,12 @@ export default class ApplicationManagement extends Vue {
   private loading = false;
 
   private visible = false;
-  private title = '添加应用';
+  private title = this.$t('APPLICATION.ADD');
   private params: ReqAddOrUpdateBodyDto = this.initParams();
   private confirmLoading = false;
   private rules: Record<string, any> = {
-    name: [{ required: true, message: '请输入应用名称', trigger: 'blur' }],
-    description: [{ required: true, message: '请输入应用简介', trigger: 'blur' }],
+    name: [{ required: true, message: this.$t('APPLICATION.NAME_PLACEHOLDER'), trigger: 'blur' }],
+    description: [{ required: true, message: this.$t('APPLICATION.DESCRIPTION_PLACEHOLDER'), trigger: 'blur' }],
   };
 
   get userId() {
@@ -119,38 +126,45 @@ export default class ApplicationManagement extends Vue {
   get columns() {
     return [
       {
-        title: '应用名称',
+        title: '#ID',
+        dataIndex: 'id',
+        width: 80,
+        scopedSlots: { customRender: 'id' },
+      },
+      {
+        title: this.$t('APPLICATION.NAME'),
         dataIndex: 'name',
         width: 120,
         scopedSlots: { customRender: 'name' },
       },
       {
-        title: '应用简介',
+        title: this.$t('APPLICATION.DESCRIPTION'),
         dataIndex: 'description',
         width: 200,
         ellipsis: true,
+        scopedSlots: { customRender: 'description' },
       },
       {
-        title: '拥有者',
+        title: this.$t('APPLICATION.OWNER'),
         dataIndex: 'updatedById',
         width: 120,
         ellipsis: true,
         scopedSlots: { customRender: 'owner' },
       },
       {
-        title: '创建时间',
+        title: this.$t('COMMON.LAYOUTS.CREATED_AT'),
         dataIndex: 'createdAt',
         width: 160,
         customRender: (text: any) => this.$datetime(text),
       },
       {
-        title: '更新时间',
+        title: this.$t('COMMON.LAYOUTS.UPDATED_AT'),
         dataIndex: 'updatedAt',
         width: 160,
         customRender: (text: any) => this.$datetime(text),
       },
       {
-        title: '操作',
+        title: this.$t('COMMON.LAYOUTS.ACTIONS'),
         fixed: 'right',
         width: 90,
         scopedSlots: { customRender: 'action' },
@@ -193,13 +207,13 @@ export default class ApplicationManagement extends Vue {
   }
 
   handleCreateApplication() {
-    this.title = '添加应用';
+    this.title = this.$t('APPLICATION.ADD');
     this.params = this.initParams();
     this.visible = true;
   }
 
   handleEditApplication(record: any) {
-    this.title = '编辑应用';
+    this.title = this.$t('APPLICATION.EDIT');
     this.params.id = record.id;
     this.params.name = record.name;
     this.params.description = record.description;
@@ -216,7 +230,9 @@ export default class ApplicationManagement extends Vue {
           await request(this.params);
           this.confirmLoading = false;
           this.visible = false;
-          this.$message.success(this.params.id ? '编辑成功~' : '添加成功~');
+          this.$message.success(
+            this.params.id ? this.$t('COMMON.LAYOUTS.EDIT_SUCCESS') : this.$t('COMMON.LAYOUTS.ADD_SUCCESS'),
+          );
           await this.getData();
         } catch (err) {
           this.confirmLoading = false;
@@ -228,10 +244,10 @@ export default class ApplicationManagement extends Vue {
   async handleDelete(id: number) {
     try {
       await Application.removeById(id);
-      this.$message.success('删除成功~');
+      this.$message.success(this.$t('COMMON.LAYOUTS.DELETE_SUCCESS'));
       await this.getData();
     } catch (error) {
-      this.$message.success('删除失败~');
+      this.$message.success(this.$t('COMMON.LAYOUTS.DELETE_ERROR'));
     }
   }
 }
