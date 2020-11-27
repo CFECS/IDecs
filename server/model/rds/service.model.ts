@@ -1,7 +1,7 @@
 import { Column, Entity } from 'typeorm';
 import { BaseModel } from './base.model';
 
-@Entity({ name: 'service', orderBy: { id: 'ASC' } })
+@Entity({ name: 'service', orderBy: { createdAt: 'DESC' } })
 export class ServiceModel extends BaseModel {
   @Column({ length: 64 })
   name!: string;
@@ -10,8 +10,8 @@ export class ServiceModel extends BaseModel {
   description!: string;
 
   @Column()
-  navId!: number;
+  navId!: string;
 
   @Column()
-  navRootId!: number;
+  navRootId!: string;
 }

@@ -12,11 +12,11 @@ export class PolicyService {
     await this.policyDao.insert(bodyDto);
   }
 
-  async updateById(id: number, bodyDto: ReqAddOrUpdateBodyDto) {
+  async updateById(id: string, bodyDto: ReqAddOrUpdateBodyDto) {
     await this.policyDao.update(id, bodyDto);
   }
 
-  async removeById(id: number) {
+  async removeById(id: string) {
     await this.policyDao.softDelete(id);
   }
 
@@ -24,7 +24,7 @@ export class PolicyService {
     return this.policyDao.queryPagination(page, limit, true);
   }
 
-  getById(id: number): Promise<PolicyModel | undefined> {
+  getById(id: string): Promise<PolicyModel | undefined> {
     return this.policyDao.findOne(id);
   }
 }

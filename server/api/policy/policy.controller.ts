@@ -15,12 +15,12 @@ export class PolicyController {
   }
 
   @Put('/:id')
-  updateById(@Param('id') id: number, @Body() bodyDto: ReqAddOrUpdateBodyDto) {
+  updateById(@Param('id') id: string, @Body() bodyDto: ReqAddOrUpdateBodyDto) {
     return this.policyService.updateById(id, bodyDto);
   }
 
   @Delete('/:id')
-  removeById(@Param('id') id: number) {
+  removeById(@Param('id') id: string) {
     return this.policyService.removeById(id);
   }
 
@@ -30,7 +30,7 @@ export class PolicyController {
   }
 
   @Get('/:id')
-  getById(@Param('id') id: number): Promise<PolicyModel | undefined> {
+  getById(@Param('id') id: string): Promise<PolicyModel | undefined> {
     return this.policyService.getById(id);
   }
 }

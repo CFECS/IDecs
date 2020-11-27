@@ -12,11 +12,11 @@ export class ServiceService {
     await this.serviceDao.insert(bodyDto);
   }
 
-  async updateById(id: number, bodyDto: ReqAddOrUpdateBodyDto) {
+  async updateById(id: string, bodyDto: ReqAddOrUpdateBodyDto) {
     await this.serviceDao.update(id, bodyDto);
   }
 
-  async removeById(id: number) {
+  async removeById(id: string) {
     await this.serviceDao.softDelete(id);
   }
 
@@ -24,7 +24,7 @@ export class ServiceService {
     return this.serviceDao.queryPagination(page, limit, true);
   }
 
-  getById(id: number): Promise<ServiceModel | undefined> {
+  getById(id: string): Promise<ServiceModel | undefined> {
     return this.serviceDao.findOne(id);
   }
 }

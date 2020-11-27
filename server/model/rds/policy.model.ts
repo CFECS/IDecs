@@ -1,7 +1,7 @@
 import { Column, Entity } from 'typeorm';
 import { BaseModel } from './base.model';
 
-@Entity({ name: 'policy', orderBy: { id: 'ASC' } })
+@Entity({ name: 'policy', orderBy: { createdAt: 'DESC' } })
 export class PolicyModel extends BaseModel {
   @Column({ length: 128 })
   name!: string;
@@ -13,5 +13,5 @@ export class PolicyModel extends BaseModel {
   description!: string;
 
   @Column()
-  serviceId!: number;
+  serviceId!: string;
 }

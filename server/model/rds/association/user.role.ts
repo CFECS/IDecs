@@ -3,8 +3,8 @@ import { Entity, PrimaryColumn } from 'typeorm';
 @Entity({ name: 'ass_user_role' })
 export class UserRole {
   @PrimaryColumn()
-  userId!: number;
+  userId!: string;
 
   @PrimaryColumn()
-  roleId!: number;
+  roleId!: string;
 }

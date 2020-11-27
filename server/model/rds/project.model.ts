@@ -2,7 +2,7 @@ import { Column, Entity, ManyToOne } from 'typeorm';
 import { BaseModel } from './base.model';
 import { UserModel } from './user.model';
 
-@Entity({ name: 'project', orderBy: { id: 'ASC' } })
+@Entity({ name: 'project', orderBy: { createdAt: 'DESC' } })
 export class ProjectModel extends BaseModel {
   @Column({ length: 64 })
   name!: string;
@@ -11,10 +11,10 @@ export class ProjectModel extends BaseModel {
   description!: string;
 
   @Column()
-  createdById!: number;
+  createdById!: string;
 
   @Column()
-  updatedById!: number;
+  updatedById!: string;
 
   @ManyToOne(() => UserModel)
   createdBy!: UserModel;

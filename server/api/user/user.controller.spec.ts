@@ -36,7 +36,7 @@ describe('Signup and login', () => {
   });
 
   it('should create user by phone successful', () => {
-    const phone = `+8615${Date.now().toString().slice(4, 13)}`;
+    const phone = `+8613${Date.now().toString().slice(4, 13)}`;
     const data: ReqSignupBodyDto = {
       phone,
       code: config.api.otp.code,
@@ -73,7 +73,7 @@ describe('UserController', () => {
   });
 
   it('should get user by id successful', () => {
-    const url = '/api/user/10';
+    const url = '/api/user/caf3ec93-8b6c-4a10-bfe9-16a22eea426c';
     return BaseTest.setHeaders(agent, url)
       .get(url)
       .expect(HttpStatus.OK)
@@ -81,7 +81,7 @@ describe('UserController', () => {
   });
 
   it('should delete user by id successful', () => {
-    const url = '/api/user/12';
+    const url = '/api/user/caf3ec93-8b6c-4a10-bfe9-16a22eea426c';
     return BaseTest.setHeaders(agent, url)
       .delete(url)
       .expect(HttpStatus.OK)
@@ -117,7 +117,7 @@ describe('UserController', () => {
     const url = '/api/user/profile';
     const data: ReqProfileUpdateBodyDto = {
       username: 'haha',
-      avatar: '',
+      avatar: 'http://hgfhgfas.com',
       profile: {
         test: 'prefect',
       },

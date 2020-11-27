@@ -21,7 +21,7 @@ describe('NavController', () => {
     const data: ReqAddOrUpdateBodyDto = {
       name: 'test nav',
       description: 'for test',
-      parentId: 0,
+      parentId: 'b6252599-6bfd-4852-862c-3efa039a3014',
       page: '',
     };
     const url = '/api/nav';
@@ -36,10 +36,10 @@ describe('NavController', () => {
     const data: ReqAddOrUpdateBodyDto = {
       name: 'test nav',
       description: 'for test updated',
-      parentId: 0,
+      parentId: 'b6252599-6bfd-4852-862c-3efa039a3014',
       page: '',
     };
-    const url = '/api/nav/1';
+    const url = '/api/nav/0d5ec8fa-486b-4085-8ff6-97acabd389ff';
     return BaseTest.setHeaders(agent, url)
       .put(url)
       .send(data)
@@ -48,7 +48,7 @@ describe('NavController', () => {
   });
 
   it('should get nav by id successful', () => {
-    const url = '/api/nav/1';
+    const url = '/api/nav/0d5ec8fa-486b-4085-8ff6-97acabd389ff';
     return BaseTest.setHeaders(agent, url)
       .get(url)
       .expect(HttpStatus.OK)
@@ -64,7 +64,7 @@ describe('NavController', () => {
   });
 
   it('should delete nav successful', () => {
-    const url = '/api/nav/1';
+    const url = '/api/nav/0d5ec8fa-486b-4085-8ff6-97acabd389ff';
     return BaseTest.setHeaders(agent, url)
       .delete(url)
       .expect(HttpStatus.OK)

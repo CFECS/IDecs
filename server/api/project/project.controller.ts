@@ -16,12 +16,12 @@ export class ProjectController {
   }
 
   @Put('/:id')
-  updateById(@Param('id') id: number, @Body() bodyDto: ReqAddOrUpdateBodyDto, @Req() req: RequestAo) {
+  updateById(@Param('id') id: string, @Body() bodyDto: ReqAddOrUpdateBodyDto, @Req() req: RequestAo) {
     return this.projectService.updateById(id, bodyDto, req.payload.userId);
   }
 
   @Delete('/:id')
-  removeById(@Param('id') id: number) {
+  removeById(@Param('id') id: string) {
     return this.projectService.removeById(id);
   }
 
@@ -31,7 +31,7 @@ export class ProjectController {
   }
 
   @Get('/:id')
-  getById(@Param('id') id: number): Promise<ProjectModel | undefined> {
+  getById(@Param('id') id: string): Promise<ProjectModel | undefined> {
     return this.projectService.getById(id);
   }
 }

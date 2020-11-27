@@ -16,12 +16,12 @@ export class NavController {
   }
 
   @Put('/:id')
-  updateById(@Param('id') id: number, @Body() bodyDto: ReqAddOrUpdateBodyDto) {
+  updateById(@Param('id') id: string, @Body() bodyDto: ReqAddOrUpdateBodyDto) {
     return this.navService.updateById(id, bodyDto);
   }
 
   @Delete('/:id')
-  removeById(@Param('id') id: number) {
+  removeById(@Param('id') id: string) {
     return this.navService.removeById(id);
   }
 
@@ -31,7 +31,7 @@ export class NavController {
   }
 
   @Get('/:id')
-  getById(@Param('id') id: number): Promise<NavModel | undefined> {
+  getById(@Param('id') id: string): Promise<NavModel | undefined> {
     return this.navService.getById(id);
   }
 }

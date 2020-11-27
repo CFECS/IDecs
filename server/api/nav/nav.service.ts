@@ -12,11 +12,11 @@ export class NavService {
     await this.navDao.insert(bodyDto);
   }
 
-  async updateById(id: number, bodyDto: ReqAddOrUpdateBodyDto) {
+  async updateById(id: string, bodyDto: ReqAddOrUpdateBodyDto) {
     await this.navDao.update(id, bodyDto);
   }
 
-  async removeById(id: number) {
+  async removeById(id: string) {
     await this.navDao.softDelete(id);
   }
 
@@ -24,7 +24,7 @@ export class NavService {
     return this.navDao.queryPagination(page, limit, true);
   }
 
-  getById(id: number): Promise<NavModel | undefined> {
+  getById(id: string): Promise<NavModel | undefined> {
     return this.navDao.findOne(id);
   }
 }

@@ -12,11 +12,11 @@ export class RoleService {
     await this.roleDao.insert(bodyDto);
   }
 
-  async updateById(id: number, bodyDto: ReqAddOrUpdateBodyDto) {
+  async updateById(id: string, bodyDto: ReqAddOrUpdateBodyDto) {
     await this.roleDao.update(id, bodyDto);
   }
 
-  async removeById(id: number) {
+  async removeById(id: string) {
     await this.roleDao.softDelete(id);
   }
 
@@ -24,7 +24,7 @@ export class RoleService {
     return this.roleDao.queryPagination(page, limit, true);
   }
 
-  getById(id: number): Promise<RoleModel | undefined> {
+  getById(id: string): Promise<RoleModel | undefined> {
     return this.roleDao.findOne(id);
   }
 }

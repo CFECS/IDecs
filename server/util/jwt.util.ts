@@ -8,7 +8,6 @@ import { CustomException } from '../exception/custom.exception';
 import { ResponseCodeEnum } from '../enum/response.code.enum';
 import { Session, SessionDocument } from '../model/mongo/session.model';
 import { config } from '../../config';
-import { Utils } from './utils';
 
 interface TokenPayload {
   sub: string;
@@ -16,7 +15,7 @@ interface TokenPayload {
 }
 
 export interface JwtPayload extends TokenPayload {
-  userId: number;
+  userId: string;
   auths: Record<string, any>;
 }
 
@@ -55,9 +54,7 @@ export class JwtUtil {
     if (jwtPayload?.type !== type) {
       throw new CustomException(ResponseCodeEnum.UNKNOWN_TOKEN_TYPE);
     }
-    if (jwtPayload?.type === TokenTypeEnum.TICKET) {
-      jwtPayload.userId = Number.parseInt(Utils.decodeBase64(jwtPayload.sub));
-    } else if (jwtPayload?.type === TokenTypeEnum.ACCESS_TOKEN) {
+    if (jwtPayload?.type === TokenTypeEnum.ACCESS_TOKEN) {
       const session = await this.sessionModel.findOne({ sessionId: jwtPayload.sub });
       if (session?.token !== token) {
         throw new CustomException(ResponseCodeEnum.INVALID_TOKEN);

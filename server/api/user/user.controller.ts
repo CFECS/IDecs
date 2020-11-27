@@ -95,12 +95,12 @@ export class UserController {
   }
 
   @Get('/:id')
-  getById(@Param('id') id: number): Promise<UserModel | undefined> {
+  getById(@Param('id') id: string): Promise<UserModel | undefined> {
     return this.userService.getById(id);
   }
 
   @Delete('/:id')
-  async removeById(@Param('id') id: number): Promise<void> {
+  async removeById(@Param('id') id: string): Promise<void> {
     await this.userService.removeById(id);
   }
 }

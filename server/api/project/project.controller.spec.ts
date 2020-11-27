@@ -35,7 +35,7 @@ describe('ProjectController', () => {
       name: 'test project',
       description: 'for test updated',
     };
-    const url = '/api/project/1';
+    const url = '/api/project/b6252599-6bfd-4852-862c-3efa039a3014';
     return BaseTest.setHeaders(agent, url)
       .put(url)
       .send(data)
@@ -44,7 +44,7 @@ describe('ProjectController', () => {
   });
 
   it('should get project by id successful', () => {
-    const url = '/api/project/1';
+    const url = '/api/project/b6252599-6bfd-4852-862c-3efa039a3014';
     return BaseTest.setHeaders(agent, url)
       .get(url)
       .expect(HttpStatus.OK)
@@ -60,7 +60,7 @@ describe('ProjectController', () => {
   });
 
   it('should delete project successful', () => {
-    const url = '/api/project/1';
+    const url = '/api/project/b6252599-6bfd-4852-862c-3efa039a3014';
     return BaseTest.setHeaders(agent, url)
       .delete(url)
       .expect(HttpStatus.OK)

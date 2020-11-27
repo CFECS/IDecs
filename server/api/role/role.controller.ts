@@ -15,12 +15,12 @@ export class RoleController {
   }
 
   @Put('/:id')
-  updateById(@Param('id') id: number, @Body() bodyDto: ReqAddOrUpdateBodyDto) {
+  updateById(@Param('id') id: string, @Body() bodyDto: ReqAddOrUpdateBodyDto) {
     return this.roleService.updateById(id, bodyDto);
   }
 
   @Delete('/:id')
-  removeById(@Param('id') id: number) {
+  removeById(@Param('id') id: string) {
     return this.roleService.removeById(id);
   }
 
@@ -30,7 +30,7 @@ export class RoleController {
   }
 
   @Get('/:id')
-  getById(@Param('id') id: number): Promise<RoleModel | undefined> {
+  getById(@Param('id') id: string): Promise<RoleModel | undefined> {
     return this.roleService.getById(id);
   }
 }

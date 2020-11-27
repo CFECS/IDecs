@@ -8,15 +8,15 @@ import { ProjectModel } from '../../model/rds/project.model';
 export class ProjectService {
   constructor(private readonly projectDao: ProjectDao) {}
 
-  async add(bodyDto: ReqAddOrUpdateBodyDto, addBy: number) {
+  async add(bodyDto: ReqAddOrUpdateBodyDto, addBy: string) {
     await this.projectDao.insert({ createdById: addBy, updatedById: addBy, ...bodyDto });
   }
 
-  async updateById(id: number, bodyDto: ReqAddOrUpdateBodyDto, updateBy: number) {
+  async updateById(id: string, bodyDto: ReqAddOrUpdateBodyDto, updateBy: string) {
     await this.projectDao.update(id, { updatedById: updateBy, ...bodyDto });
   }
 
-  async removeById(id: number) {
+  async removeById(id: string) {
     await this.projectDao.softDelete(id);
   }
 
@@ -24,7 +24,7 @@ export class ProjectService {
     return this.projectDao.queryPagination(page, limit, true);
   }
 
-  getById(id: number): Promise<ProjectModel | undefined> {
+  getById(id: string): Promise<ProjectModel | undefined> {
     return this.projectDao.findOne(id, { relations: ['createdBy', 'updatedBy'] });
   }
 }

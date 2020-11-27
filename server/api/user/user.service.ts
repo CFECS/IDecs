@@ -22,7 +22,6 @@ import { UserDao } from '../../dao/user.dao';
 import { NotifyTypeEnum } from '../../enum/notify.type.enum';
 import { ReqPasswordResetBodyDto } from '../../dto/user/req.password.reset.body.dto';
 import { NotificationService } from '../notification/notification.service';
-import { Utils } from '../../util/utils';
 
 @Injectable()
 export class UserService {
@@ -67,7 +66,7 @@ export class UserService {
       default:
         throw new CustomException(ResponseCodeEnum.UNKNOWN_LOGIN_TYPE);
     }
-    const ticket = JwtUtil.signTicket({ sub: Utils.toBase64(user.id.toString()), type: TokenTypeEnum.TICKET });
+    const ticket = JwtUtil.signTicket({ sub: user.id, type: TokenTypeEnum.TICKET });
     return { ticket };
   }
 
@@ -84,7 +83,7 @@ export class UserService {
 
   async validateTicket(ticket: string): Promise<ResTokenValidateDto> {
     const payload = await this.jwtUtil.verifyToken(ticket, TokenTypeEnum.TICKET);
-    const user = await this.getById(payload.userId);
+    const user = await this.getById(payload.sub);
     if (!user) {
       throw new CustomException(ResponseCodeEnum.USER_NOT_EXIST);
     }
@@ -95,7 +94,7 @@ export class UserService {
     });
     await this.sessionModel.create({
       sessionId,
-      userId: payload.userId,
+      userId: user.id,
       auths: {},
       token,
     });
@@ -112,12 +111,12 @@ export class UserService {
     return user;
   }
 
-  async getById(id: number, withPassword = false): Promise<UserModel | undefined> {
+  async getById(id: string, withPassword = false): Promise<UserModel | undefined> {
     const user = await this.userDao.findOne(id);
     return withPassword ? user : (classToPlain(user) as UserModel);
   }
 
-  async removeById(id: number): Promise<void> {
+  async removeById(id: string): Promise<void> {
     await this.userDao.softDelete(id);
   }
 
@@ -125,11 +124,11 @@ export class UserService {
     return this.userDao.queryPagination(page, limit, true);
   }
 
-  async passwordChange(id: number, newPassword: string): Promise<void> {
+  async passwordChange(id: string, newPassword: string): Promise<void> {
     await this.userDao.update(id, { password: PasswordUtil.generateStorePwd(newPassword) });
   }
 
-  async profileUpdate(id: number, profileUpdateBodyDto: ReqProfileUpdateBodyDto): Promise<void> {
+  async profileUpdate(id: string, profileUpdateBodyDto: ReqProfileUpdateBodyDto): Promise<void> {
     await this.userDao.update(id, {
       username: profileUpdateBodyDto.username,
       avatar: profileUpdateBodyDto.avatar,
@@ -137,12 +136,12 @@ export class UserService {
     });
   }
 
-  async emailChange(id: number, email: string, code: string): Promise<void> {
+  async emailChange(id: string, email: string, code: string): Promise<void> {
     await this.notificationService.emailVerify(email, code, NotifyTypeEnum[NotifyTypeEnum.BINDING]);
     await this.userDao.update(id, { email });
   }
 
-  async phoneChange(id: number, phone: string, code: string): Promise<void> {
+  async phoneChange(id: string, phone: string, code: string): Promise<void> {
     await this.notificationService.smsVerify(phone, code, NotifyTypeEnum[NotifyTypeEnum.BINDING]);
     await this.userDao.update(id, { phone });
   }

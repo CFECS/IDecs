@@ -1,7 +1,7 @@
 import { Column, Entity } from 'typeorm';
 import { BaseModel } from './base.model';
 
-@Entity({ name: 'role', orderBy: { id: 'ASC' } })
+@Entity({ name: 'role', orderBy: { createdAt: 'DESC' } })
 export class RoleModel extends BaseModel {
   @Column({ length: 64 })
   name!: string;
